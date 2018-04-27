@@ -1,2 +1,2 @@
 # abq-outside
-capstone, yall
+capstone, y'all
