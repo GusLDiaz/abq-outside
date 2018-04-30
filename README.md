@@ -1,2 +1,2 @@
 # abq-outside
-capstone, y'all
+Capstone Project: Interactive Trails Map
