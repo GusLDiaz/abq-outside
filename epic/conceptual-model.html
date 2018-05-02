@@ -6,9 +6,34 @@
 	</head>
 	<body>
 		<h1>ABQ Outside Conceptual Model</h1>
-		<h4>Trail</h4>
 		<h4>Profile</h4>
-		<h4>Comment/Review</h4>
+		<ul>
+			<li>profileId (primary key)</li>
+			<li>profileActivationToken</li>
+			<li>profileEmail</li>
+			<li>profileUsername</li>
+			<li>profileHash</li>
+		</ul>
+		<h4>Trail</h4>
+		<ul>
+			<li>trailId (primary key)</li>
+			<li>trailAddress</li>
+			<li>trailPicture</li>
+			<li>trailName</li>
+			<li>trailLocation</li>
+		</ul>
+		<h4>Comment</h4>
+		<ul>
+			<li>commentId (primary key)</li>
+			<li>commentProfileId (foreign key)</li>
+			<li>commentTrailId (foreign key)</li>
+			<li>commentContent</li>
+			<li>commentDateTime</li>
+		</ul>
 		<h4>Bookmark</h4>
+		<ul>
+			<li>bookmarkProfileId (foreign key)</li>
+			<li>bookmarkTrailId (foreign key)</li>
+		</ul>
 	</body>
 </html>
