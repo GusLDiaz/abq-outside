@@ -9,10 +9,9 @@
 		<h4>Profile</h4>
 		<ul>
 			<li>profileId (primary key)</li>
-			<li>profileActivationToken</li>
 			<li>profileEmail</li>
 			<li>profileUsername</li>
-			<li>profileHash</li>
+			<li>profileRefreshToken</li>
 			<li>profileImage</li>
 		</ul>
 		<h4>Trail</h4>
@@ -22,7 +21,7 @@
 			<li>trailImage</li>
 			<li>trailName</li>
 			<li>trailLocation</li>
-			<li>trailDescription</li>
+			<li>trailSummary</li>
 		</ul>
 		<h4>Comment</h4>
 		<ul>
@@ -31,12 +30,6 @@
 			<li>commentTrailId (foreign key)</li>
 			<li>commentContent</li>
 			<li>commentDateTime</li>
-			<li>commentPhoto (?)</li>
-		</ul>
-		<h4>Bookmark</h4>
-		<ul>
-			<li>bookmarkProfileId (foreign key)</li>
-			<li>bookmarkTrailId (foreign key)</li>
 		</ul>
 	</body>
 </html>
