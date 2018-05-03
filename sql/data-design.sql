@@ -29,3 +29,14 @@ CREATE TABLE trails (
 	PRIMARY KEY(trailId)
 );
 
+CREATE TABLE comment (
+	commentId BINARY(16),
+	commentProfileId BINARY(16) NOT NULL,
+	commentTrailId BINARY(16) NOT NULL,
+	commentTimeStamp DATETIME(6) NOT NULL,
+	INDEX(commentProfileId),
+	INDEX(commentTrailId),
+	FOREIGN KEY(commentProfileId) REFERENCES profile(profileId),
+	FOREIGN KEY(commentTrailId) REFERENCES trail(trailId),
+	PRIMARY KEY(commentId)
+);
