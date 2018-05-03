@@ -9,7 +9,7 @@ CREATE TABLE profile (
 	profileEmail VARCHAR(128) NOT NULL,
 	profileImage VARCHAR(128),
 	profileRefreshToken VARCHAR(128),
-	profileUserName VARCHAR(64),
+	profileUsername VARCHAR(64),
 	UNIQUE(profileUserName),
 	UNIQUE(profileEmail),
 	PRIMARY KEY(profileId)
@@ -34,7 +34,7 @@ CREATE TABLE comment (
 	commentId BINARY(16),
 	commentProfileId BINARY(16) NOT NULL,
 	commentTrailId BINARY(16) NOT NULL,
-	commentTimeStamp DATETIME(6) NOT NULL,
+	commentTimestamp DATETIME(6) NOT NULL,
 	INDEX(commentProfileId),
 	INDEX(commentTrailId),
 	FOREIGN KEY(commentProfileId) REFERENCES profile(profileId),
