@@ -9,7 +9,7 @@ CREATE TABLE profile (
 	profileEmail VARCHAR(128) NOT NULL,
 	profileImage VARCHAR(128),
 	profileRefreshToken VARCHAR(128),
-	profileUsername VARCHAR(64),
+	profileUsername VARCHAR(64) NOT NULL,
 	UNIQUE(profileUserName),
 	UNIQUE(profileEmail),
 	PRIMARY KEY(profileId)
@@ -17,7 +17,7 @@ CREATE TABLE profile (
 
 CREATE TABLE trail (
 	trailId BINARY(16) NOT NULL,
-	trailAddress VARCHAR(128) NOT NULL,
+	trailAddress VARCHAR(128),
 	trailAscent TINYINT,
 	trailImage VARCHAR(255),
 	trailLat DECIMAL (12,9),
@@ -26,7 +26,7 @@ CREATE TABLE trail (
 	trailName VARCHAR(128),
 	trailRating TINYINT UNSIGNED,
 	trailSummary VARCHAR(128),
-	trailExternalId CHAR(7),
+	trailExternalId CHAR(7) NOT NULL,
 	PRIMARY KEY(trailId)
 );
 
