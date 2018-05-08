@@ -45,8 +45,8 @@ class Trail implements \JsonSerializable {
 	/**
 	 * constructor for this Trail
 	 *
-	 * @param UUID|string $newtrailId id of this Trail
-	 * @param UUID|string $newtrailExternalId id of this Trail
+	 * @param string|UUID $newTrailId id of this Trail
+	 * @param string|UUID $newTrailExternalId id of this Trail
 	 * @param string $newTrailAddress address of this Trail
 	 * @param string $newTrailImage image of this Trail
 	 * @param string $newTrailName name of this Trail
