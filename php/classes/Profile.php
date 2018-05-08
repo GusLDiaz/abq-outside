@@ -2,12 +2,13 @@
 namespace Edu\Cnm\AbqOutside;
 require_once("autoload.php");
 require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
-
 use Ramsey\Uuid\Uuid;
 
 /**
  * Class for the Profile Entity
  *
+ * @author Dylan McDonald <dmcdonald21@cnm.edu>
+ * @author Michael Figueroa <mfigueroa14@cnm.edu>
  * @version 3.0.0
  **/
 class Profile implements \JsonSerializable {
@@ -18,8 +19,8 @@ class Profile implements \JsonSerializable {
 	 **/
 	private $profileId;
 	/**
-	 * Atrribute for the profile's password
-	 * @var Uuid $profileHash
+	 * The profile's Email
+	 * @var string $profileEmail
 	 **/
 	private $profileEmail;
 	/**
