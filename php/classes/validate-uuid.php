@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\AbqOuside;
+namespace Edu\Cnm\AbqOutside;
 require_once("autoload.php");
 require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
