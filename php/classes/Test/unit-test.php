@@ -80,9 +80,8 @@ return(Factory::DELETE_ALL());
 public final function getConnection() {
 if($this->connection === null) {
 // connect to mySQL and provide the interface to PHPUnit
-//	find correct path
-$config = readConfig(" . ini");
-$pdo = connectToEncryptedMySQL(" . ini");
+$config = readConfig("/etc/apache2/capstone-mysql/outside.ini");
+$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/outside.ini");
 $this->connection = $this->createDefaultDBConnection($pdo, $config["database"]);
 }
 return($this->connection);
