@@ -10,3 +10,20 @@ use Ramsey\Uuid\Uuid;
  * @author Jullyane Hawkins <jhawkins20@cnm.edu>
  * @version 1.0.0
  **/
+class Trail implements \JsonSerializable {
+	use ValidateUuid;
+	/**
+	 * id for this Trail; this is the primary key
+	 * @var Uuid $trailId
+	 **/
+	private $trailId;
+	/**
+	 * extrenal id for this Trail
+	 * @var Uuid $trailExternalId
+	 **/
+	private $trailExternalId;
+	/**
+	 * physical address for this Trail
+	 * @var string $trailAddress
+	 **/
+	private $trailAddress;
