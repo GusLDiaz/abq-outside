@@ -50,7 +50,7 @@ abstract class AbqOutsideTest extends TestCase {
 //tables in correct order
 		$dataset->addTable("profile");
 		$dataset->addTable("trail");
-		$dataset->addTable("comment);
+		$dataset->addTable("comment");
 return($dataset);
 }
 
@@ -77,18 +77,11 @@ public final function getTearDownOperation() {
 return(Factory::DELETE_ALL());
 }
 
-/*
-* sets up the database connection and provides it to PHPUnit
-*
-* @see <https://phpunit.de/manual/current/en/database.html#database.configuration-of-a-phpunit-database-testcase>
-* @return Connection PHPUnit database connection interface
-*/
-
 public final function getConnection() {
 if($this->connection === null) {
 // connect to mySQL and provide the interface to PHPUnit
 //	find correct path
-//$config = readConfig(" . ini");
+$config = readConfig(" . ini");
 $pdo = connectToEncryptedMySQL(" . ini");
 $this->connection = $this->createDefaultDBConnection($pdo, $config["database"]);
 }
