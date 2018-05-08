@@ -58,4 +58,19 @@ class Trail implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
+	public function __construct($newTrailId, $newTrailExternalId, string $newTrailAddress, string $newTrailImage, string $newTrailName, string $newTrailLocation) {
+		try {
+			$this->setTrailId($newTrailId);
+			$this->setTrailExternalId($newTrailExternalId);
+			$this->setTrailAddress($newTrailAddress);
+			$this->setTrailImage($newTrailImage);
+			$this->setTrailName($newTrailName);
+			$this->setTrailLocation($newTrailLocation);
+		}
+			//determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
 }
