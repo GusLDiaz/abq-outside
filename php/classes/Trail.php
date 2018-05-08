@@ -42,3 +42,20 @@ class Trail implements \JsonSerializable {
 	 * @var string $trailLocation
 	 **/
 	private $trailLocation;
+	/**
+	 * constructor for this Trail
+	 *
+	 * @param UUID|string $newtrailId id of this Trail
+	 * @param UUID|string $newtrailExternalId id of this Trail
+	 * @param string $newTrailAddress address of this Trail
+	 * @param string $newTrailImage image of this Trail
+	 * @param string $newTrailName name of this Trail
+	 * @param string $newTrailLocation location of this trail
+
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
+	 **/
+}
