@@ -10,28 +10,40 @@ namespace Edu\Cnm\AbqOutside\Test;
 use Edu\Cnm\AbqOutside\{Profile, Trail};
 
 // grab the class under scrutiny
-require_once(dirname(__DIR__) . "/autoload.php");
+//require_once(dirname(__DIR__) . "/autoload.php");
 
 // grab the uuid generator
-require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
+//require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
 
-/**
- * Full PHPUnit test for the Tweet class
- *
- * This is a complete PHPUnit test of the Tweet class. It is complete because *ALL* mySQL/PDO enabled methods
- * are tested for both invalid and valid inputs.
- *
- * @see Tweet
- * @author Dylan McDonald <dmcdonald21@cnm.edu>
- **/
+
 class CommentTest extends AbqOutsideTest {
 	/**
 	 * Profile that created comment for foreign key relations
 	 * @var Profile profile
 	 **/
 	protected $profile = null;
+	/**
+	 * @var Trail trail
+	 */
+	protected $trail = null;
+	protected $VALID_PROFILE_HASH;
 
-commentId BINARY(16),
-commentProfileId BINARY(16) NOT NULL,
-commentTrailId BINARY(16) NOT NULL,
-commentTimestamp DATETIME(6) NOT NULL,
+	/**
+	 * content of the Comment
+	 * @var string $VALID_COMMENT_CONTENT
+	 *
+	 */
+	protected $VALID_COMMENT_CONTENT = "PHPUnit test passing";
+
+	/**
+	 * content of the updated comment
+	 * @var string $VALID_COMMENT_CONTENT2
+	 **/
+	protected $VALID_COMMENT_CONTENT2 = "PHPUnit test still passing";
+
+	/**
+	 * timestamp of the comment; this starts as null and is assigned later
+	 * @var \DateTime $VALID_COMMENT_TIMESTAMP
+	 **/
+	protected $VALID_COMMENT_TIMESTAMP = null;
+}
