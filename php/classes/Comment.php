@@ -48,7 +48,7 @@ class Comment implements \JsonSerializable {
 	 * @param string|Uuid $newcommentId id of this Comment or null if a new Comment
 	 * @param string|Uuid $newcommentProfileId id of the profile who sent Comment
 	 * @param string $newcommentTrailId id of the trail comment
-	 * @param string $newTweetContent string containing actual comment data
+	 * @param string $newcommentContent string containing actual comment data
 	 * @param \DateTime|string|null $newcommentDateTime date and time Comment was sent or null if set to current date and time
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
