@@ -27,3 +27,18 @@ class Trail implements \JsonSerializable {
 	 * @var string $trailAddress
 	 **/
 	private $trailAddress;
+	/**
+	 * image of this Trail
+	 * @var string $trailImage
+	 **/
+	private $trailImage;
+	/**
+	 * name of this Trail
+	 * @var string $trailName
+	 **/
+	private $trailName;
+	/**
+	 * detailed description of this Trail location
+	 * @var string $trailLocation
+	 **/
+	private $trailLocation;
