@@ -123,4 +123,34 @@ class Trail implements \JsonSerializable {
 		// convert and store the trail external id
 		$this->trailExternalId = $uuid;
 	}
+	/**
+	 * accessor method for trail address
+	 *
+	 * @return string value of trail address
+	 **/
+	public function getTrailAddress() : string {
+		return($this->trailAddress);
+	}
+	/**
+	 * mutator method for trail address
+	 *
+	 * @param string $newTrailAddress new value of trail address
+	 * @throws \InvalidArgumentException if $newTrailAddress is not a string or insecure
+	 * @throws \RangeException if $newTrailAddress is > 200 characters
+	 * @throws \TypeError if $newTrailAddress is not a string
+	 **/
+	public function setTrailAddress(string $newTrailAddress) : void {
+		// verify the address is secure
+		$newTrailAddress = trim($newTrailAddress);
+		$newTrailAddress = filter_var($newTrailAddress, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newTrailAddress) === true) {
+			throw(new \InvalidArgumentException("trail address is empty or insecure"));
+		}
+		// verify the address will fit in the database
+		if(strlen($newTrailAddress) > 200) {
+			throw(new \RangeException("trail address too large"));
+		}
+		// store the address
+		$this->trailAddress = $newtrailAddress;
+	}
 }
