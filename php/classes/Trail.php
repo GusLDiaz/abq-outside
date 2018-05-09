@@ -73,4 +73,29 @@ class Trail implements \JsonSerializable {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
+	/**
+	 * accessor method for trail id
+	 *
+	 * @return Uuid value of trail id
+	 **/
+	public function getTrailId() : Uuid {
+		return($this->trailId);
+	}
+	/**
+	 * mutator method for trail id
+	 *
+	 * @param Uuid|string $newTrailId new value of trail id
+	 * @throws \RangeException if $newTrailId is not positive
+	 * @throws \TypeError if $newTrailId is not a uuid or string
+	 **/
+	public function setTrailId($newTrailId) : void {
+		try {
+			$uuid = self::validateUuid($newTrailId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		// convert and store the trail id
+		$this->trailId = $uuid;
+	}
 }
