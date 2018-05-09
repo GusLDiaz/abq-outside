@@ -153,4 +153,34 @@ class Trail implements \JsonSerializable {
 		// store the address
 		$this->trailAddress = $newtrailAddress;
 	}
+	/**
+	 * accessor method for trail image
+	 *
+	 * @return string value of trail image
+	 **/
+	public function getTrailImage() : string {
+		return($this->trailImage);
+	}
+	/**
+	 * mutator method for trail image
+	 *
+	 * @param string $newTrailImage new value of trail image
+	 * @throws \InvalidArgumentException if $newTrailImage is not a string or insecure
+	 * @throws \RangeException if $newTrailImage is > 200 characters
+	 * @throws \TypeError if $newTrailImage is not a string
+	 **/
+	public function setTrailImage(string $newTrailImage) : void {
+		// verify the image is secure
+		$newTrailImage = trim($newTrailImage);
+		$newTrailImage = filter_var($newTrailImage, FILTER_SANITIZE_URL);
+		if(empty($newTrailImage) === true) {
+			throw(new \InvalidArgumentException("trail image is empty or insecure"));
+		}
+		// verify the image will fit in the database
+		if(strlen($newTrailImage) > 200) {
+			throw(new \RangeException("image too large"));
+		}
+		// store the image
+		$this->trailImage = $newTrailImage;
+	}
 }
