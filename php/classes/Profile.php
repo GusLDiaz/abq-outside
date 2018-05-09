@@ -37,4 +37,32 @@ class Profile implements \JsonSerializable {
 	 * @var string $profileUsername
 	 **/
 	private $profileImage;
+
+	/**
+	 * constructor for Profile
+	 *
+	 * @param string|Uuid $newProfileId id for Profile or null if a new Profile
+	 * @param string $newProfileEmail string containing profile email data
+	 * @param string $newProfileUsername string containing profile Username
+	 * @param string $newProfileRefreshToken string containing /////////
+	 * @param string $newProfileImage string containing profile image data
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
+	 **/
+	public function __construct($newProfileId, string $newProfileEmail, string $newProfileUsername, string $newProfileRefreshToken, string $newProfileImage) {
+		try {
+			$this->setProfileId($newProfileId);
+			$this->setProfileEmail($newProfileEmail);
+			$this->setProfileUsername($newProfileUsername);
+			$this->setProfileRefreshToken($newProfileRefreshToken);
+			$this->setProfileImage($newProfileImage);
+		} //determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
 }
