@@ -52,13 +52,13 @@ class Profile implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct($newProfileId, string $newProfileEmail, string $newProfileUsername, string $newProfileRefreshToken, string $newProfileImage) {
+	public function __construct($newProfileId, string $newProfileEmail, string $newProfileImage, string $newProfileRefreshToken, string $newProfileUsername) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileEmail($newProfileEmail);
-			$this->setProfileUsername($newProfileUsername);
-			$this->setProfileRefreshToken($newProfileRefreshToken);
 			$this->setProfileImage($newProfileImage);
+			$this->setProfileRefreshToken($newProfileRefreshToken);
+			$this->setProfileUsername($newProfileUsername);
 		} //determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
@@ -116,5 +116,36 @@ class Profile implements \JsonSerializable {
 		}
 		// convert and store the profile email
 		$this->profileEmail = $newProfileEmail;
+	}
+
+	/**
+	 * accessor method for profile image
+	 *
+	 * @return string value of profile image
+	 **/
+	public function getProfileImage(): string {
+		return ($this->profileImage);
+	}
+
+	/**
+	 * mutator method for profile image
+	 *
+	 * @param string $newProfileImage new value of profile image
+	 * @throws \InvalidArgumentException if $newProfileImage is not a string or insecure
+	 * @throws \TypeError if $newProfileImage is not a string
+	 **/
+	public function setProfileImage(string $newProfileImage): void {
+		// verify the profile image is secure
+		$newProfileImage = trim($newProfileImage);
+		$newProfileImage = filter_var($newProfileImage, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileImage) === true) {
+			throw(new \InvalidArgumentException("profile image is empty or insecure"));
+		}
+		// verify the profile image will fit in the database
+		if(strlen($newProfileImage) > 140) {
+			throw(new \RangeException("profile image too large"));
+		}
+		// store the profile image
+		$this->profileImage = $newProfileImage;
 	}
 }
