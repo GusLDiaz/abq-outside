@@ -23,20 +23,20 @@ class Profile implements \JsonSerializable {
 	 **/
 	private $profileEmail;
 	/**
-	 * The profile's Username
+	 * The profile's Image
 	 * @var string $profileUsername
 	 **/
-	private $profileUsername;
+	private $profileImage;
 	/**
 	 * The profile's Refresh Token
 	 * @var string $profileUsername
 	 **/
 	private $profileRefreshToken;
 	/**
-	 * The profile's Image
+	 * The profile's Username
 	 * @var string $profileUsername
 	 **/
-	private $profileImage;
+	private $profileUsername;
 
 	/**
 	 * constructor for Profile
@@ -147,5 +147,51 @@ class Profile implements \JsonSerializable {
 		}
 		// store the profile image
 		$this->profileImage = $newProfileImage;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getProfileRefreshToken(): string {
+		return $this->profileRefreshToken;
+	}
+
+	/**
+	 * @param string $profileRefreshToken
+	 */
+	public function setProfileRefreshToken(string $profileRefreshToken): void {
+		$this->profileRefreshToken = $profileRefreshToken;
+	}
+
+
+	/**
+	 * accessor method for profile username
+	 *
+	 * @return string value of profile username
+	 **/
+	public function getProfileUsername(): string {
+		return ($this->profileUsername);
+	}
+
+	/**
+	 * mutator method for profile username
+	 *
+	 * @param string $newProfileUsername new value of profile username
+	 * @throws \InvalidArgumentException if $newProfileUsername is not a string or insecure
+	 * @throws \TypeError if $newProfileUsername is not a string
+	 **/
+	public function setProfileUsername(string $newProfileUsername): void {
+		// verify the profile username is secure
+		$newProfileUsername = trim($newProfileUsername);
+		$newProfileUsername = filter_var($newProfileUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileUsername) === true) {
+			throw(new \InvalidArgumentException("profile username is empty or insecure"));
+		}
+		// verify the profile username will fit in the database
+		if(strlen($newProfileUsername) > 140) {
+			throw(new \RangeException("profile username too large"));
+		}
+		// store the profile username
+		$this->profileUsername = $newProfileUsername;
 	}
 }
