@@ -92,4 +92,29 @@ class Profile implements \JsonSerializable {
 		// convert and store the profile id
 		$this->profileId = $uuid;
 	}
+
+	/**
+	 * accessor method for profile email
+	 *
+	 **/
+	public function getProfileEmail(): string {
+		return ($this->profileEmail);
+	}
+
+	/**
+	 * mutator method for profile email
+	 *
+	 * @param string | $newProfileEmail new value of profileEmail
+	 * @throws \RangeException if $newProfileEmail is not positive
+	 **/
+	public function setProfileEmail($newProfileEmail): void {
+		try {
+			$uuid = self::validateUuid($newProfileEmail);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		// convert and store the profile email
+		$this->profileEmail = $newProfileEmail;
+	}
 }
