@@ -98,4 +98,29 @@ class Trail implements \JsonSerializable {
 		// convert and store the trail id
 		$this->trailId = $uuid;
 	}
+	/**
+	 * accessor method for trail external id
+	 *
+	 * @return Uuid value of trail external id
+	 **/
+	public function getTrailExternalId() : Uuid {
+		return($this->trailExternalId);
+	}
+	/**
+	 * mutator method for trail external id
+	 *
+	 * @param Uuid|string $newTrailExternalId new value of trail external id
+	 * @throws \RangeException if $newTrailExternalId is not positive
+	 * @throws \TypeError if $newTrailExternalId is not a uuid or string
+	 **/
+	public function setTrailExternalId($newTrailExternalId) : void {
+		try {
+			$uuid = self::validateUuid($newTrailExternalId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		// convert and store the trail external id
+		$this->trailExternalId = $uuid;
+	}
 }
