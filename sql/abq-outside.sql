@@ -32,6 +32,7 @@ CREATE TABLE trail (
 
 CREATE TABLE comment (
 	commentId BINARY(16),
+	commentContent VARCHAR (256),
 	commentProfileId BINARY(16) NOT NULL,
 	commentTrailId BINARY(16) NOT NULL,
 	commentTimestamp DATETIME(6) NOT NULL,
