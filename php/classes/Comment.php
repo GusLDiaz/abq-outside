@@ -2,6 +2,8 @@
 namespace Edu\Cnm\AbqOutside;
 require_once("autoload.php");
 require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
+
+use PDOException;
 use Ramsey\Uuid\Uuid;
 /**
  * Small Cross Section of a comment
@@ -155,12 +157,12 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for tweet content
+	 * accessor method for comment content
 	 *
-	 * @return string value of tweet content
+	 * @return string value of comment content
 	 **/
-	public function getTweetContent(): string {
-		return ($this->tweetContent);
+	public function getCommentContent(): string {
+		return ($this->commentContentContent);
 	}
 
 	/**
@@ -184,8 +186,8 @@ class Comment implements \JsonSerializable {
 			throw(new \RangeException("comment content id too large"));
 		}
 
-		// store the tweet content
-		$this->setCommentContentId() = $newCommentContentId;
+		// store the comment content
+		$this->CommentContentId = $newCommentContentId;
 	}
 
 	/**
@@ -193,8 +195,8 @@ class Comment implements \JsonSerializable {
 	 *
 	 * @return \DateTime value of content date time
 	 **/
-	public function getContentDateTime() : \DateTime {
-		return($this->getContentDateTime());
+	public function getContentDateTime(): \DateTime {
+		return ($this->commentDateTime);
 	}
 
 	/**
@@ -204,10 +206,10 @@ class Comment implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if $newContentDateTime is not a valid object or string
 	 * @throws \RangeException if $newContentDateTime is a date that does not exist
 	 **/
-	public function setContentDateTime($newContentDateTime = null) : void {
+	public function setContentDateTime($newContentDateTime = null): void {
 		// base case: if the date is null, use the current date and time
 		if($newContentDateTime === null) {
-			$this->getContentDateTime() = new \DateTime();
+			$this->getContentDateTime = new \DateTime();
 			return;
 		}
 
@@ -225,10 +227,10 @@ class Comment implements \JsonSerializable {
 	 * inserts this Comment into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL related errors occur
+	 * @throws PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function insert(\PDO $pdo) : void {
+	public function insert(\PDO $pdo): void {
 
 		// create query template
 		$query = "INSERT INTO comment(commentId,commentProfileId, commentTrailId, commentContent, commentDateTime) VALUES(:commentId, :commentProfileId, :commentTrailId, :commentContent, :commentDateTime)";
@@ -244,10 +246,10 @@ class Comment implements \JsonSerializable {
 	 * deletes this Comment from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL related errors occur
+	 * @throws PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function delete(\PDO $pdo) : void {
+	public function delete(\PDO $pdo): void {
 
 		// create query template
 		$query = "DELETE FROM comment WHERE commentId = :commentId";
@@ -262,21 +264,274 @@ class Comment implements \JsonSerializable {
 	 * updates this Comment in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL related errors occur
+	 * @throws PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function update(\PDO $pdo) : void {
+	public function update(\PDO $pdo): void {
 
 		// create query template
-		$query = "UPDATE tweet SET commentId = :commentId, commentProfileId = :commentProfileId, commentTrailId = :commentTrailId, commentTrailId = :commentContent, = :commentContent, commentDateTime = :commentDateTime WHERE commentId = :commentId";
+		$query = "UPDATE comment SET commentId = :commentId, commentProfileId = :commentProfileId, commentTrailId = :commentTrailId, commentTrailId = :commentContent, = :commentContent, commentDateTime = :commentDateTime WHERE commentId = :commentId";
 		$statement = $pdo->prepare($query);
 
 
 		$formattedDate = $this->commentDateTime->format("Y-m-d H:i:s.u");
-		$parameters = ["commentId" => $this->commentId->getBytes(),"commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentDateTime" => $formattedDate];
+		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentDateTime" => $formattedDate];
 		$statement->execute($parameters);
 	}
 
+	/**
+	 * gets the Comment by commentId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $commentId comment id to search for
+	 * @return Comment|null Comment found or null if not found
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
+	 **/
+	public static function getCommentByCommentId(\PDO $pdo, $commentId): ?Comment {
+		// sanitize the commentId before searching
+		try {
+			$commentId = self::validateUuid($commentId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		// create query template
+		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentDateTime FROM comment WHERE commentId = :commentId";
+		$statement = $pdo->prepare($query);
+
+		// bind the comment id to the place holder in the template
+		$parameters = ["commentId" => $commentId->getBytes()];
+		$statement->execute($parameters);
+
+		// grab the comment from mySQL
+		try {
+			$comment = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$comment = new Comment($row["commentId"], $row["commentProfileId"], $row["commentTrailId"], $row["commentContent"], $row["commentDateTime"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($comment);
+	}
+
+	/**
+	 * gets the Comment by comment profile id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $commentProfileId comment profile id to search by
+	 * @return \SplFixedArray SplFixedArray of Comments found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getCommentByCommentProfileId(\PDO $pdo, $commentProfileId): \SplFixedArray {
+
+		try {
+			$commentProfileId = self::validateUuid($commentProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		// create query template
+		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentDateTime FROM comment WHERE commentProfileId = :commentProfileId";
+		$statement = $pdo->prepare($query);
+		// bind the comment profile id to the place holder in the template
+		$parameters = ["commentProfileId" => $commentProfileId->getBytes()];
+		$statement->execute($parameters);
+		// build an array of comments
+		$comments = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$comment = new Comment($row["commentId"], $row["commentProfileId"], $row["commentTrailId"], $row["commentContent"], $row["commentDateTime"]);
+				$comments[$comments->key()] = $comment;
+				$comments->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($comments);
+	}
+
+	/**
+	 * gets the Comment by comment trail id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $commentTrailId comment trail id to search for
+	 * @return \SplFixedArray SplFixedArray of Comments found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getCommentBycommentTrailId(\PDO $pdo, string $commentTrailId): \SplFixedArray {
+		// sanitize the description before searching
+		$commentTrailId = trim($commentTrailId);
+		$commentTrailId = filter_var($commentTrailId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($commentTrailId) === true) {
+			throw(new \PDOException("comment trail id is invalid"));
+		}
+
+		// escape any mySQL wild cards
+		$commentTrailId = str_replace("_", "\\_", str_replace("%", "\\%", $commentTrailId));
+
+		// create query template
+		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentDateTime FROM comment WHERE commentTrailId LIKE :commentTrailId";
+		$statement = $pdo->prepare($query);
+
+		// bind the comment trail id to the place holder in the template
+		$commentTrailId = "%$commentTrailId%";
+		$parameters = ["commentTrailId" => $commentTrailId];
+		$statement->execute($parameters);
+
+		// build an array of comments
+		$comments = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$comment = new Comment($row["commentId"], $row["commentProfileId"], $row["commentTrailId"], $row["commentContent"], $row["commentDateTime"]);
+				$comments[$comments->key()] = $comment;
+				$comments->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($comments);
+	}
+
+	/**
+	 * gets the Comment by comment Content
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $commentContent comment content to search for
+	 * @return \SplFixedArray SplFixedArray of Comments found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getCommentByCommentContent(\PDO $pdo, string $commentContent): \SplFixedArray {
+		// sanitize the description before searching
+		$commentContent = trim($commentContent);
+		$commentContent = filter_var($commentContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($commentContent) === true) {
+			throw(new \PDOException("comment content is invalid"));
+		}
+
+		// escape any mySQL wild cards
+		$commentContent = str_replace("_", "\\_", str_replace("%", "\\%", $commentContent));
+
+		// create query template
+		$query = "SELECT commentId, commentProfileId, commentTrailId, commentcontent, commentDateTime FROM comment WHERE commentContent LIKE :commentContent";
+		$statement = $pdo->prepare($query);
+
+		// bind the comment content to the place holder in the template
+		$commentContent = "%$commentContent%";
+		$parameters = ["commentContent" => $commentContent];
+		$statement->execute($parameters);
+
+		// build an array of comments
+		$comments = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$comment = new Comment($row["commentId"], $row["commentProfileId"], $row["commentTrailId"], $row["commentContent"], $row["commentDateTime"]);
+				$comments[$comments->key()] = $comment;
+				$comments->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($comments);
+	}
+
+	/**
+	 * gets the Tweet by profile id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $tweetProfileId profile id to search by
+	 * @return \SplFixedArray SplFixedArray of Tweets found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getTweetByTweetProfileId(\PDO $pdo, $tweetProfileId): \SplFixedArray {
+
+		try {
+			$tweetProfileId = self::validateUuid($tweetProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		// create query template
+		$query = "SELECT tweetId, tweetProfileId, tweetContent, tweetDate FROM tweet WHERE tweetProfileId = :tweetProfileId";
+		$statement = $pdo->prepare($query);
+		// bind the tweet profile id to the place holder in the template
+		$parameters = ["tweetProfileId" => $tweetProfileId->getBytes()];
+		$statement->execute($parameters);
+		// build an array of tweets
+		$tweets = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$tweet = new Tweet($row["tweetId"], $row["tweetProfileId"], $row["tweetContent"], $row["tweetDate"]);
+				$tweets[$tweets->key()] = $tweet;
+				$tweets->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($tweets);
+	}
+
+	/**
+	 * gets the Comments by comment date time
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $commentDate comment date time to search for
+	 * @return \SplFixedArray SplFixedArray of Comments found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getCommentByCommentDateTime(\PDO $pdo, string $commentDateTime): \SplFixedArray {
+		// sanitize the description before searching
+		$commentDateTime = trim($commentDateTime);
+		$commentDateTime = filter_var($commentDateTime, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($commentDateTime) === true) {
+			throw(new \PDOException("comment content is invalid"));
+		}
+
+		// escape any mySQL wild cards
+		$commentDateTime = str_replace("_", "\\_", str_replace("%", "\\%", $commentDateTime
+		));
+
+		// create query template
+		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentDateTime FROM comment WHERE commentDateTime LIKE :commentDateTime";
+		$statement = $pdo->prepare($query);
+
+		// bind the comment content to the place holder in the template
+		$commentDateTime = "%$commentDateTime%";
+		$parameters = ["commentDateTime" => $tweetContent];
+		$statement->execute($parameters);
+
+		// build an array of tweets
+		$tweets = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$tweet = new Tweet($row["tweetId"], $row["tweetProfileId"], $row["tweetContent"], $row["tweetDate"]);
+				$tweets[$tweets->key()] = $tweet;
+				$tweets->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($tweets);
+	}
 
 
 
