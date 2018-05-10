@@ -60,13 +60,13 @@ class Comment implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct($newcommentId, $commentProfileId, string $newcommentTrailId, $newcommentContent, $newcommentDateTime = null) {
+	public function __construct($newCommentId, $newCommentProfileId = null, string $newCommentTrailId, $newCommentContent, $newCommentDateTime = null) {
 		try {
-			$this->setcommentId($newcommentId);
-			$this->setcommentProfileId($newcommentProfileId);
-			$this->setcommentTrailId($newcommentTrailId);
-			$this->setcommentContent($newcommentContent);
-			$this->setcommentDateTime($newcommentDateTime);
+			$this->setcommentId($newCommentId);
+			$this->setcommentProfileId($newCommentProfileId);
+			$this->setcommentTrailId($newCommentTrailId);
+			$this->setcommentContent($newCommentContent);
+			$this->setcommentDateTime($newCommentDateTime);
 		} //determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
@@ -445,9 +445,9 @@ class Comment implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if $newContentDateTime is not a valid object or string
 	 * @throws \RangeException if $newContentDateTime is a date that does not exist
 	 **/
-	public function setContentDateTime($newContentDateTime = null): void {
+	public function setCommentTimestamp($newCommentTimestamp = null): void {
 		// base case: if the date is null, use the current date and time
-		if($newContentDateTime === null) {
+		if($newCommentTimestamp === null) {
 			$this->getContentDateTime = new \DateTime();
 			return;
 		}

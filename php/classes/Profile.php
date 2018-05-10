@@ -95,7 +95,7 @@ class Profile implements \JsonSerializable {
 
 	/**
 	 * accessor method for profile email
-	 *
+	 * @return string value of profile email
 	 **/
 	public function getProfileEmail(): string {
 		return ($this->profileEmail);
@@ -108,6 +108,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \RangeException if $newProfileEmail is not positive
 	 **/
 	public function setProfileEmail($newProfileEmail): void {
+		//TODO CLEAN UP MUTATOR METHOD HANDLE LIKE A STRING
 		try {
 			$uuid = self::validateUuid($newProfileEmail);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -142,7 +143,7 @@ class Profile implements \JsonSerializable {
 			throw(new \InvalidArgumentException("profile image is empty or insecure"));
 		}
 		// verify the profile image will fit in the database
-		if(strlen($newProfileImage) > 140) {
+		if(strlen($newProfileImage) > 255) {
 			throw(new \RangeException("profile image too large"));
 		}
 		// store the profile image
@@ -160,6 +161,7 @@ class Profile implements \JsonSerializable {
 	 * @param string $profileRefreshToken
 	 */
 	public function setProfileRefreshToken(string $profileRefreshToken): void {
+		//TODO HANDLE SAME WAY AS PROFILE ACTIVATION TOKEN
 		$this->profileRefreshToken = $profileRefreshToken;
 	}
 
@@ -188,7 +190,7 @@ class Profile implements \JsonSerializable {
 			throw(new \InvalidArgumentException("profile username is empty or insecure"));
 		}
 		// verify the profile username will fit in the database
-		if(strlen($newProfileUsername) > 140) {
+		if(strlen($newProfileUsername) > 64) {
 			throw(new \RangeException("profile username too large"));
 		}
 		// store the profile username
