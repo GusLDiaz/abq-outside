@@ -514,24 +514,68 @@ class Comment implements \JsonSerializable {
 
 		// bind the comment content to the place holder in the template
 		$commentDateTime = "%$commentDateTime%";
-		$parameters = ["commentDateTime" => $tweetContent];
+		$parameters = ["commentDateTime" => $commentDateTime];
 		$statement->execute($parameters);
 
-		// build an array of tweets
-		$tweets = new \SplFixedArray($statement->rowCount());
+		// build an array of comments
+		$comments = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$tweet = new Tweet($row["tweetId"], $row["tweetProfileId"], $row["tweetContent"], $row["tweetDate"]);
-				$tweets[$tweets->key()] = $tweet;
-				$tweets->next();
+				$comment = new Comment($row["commentId"], $row["commentProfileId"], $row["commentTrailId"], $row["commentContent"], $row["$commentDateTime"]);
+				$comments[$comments->key()] = $comment;
+				$comments->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($tweets);
+		return ($comments);
 	}
 
+* gets all Comments
+*
+* @param \PDO $pdo PDO connection object
+* @return \SplFixedArray SplFixedArray of Comments found or null if not found
+* @throws \PDOException when mySQL related errors occur
+* @throws \TypeError when variables are not the correct data type
+**/
+	public static function getAllComments(\PDO $pdo): \SPLFixedArray {
+		// create query template
+		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentDateTime FROM comment";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
 
+		// build an array of comments
+		$comments = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$comment = new Comment($row["commentId"], $row["commentProfileId"], $row["commentTrailId"], $row["commentContent"], $row["commentDateTime"]);
+				$comments[$comments->key()] = $comment;
+				$comments->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($comments);
+	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize(): array {
+		$fields = get_object_vars($this);
+
+		$fields["commentId"] = $this->commentId->toString();
+		$fields["commentProfileId"] = $this->commentProfileId->toString();
+
+		//format the date so that the front end can consume it
+		$fields["commentDateTime"] = round(floatval($this->commentDateTime->format("U.u")) * 1000);
+		return ($fields);
+	}
+}
 
