@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS profile;
 CREATE TABLE profile (
 	profileId BINARY(16) NOT NULL,
 	profileEmail VARCHAR(128) NOT NULL,
-	profileImage VARCHAR(128),
+	profileImage VARCHAR(255),
 	profileRefreshToken VARCHAR(128),
 	profileUsername VARCHAR(64) NOT NULL,
 	UNIQUE(profileUserName),

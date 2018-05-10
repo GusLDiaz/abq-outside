@@ -104,19 +104,23 @@ class Profile implements \JsonSerializable {
 	/**
 	 * mutator method for profile email
 	 *
-	 * @param string | $newProfileEmail new value of profileEmail
-	 * @throws \RangeException if $newProfileEmail is not positive
+	 * @param string $newProfileEmail new value of profile username
+	 * @throws \InvalidArgumentException if $newProfileUsername is not a string or insecure
+	 * @throws \TypeError if $newProfileUsername is not a string
 	 **/
-	public function setProfileEmail($newProfileEmail): void {
-		//TODO CLEAN UP MUTATOR METHOD HANDLE LIKE A STRING
-		try {
-			$uuid = self::validateUuid($newProfileEmail);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	public function setProfileEmail(string $newProfileEmail): void {
+		// verify the profile username is secure
+		$newProfileEmail = trim($newProfileEmail);
+		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileEmail) === true) {
+			throw(new \InvalidArgumentException("profile username is empty or insecure"));
 		}
-		// convert and store the profile email
-		$this->profileEmail = $newProfileEmail;
+		// verify the profile username will fit in the database
+		if(strlen($newProfileEmail) > 128) {
+			throw(new \RangeException("profile username too large"));
+		}
+		// store the profile username
+		$this->profileUsername = $newProfileEmail;
 	}
 
 	/**
