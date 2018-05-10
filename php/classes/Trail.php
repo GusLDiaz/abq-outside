@@ -6,7 +6,7 @@ use Ramsey\Uuid\Uuid;
 /**
  *
  * This is the Trail class where we find data about each trail such as Id, Extrenal Id, Address, Image, Name, Location, Summary, Ascent, Rating, Length, Latitude and Longitude.
- *
+
  * @author Jullyane Hawkins <jhawkins20@cnm.edu>
  * @coauthor Gus Liakos <gusliakos@gmail.com>
  * @version 1.0.0
@@ -17,44 +17,44 @@ class Trail implements \JsonSerializable {
 	 * id for this Trail; this is the primary key
 	 * @var Uuid $trailId
 	 **/
-	private $trailId;
+	protected $trailId;
 	/**
 	 * external id for this Trail
 	 * attained from API /DDL
 	 * @var string *(char7)* $trailExternalId
 	 **/
-	private $trailExternalId;
+	protected $trailExternalId;
 	/**
 	 * physical address for this Trail
 	 * attained from API /DDL
 	 * @var string $trailAddress
 	 **/
-	private $trailAddress;
+	protected $trailAddress;
 	/**
 	 * image of this Trail
 	 * attained from API /DDL
 	 * @var string $trailImage
 	 **/
-	private $trailImage;
+	protected $trailImage;
 	/**
 	 * name of this Trail
 	 * attained from API /DDL
 	 * @var string $trailName
 	 **/
-	private $trailName;
+	protected $trailName;
 	/**
 	 * detailed description of this Trail location
 	 * attained from API /DDL
 	 * @var string $trailLocation
 	 **/
 	//TODO DOCBLOCS STATE VARS
-	private $trailLocation;
-	private $trailSummary;
-	private $trailAscent;
-	private $trailSummary;
-	private $trailRating;
-	private $trailLat;
-	private $trailLong;
+	protected $trailLocation;
+	protected $trailSummary;
+	protected $trailAscent;
+	protected $trailSummary;
+	protected $trailRating;
+	protected $trailLat;
+	protected $trailLong;
 
   /**
 	 * constructor for this Trail
@@ -198,3 +198,4 @@ class Trail implements \JsonSerializable {
 		$this->trailImage = $newTrailImage;
 	}
 }
+for lat long range exceptions
