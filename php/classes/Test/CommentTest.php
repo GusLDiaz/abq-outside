@@ -5,9 +5,12 @@
  * Date: 5/8/2018
  * Time: 2:43 PM
  */
+
 namespace Edu\Cnm\AbqOutside\Test;
 
-use Edu\Cnm\AbqOutside\{Profile, Trail};
+use Edu\Cnm\AbqOutside\{
+	Profile, Trail
+};
 
 // grab the class under scrutiny
 //require_once(dirname(__DIR__) . "/autoload.php");
@@ -26,7 +29,7 @@ class CommentTest extends AbqOutsideTest {
 	 * @var Trail trail
 	 */
 	protected $trail = null;
-	protected $VALID_PROFILE_HASH;
+	protected $VALID_PROFILE_REFRESH_TOKEN;
 
 	/**
 	 * content of the Comment
@@ -46,4 +49,20 @@ class CommentTest extends AbqOutsideTest {
 	 * @var \DateTime $VALID_COMMENT_TIMESTAMP
 	 **/
 	protected $VALID_COMMENT_TIMESTAMP = null;
+
+	protected final function setUp(): void {
+	// run setUp() method
+		parent::setUp();
+//	$password = "abc123";
+//	$this->VALID_PROFILE_REFRESH_TOKEN = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+
+
+	// create and insert a Profile to own the test
+	//id email image Refreshtoken username
+		$this->profile = new Profile(generateUuidV4(), "email", "imagehandle", "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "username");//,$this->VALID_PROFILE_HASH, "+12125551212");
+		$this->profile->insert($this->getPDO());
+
+	// calculate the date (just use the time the unit test was setup...)
+		$this->$VALID_COMMENT_TIMESTAMP = new \DateTime();
+	}
 }
