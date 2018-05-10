@@ -71,3 +71,60 @@ class Comment implements \JsonSerializable {
 	}
 }
 
+/**
+ * accessor method for comment id
+ *
+ * @return Uuid value of comment id
+ **/
+public function getCommentId() : Uuid {
+	return($this->commentId);
+}
+
+/**
+ * mutator method for comment id
+ *
+ * @param Uuid|string $newCommentId new value of comment id
+ * @throws \RangeException if $newCommentId is not positive
+ * @throws \TypeError if $newCommentId is not a uuid or string
+ **/
+public function setCommentId ( $newCommentId) : void {
+	try {
+		$uuid = self::validateUuid($newCommentId);
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	}
+
+	// convert and store the comment id
+	$this->commentId = $uuid;
+}
+
+/**
+ * accessor method for comment profile id
+ *
+ * @return Uuid value of comment profile
+ **/
+public function getCommentProfilId() : Uuid {
+	return($this->commentProfileId);
+}
+
+/**
+ * mutator method for comment profile id
+ *
+ * @param Uuid|string $newCommentProfileId new value of comment profile id
+ * @throws \RangeException if $newCommentProfileId is not positive
+ * @throws \TypeError if $newCommentProfileId is not a uuid or string
+ **/
+public function setCommentProfileId ( $newCommentProfileId) : void {
+	try {
+		$uuid = self::validateUuid($newCommentProfileIdId);
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	}
+
+	// convert and store the comment profile id
+	$this->commentProfileId = $uuid;
+}
+
+
