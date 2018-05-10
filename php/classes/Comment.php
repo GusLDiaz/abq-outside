@@ -165,7 +165,7 @@ class Comment implements \JsonSerializable {
 	 * @return string value of comment content
 	 **/
 	public function getCommentContent(): string {
-		return ($this->commentContentContent);
+		return ($this->commentContent);
 	}
 
 	/**
@@ -226,6 +226,61 @@ class Comment implements \JsonSerializable {
 		$this->commentTimestamp = $newCommentTimestamp;
 	}
 
+	/**
+	 * inserts this Comment into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo): void {
+
+		// create query template
+		$query = "INSERT INTO comment(commentId,commentProfileId, commentTrailId, commentContent, commentTimestamp) VALUES(:commentId, :commentProfileId, :commentTrailId, :commentContent, :commentTimestamp)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$formattedDate = $this->commentTimestamp->format("Y-m-d H:i:s.u");
+		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * deletes this Comment from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo): void {
+
+		// create query template
+		$query = "DELETE FROM comment WHERE commentId = :commentId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["commentId" => $this->commentId->getBytes()];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this Comment in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo): void {
+
+		// create query template
+		$query = "UPDATE comment SET commentId = :commentId, commentProfileId = :commentProfileId, commentTrailId = :commentTrailId, commentTrailId = :commentContent, = :commentContent, commentTimestamp = :commentTimestamp WHERE commentId = :commentId";
+		$statement = $pdo->prepare($query);
+
+
+		$formattedDate = $this->commentTimestamp->format("Y-m-d H:i:s.u");
+		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
+		$statement->execute($parameters);
+	}
 
 	/**
 	 * gets the Comment by comment Id
@@ -268,7 +323,7 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the Comment by comment profile id
+	 * gets the Comment by commentProfileId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $commentProfileId comment profile id to search by
@@ -307,7 +362,7 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the Comment by comment trail id
+	 * gets the Comment by commentTrailId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $commentTrailId comment trail id to search for
@@ -352,7 +407,7 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the Comment by comment Content
+	 * gets the Comment by commentContent
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $commentContent comment content to search for
@@ -397,7 +452,7 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the Comments by comment time stamp
+	 * gets the Comments by commentTimestamp
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $commentDate comment time stamp to search for
@@ -442,9 +497,17 @@ class Comment implements \JsonSerializable {
 		return ($comments);
 	}
 
+	/**
+	 * gets all Comments
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of Comments found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
 	public static function getAllComments(\PDO $pdo): \SPLFixedArray {
 		// create query template
-		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment";
+		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent,  commentTimestamp FROM comment";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -463,71 +526,6 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comments);
 	}
-
-	/**
-	 * inserts this Comment into mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function insert(\PDO $pdo): void {
-
-		// create query template
-		$query = "INSERT INTO comment(commentId,commentProfileId, commentTrailId, commentContent, commentTimestamp) VALUES(:commentId, :commentProfileId, :commentTrailId, :commentContent, :commentTimestamp)";
-		$statement = $pdo->prepare($query);
-
-		// bind the member variables to the place holders in the template
-		$formattedDate = $this->commentTimestamp->format("Y-m-d H:i:s.u");
-		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
-		$statement->execute($parameters);
-	}
-
-	/**
-	 * deletes this Comment from mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function delete(\PDO $pdo): void {
-
-		// create query template
-		$query = "DELETE FROM comment WHERE commentId = :commentId";
-		$statement = $pdo->prepare($query);
-
-		// bind the member variables to the place holder in the template
-		$parameters = ["commentId" => $this->commentId->getBytes()];
-		$statement->execute($parameters);
-	}
-
-	/* gets all Comments
-	*
-	* @param \PDO $pdo PDO connection object
-	* @return \SplFixedArray SplFixedArray of Comments found or null if not found
-	* @throws \PDOException when mySQL related errors occur
-	* @throws \TypeError when variables are not the correct data type
-	**/
-
-	/**
-	 * updates this Comment in mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function update(\PDO $pdo): void {
-
-		// create query template
-		$query = "UPDATE comment SET commentId = :commentId, commentProfileId = :commentProfileId, commentTrailId = :commentTrailId, commentTrailId = :commentContent, = :commentContent, commentTimestamp = :commentTimestamp WHERE commentId = :commentId";
-		$statement = $pdo->prepare($query);
-
-
-		$formattedDate = $this->commentTimestamp->format("Y-m-d H:i:s.u");
-		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
-		$statement->execute($parameters);
-	}
-
 	/**
 	 * formats the state variables for JSON serialization
 	 *
