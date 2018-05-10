@@ -69,62 +69,129 @@ class Comment implements \JsonSerializable {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
-}
 
-/**
- * accessor method for comment id
- *
- * @return Uuid value of comment id
- **/
-public function getCommentId() : Uuid {
-	return($this->commentId);
-}
-
-/**
- * mutator method for comment id
- *
- * @param Uuid|string $newCommentId new value of comment id
- * @throws \RangeException if $newCommentId is not positive
- * @throws \TypeError if $newCommentId is not a uuid or string
- **/
-public function setCommentId ( $newCommentId) : void {
-	try {
-		$uuid = self::validateUuid($newCommentId);
-	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exceptionType = get_class($exception);
-		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	/**
+	 * accessor method for comment id
+	 *
+	 * @return Uuid value of comment id
+	 **/
+	public function getCommentId(): Uuid {
+		return ($this->commentId);
 	}
 
-	// convert and store the comment id
-	$this->commentId = $uuid;
-}
+	/**
+	 * mutator method for comment id
+	 *
+	 * @param Uuid|string $newCommentId new value of comment id
+	 * @throws \RangeException if $newCommentId is not positive
+	 * @throws \TypeError if $newCommentId is not a uuid or string
+	 **/
+	public function setCommentId($newCommentId): void {
+		try {
+			$uuid = self::validateUuid($newCommentId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
 
-/**
- * accessor method for comment profile id
- *
- * @return Uuid value of comment profile
- **/
-public function getCommentProfilId() : Uuid {
-	return($this->commentProfileId);
-}
-
-/**
- * mutator method for comment profile id
- *
- * @param Uuid|string $newCommentProfileId new value of comment profile id
- * @throws \RangeException if $newCommentProfileId is not positive
- * @throws \TypeError if $newCommentProfileId is not a uuid or string
- **/
-public function setCommentProfileId ( $newCommentProfileId) : void {
-	try {
-		$uuid = self::validateUuid($newCommentProfileIdId);
-	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exceptionType = get_class($exception);
-		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		// convert and store the comment id
+		$this->commentId = $uuid;
 	}
 
-	// convert and store the comment profile id
-	$this->commentProfileId = $uuid;
+	/**
+	 * accessor method for comment profile id
+	 *
+	 * @return Uuid value of comment profile
+	 **/
+	public function getCommentProfilId(): Uuid {
+		return ($this->commentProfileId);
+	}
+
+	/**
+	 * mutator method for comment profile id
+	 *
+	 * @param Uuid|string $newCommentProfileId new value of comment profile id
+	 * @throws \RangeException if $newCommentProfileId is not positive
+	 * @throws \TypeError if $newCommentProfileId is not a uuid or string
+	 **/
+	public function setCommentProfileId($newCommentProfileId): void {
+		try {
+			$uuid = self::validateUuid($newCommentProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		// convert and store the comment profile id
+		$this->commentProfileId = $uuid;
+	}
+
+	/**
+	 * accessor method for comment trail id
+	 *
+	 * @return String value of comment trail id
+	 **/
+	public function getCommentTrailId(): String {
+		return ($this->commentTrailId);
+	}
+
+	/**
+	 * mutator method for comment trail id
+	 *
+	 * @param string $newCommentTrailId new value of comment trail id
+	 * @throws \RangeException if $newCommentTrailId is not positive
+	 * @throws \TypeError if $newCommentTrailId is not an integer
+	 **/
+	public function setCommentTrailId($newCommentTrailId): void {
+		try {
+			$string = self::validateString($newCommentTrailId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		// convert and store the comment trail id
+		$this->commentTrailId = $string;
+	}
+
+	/**
+	 * accessor method for tweet content
+	 *
+	 * @return string value of tweet content
+	 **/
+	public function getTweetContent(): string {
+		return ($this->tweetContent);
+	}
+
+	/**
+	 * mutator method for comment content id
+	 *
+	 * @param string $newCommentContentId new value of comment content id
+	 * @throws \InvalidArgumentException if $newCommentContentId is not a string or insecure
+	 * @throws \RangeException if $newCommentContentId is > 140 characters
+	 * @throws \TypeError if $newCommentContentId is not a string
+	 **/
+	public function setCommentContentId(string $newCommentContentId): void {
+		// verify the comment content id is secure
+		$newCommentContentId = trim($newCommentContentId);
+		$newCommentContentId = filter_var($newCommentContentId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newCommentContentId) === true) {
+			throw(new \InvalidArgumentException("comment content id is empty or insecure"));
+		}
+
+		// verify the comment content id will fit in the database
+		if(strlen($newCommentContentId) > 140) {
+			throw(new \RangeException("comment content id too large"));
+		}
+
+		// store the tweet content
+		$this->setCommentContentId() = $newCommentContentId;
+	}
 }
+
+
+
+
+
 
 
