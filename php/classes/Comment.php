@@ -212,7 +212,7 @@ class Comment implements \JsonSerializable {
 	public function setCommentTimestamp($newCommentTimestamp = null): void {
 		// base case: if the date is null, use the current date and time
 		if($newCommentTimestamp === null) {
-			$this->getCommentTimestamp() = new \DateTime();
+			$this->getCommentTimestamp = new \DateTime();
 			return;
 		}
 
@@ -273,7 +273,7 @@ class Comment implements \JsonSerializable {
 	public function update(\PDO $pdo): void {
 
 		// create query template
-		$query = "UPDATE comment SET commentId = :commentId, commentProfileId = :commentProfileId, commentTrailId = :commentTrailId, commentTrailId = :commentContent, = :commentContent, commentTimestamp = :commentTimestamp WHERE commentId = :commentId";
+		$query = "UPDATE comment SET commentId = :commentId, commentProfileId = :commentProfileId, commentTrailId = :commentTrailId, commentContent = :commentContent, commentTimestamp = :commentTimestamp WHERE commentId = :commentId";
 		$statement = $pdo->prepare($query);
 
 
