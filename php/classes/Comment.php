@@ -187,10 +187,95 @@ class Comment implements \JsonSerializable {
 		// store the tweet content
 		$this->setCommentContentId() = $newCommentContentId;
 	}
-}
+
+	/**
+	 * accessor method for content date time
+	 *
+	 * @return \DateTime value of content date time
+	 **/
+	public function getContentDateTime() : \DateTime {
+		return($this->getContentDateTime());
+	}
+
+	/**
+	 * mutator method for content date time
+	 *
+	 * @param \DateTime|string|null $newContentDatetime content date time as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newContentDateTime is not a valid object or string
+	 * @throws \RangeException if $newContentDateTime is a date that does not exist
+	 **/
+	public function setContentDateTime($newContentDateTime = null) : void {
+		// base case: if the date is null, use the current date and time
+		if($newContentDateTime === null) {
+			$this->getContentDateTime() = new \DateTime();
+			return;
+		}
+
+		// store the comment date time using the ValidateDate trait
+		try {
+			$newContentDateTime = self::validateDateTime($newCommentDateTime);
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->contentDateTime = $newContentDateTime;
+	}
+
+	/**
+	 * inserts this Comment into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo) : void {
+
+		// create query template
+		$query = "INSERT INTO comment(commentId,commentProfileId, commentTrailId, commentContent, commentDateTime) VALUES(:commentId, :commentProfileId, :commentTrailId, :commentContent, :commentDateTime)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$formattedDate = $this->commentDateTime->format("Y-m-d H:i:s.u");
+		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentDateTime" => $formattedDate];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * deletes this Comment from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) : void {
+
+		// create query template
+		$query = "DELETE FROM comment WHERE commentId = :commentId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["commentId" => $this->commentId->getBytes()];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this Comment in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) : void {
+
+		// create query template
+		$query = "UPDATE tweet SET commentId = :commentId, commentProfileId = :commentProfileId, commentTrailId = :commentTrailId, commentTrailId = :commentContent, = :commentContent, commentDateTime = :commentDateTime WHERE commentId = :commentId";
+		$statement = $pdo->prepare($query);
 
 
-
+		$formattedDate = $this->commentDateTime->format("Y-m-d H:i:s.u");
+		$parameters = ["commentId" => $this->commentId->getBytes(),"commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentDateTime" => $formattedDate];
+		$statement->execute($parameters);
+	}
 
 
 
