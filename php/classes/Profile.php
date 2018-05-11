@@ -202,4 +202,111 @@ class Profile implements \JsonSerializable {
 		// store the profile username
 		$this->profileUsername = $newProfileUsername;
 	}
+
+	/**
+	 * inserts Profile into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo): void {
+
+		// create query template
+		$query = "INSERT INTO profile(profileId, profileEmail, profileImage, profileRefreshToken, profileUsername) VALUES(:profileId, :profileEmail, :profileImage, :profileRefreshToken, :profileUsername)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$parameters = ["profileId" => $this->profileId->getBytes(), "profileEmail" => $this->profileEmail->getBytes(), "profileImage" => $this->profileImage, "profileRefreshToken" => $this->profileRefreshtoken->getBytes(), "profileUsername" => $this->profileUsername->getBytes()];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * deletes profile from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo): void {
+
+		// create query template
+		$query = "DELETE FROM profile WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["profileId" => $this->profileId->getBytes()];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates profile in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo): void {
+
+		// create query template
+		$query = "UPDATE profile SET profileId = :profileId, profileEmail = :profileEmail, profileImage = :profileImage, profileRefreshToken= :profileRefreshToken, profileUsername = :profileUsername WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		$parameters = ["profileId" => $this->profileId->getBytes(), "profileEmail" => $this->profileEmail->getBytes(), "profileImage" => $this->profileImage, "profileRefreshToken" => $this->profileRefreshToken, "profileUsername" => $this->profileUsername];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * gets the profile by profile Id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $profileId profile id to search for
+	 * @return profile|null profile found or null if not found
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
+	 **/
+	public static function getProfileByProfileId(\PDO $pdo, $profileId): ?profile {
+		// sanitize the profile before searching
+		try {
+			$profileId = self::validateUuid($profileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		// create query template
+		$query = "SELECT profileId, profileEmail, profileImage, profileRefreshToken, profileUsername FROM profile WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		// bind the profile id to the place holder in the template
+		$parameters = ["profileId" => $profileId->getBytes()];
+		$statement->execute($parameters);
+
+		// grab the profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$profile = new Profile($row["profileId"], $row["profileEmail"], $row["profileImage"], $row["profileRefreshToken"], $row["profileUsername"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($profile);
+	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize(): array {
+		$fields = get_object_vars($this);
+
+		$fields["profileId"] = $this->profileId->toString();
+
+		return ($fields);
+	}
 }
+
