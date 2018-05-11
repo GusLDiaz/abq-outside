@@ -131,14 +131,15 @@ class CommentTest extends AbqOutsideTest {
 
 		// delete from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
-	 $comment->delete($this->getPDO());
-	 
-	       // use SQL data to enforce comment no longer exists
-	 $pdoComment = Comment::getCommentByCommentId($this->getPDO(), $comment->getCommentId());
-	 $this->assertNull($pdoComment);
-	 $this->assertEquals($numRows, $this->getConnection()->getRowCount("comment"));
-	 }
-}
+		$comment->delete($this->getPDO());
+
+		// use SQL data to enforce comment no longer exists
+		$pdoComment = Comment::getCommentByCommentId($this->getPDO(), $comment->getCommentId());
+		$this->assertNull($pdoComment);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("comment"));
+	}
+
+
 ///tweet
 ///grab a comment that doesn't exist
 /// 	by profile id
@@ -146,19 +147,21 @@ class CommentTest extends AbqOutsideTest {
 ///insert a Comment and regrabbing it from sql
 /// 	again by trail
 ///
-	public function testGetInvalidCommentByCommentId() : void {
+	public
+	function testGetInvalidCommentByCommentId(): void {
 		// grab a profile id that exceeds the maximum allowable profile id
 		$comment = Comment::getCommentByCommentId($this->getPDO(), generateUuidV4());
 		$this->assertNull($comment);
 	}
 
-	public function testGetValidCommentByCommentProfileId() {
+	public
+	function testGetValidCommentByCommentProfileId() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("comment");
 
 		// create and insert new comment to into mySQL
 		$commentId = generateUuidV4();
-		$comment = new Comment($commentId, $this->profile->getProfileId(),$this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
+		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
 		$comment->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -174,50 +177,97 @@ class CommentTest extends AbqOutsideTest {
 		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
 //		$this->assertEquals($pdoComment->getCommentProfileId(), $this->trail->getTrailId());
 		$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT);
-	//format the date two seconds after beginning of time, for round off error
-	$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
-}
-public function testGetValidCommentByCommentProfileId() {
-	// count the number of rows and save it for later
-	$numRows = $this->getConnection()->getRowCount("comment");
+		//format the date two seconds after beginning of time, for round off error
+		$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
+	}
 
-	// create a new Comment and insert to into mySQL
-	$commentId = generateUuidV4();
-	$comment = new Comment($commentId, $this->profile->getProfileId(),$this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
-	$comment->insert($this->getPDO());
+	public
+	function testGetValidCommentByCommentTrailId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("comment");
 
-	// grab the data from mySQL and enforce the fields match our expectations
-	$results = Comment::getCommentByCommentProfileId($this->getPDO(), $comment->getCommentProfileId());
-	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
-	$this->assertCount(1, $results);
-//	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Tweet", $results);
+		// create a new Comment and insert to into mySQL
+		$commentId = generateUuidV4();
+		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
+		$comment->insert($this->getPDO());
 
-	// grab the result from the array and validate it
-	$pdoComment = $results[0];
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Comment::getCommentBycommentTrailId($this->getPDO(), $comment->getCommentTrailId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\AbqOutside",
+			$results);
 
-	$this->assertEquals($pdoComment->getCommentId(), $commentId);
-	$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
-	$this->assertEquals($pdoComment->getCommentProfileId(), $this->trail->getTrailId());
-	$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT);
-	//format the date two seconds after beginning of time, for round off error
-	$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
-}
+		// grab the result from the array and validate it
+		$pdoComment = $results[0];
+
+		$this->assertEquals($pdoComment->getCommentId(), $commentId);
+		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoComment->getCommentTrailId(), $this->trail->getTrailId());
+		$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT);
+		//format the date two seconds after beginning of time, for round off error
+		$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
+	}
 
 	/**
 	 * test grabbing a Comment that does not exist
-	 * 	profile Id
+	 *   profile Id
 	 **/
-	public function testGetInvalidCommentByCommentProfileId() : void {
+	public
+	function testGetInvalidCommentByCommentProfileId(): void {
 		// grab a profile id that exceeds the maximum allowable profile id
-		$tweet = Comment ::getTweetByTweetProfileId($this->getPDO(), generateUuidV4());
-		$this->assertCount(0, $tweet);
+		$comment = Comment::getCommentByCommentProfileId($this->getPDO(), generateUuidV4());
+		$this->assertCount(0, $comment);
 	}
-/**
- * test grabbing a Comment that does not exist
- * 	trail Id
- **/
-public function testGetInvalidCommentByCommentTrailId() : void {
-	// grab a trail id  that exceeds the maximum allowable trail id
-	$comment = Comment::getCommentByCommentTrailId($this->getPDO(), generateUuidV4());
-	$this->assertCount(0, $comment);
+
+	/**
+	 * test grabbing a Comment that does not exist
+	 *   trail Id
+	 **/
+	public
+	function testGetInvalidCommentByCommentTrailId(): void {
+		// grab a trail id  that exceeds the maximum allowable trail id
+		$comment = Comment::getCommentByCommentTrailId($this->getPDO(), generateUuidV4());
+		$this->assertCount(0, $comment);
+	}
+
+	/**
+	 * test grabbing comments by content
+	 *
+	 */
+	public
+	function testGetValidCommentByCommentContent(): void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("comment");
+		// create and insert a comment  into mySQL
+		$commentId = generateUuidV4();
+		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->trail->getTrailId(),$this->VALID_COMMENT_TIMESTAMP, $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
+		$comment->insert($this->getPDO());
+
+			// grab the data from mySQL and enforce the fields match our expectations
+			$results = Comment::getCommentByCommentContent($this->getPDO(), $comment->getCommentContent());
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
+			$this->assertCount(1, $results);
+
+			// enforce no other objects are bleeding into test-- only Comment instantiations found
+			$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\AbqOutside\\Comment", $results);
+
+			// grab the result from the array and validate it
+			$pdoComment = $results[0];
+			$this->assertEquals($pdoComment->getCommentId(), $commentId);
+			$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
+			$this->assertEquals($pdoComment->getCommentTrailId(), $this->trail->getTrailId());
+			$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT);
+			$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
+		}
+
+	/**
+	 * test grabbing a Comment by content that does not exist
+	 **/
+	public
+	function testGetInvalidCommentByCommentContent(): void {
+		// grab a comment by content that does not exist (*i'm keeping your comment!)
+		$comment = Comment::getCommentByCommentContent($this->getPDO(), "Comcast has the best service EVER #comcastLove");
+		$this->assertCount(0, $comment);
+	}
 }
