@@ -11,7 +11,6 @@ namespace Edu\Cnm\AbqOutside\Test;
 use Edu\Cnm\AbqOutside\{
 	Comment, Profile, Trail
 };
-
 // grab the class under scrutiny
 //require_once(dirname(__DIR__) . "/autoload.php");
 
@@ -29,27 +28,25 @@ class CommentTest extends AbqOutsideTest {
 	 * @var Trail trail
 	 */
 	protected $trail = null;
+	/** @var string derivative from Oauth*/
 	protected $VALID_PROFILE_REFRESH_TOKEN;
-
 	/**
 	 * content of the Comment
 	 * @var string $VALID_COMMENT_CONTENT
 	 *
 	 */
 	protected $VALID_COMMENT_CONTENT = "PHPUnit test passing";
-
 	/**
 	 * content of the updated comment
 	 * @var string $VALID_COMMENT_CONTENT2
 	 **/
 	protected $VALID_COMMENT_CONTENT2 = "PHPUnit test still passing";
-
 	/**
 	 * timestamp of the comment; this starts as null and is assigned later
 	 * @var \DateTime $VALID_COMMENT_TIMESTAMP
 	 **/
 	protected $VALID_COMMENT_TIMESTAMP = null;
-
+//TODO finish setUP re: Trail, refresh Token
 	protected final function setUp(): void {
 		// run setUp() method
 		parent::setUp();
@@ -58,18 +55,21 @@ class CommentTest extends AbqOutsideTest {
 
 
 		// create and insert a Profile to own the test (write the comment)
-		//id email image Refreshtoken username
+		//order: profileId email image Refresh token username
 		$this->profile = new Profile(generateUuidV4(), "email", "imagehandle", "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "username");//,$this->VALID_PROFILE_HASH, " 12125551212");
 		$this->profile->insert($this->getPDO());
 		// create trail To be commented on?
 		// do a  base api call first?
 		$this->trail = new Trail(generateUuidV4(), "7475773", "address", "imagehandle",);
 		// calculate the date (just use the time the unit test was setup...)
-		$this->$VALID_COMMENT_TIMESTAMP = new \DateTime();
+		$this->VALID_COMMENT_TIMESTAMP = new \DateTime();
 	}
 
 //
-
+	/**
+	 * test adding a new comment to system
+	 *
+	 */
 	public function testInsertValidComment(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("comment");
@@ -83,15 +83,13 @@ class CommentTest extends AbqOutsideTest {
 		$pdoComment = Comment::getCommentByCommentId($this->getPDO(), $comment->getCommentId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
 		$this->assertEquals($pdoComment->getCommentId(), $commentId);
-		$this->assertEquals($pdoComment->getCommnetProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoComment->getCommentTrailId(), $this->trail->getTrailId());
 		$this->assertEquals($pdoComment->getCommmentContent(), $this->VALID_COMMENT_CONTENT);
-		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
 	}
-
-
 	/**
-	 *      * test inserting a Comment, editing it, and then updating it
+	 * test inserting a comment, editing it, and then updating it
 	 *      **/
 	public function testUpdateValidComment(): void {
 		// count the number of rows and save it for later
@@ -116,9 +114,8 @@ class CommentTest extends AbqOutsideTest {
 		//format the date two seconds after beginning of time, for round off error
 		$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
 	}
-
 	/**
-	 *      * test creating and deleting a comment
+	 * test creating and deleting a comment
 	 *      **/
 	public function testDeleteValidComment(): void {
 		// count the number of rows and save it for later
