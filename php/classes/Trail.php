@@ -182,4 +182,34 @@ class Trail implements \JsonSerializable {
 		// store the image
 		$this->trailImage = $newTrailImage;
 	}
+	/**
+	 * accessor method for trail name
+	 *
+	 * @return string value of trail name
+	 **/
+	public function getTrailName() :string {
+		return($this->trailName);
+	}
+	/**
+	 * mutator method for trail name
+	 *
+	 * @param string $newTrailName new value of trail name
+	 * @throws \InvalidArgumentException if $newTrailName is not a string or insecure
+	 * @throws \RangeException if $newTrailName is > 200 characters
+	 * @throws \TypeError if $newTrailName is not a string
+	 **/
+	public function setTrailName(string $newTrailName) : void {
+		// verify the trail is secure
+		$newTrailName = trim($newTrailName);
+		$newTrailName = filter_var($newTrailName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newTrailName) === true) {
+			throw(new \InvalidArgumentException("trail name is empty or insecure"));
+		}
+		// verify if the trail name will fit in the database
+		if(strlen($newTrailName) > 200) {
+			throw(new \RangeException("trail name too large"));
+		}
+		// store the trail name
+		$this->trailName = $newTrailName;
+	}
 }
