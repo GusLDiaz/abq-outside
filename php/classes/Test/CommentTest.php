@@ -139,3 +139,85 @@ class CommentTest extends AbqOutsideTest {
 	 $this->assertEquals($numRows, $this->getConnection()->getRowCount("comment"));
 	 }
 }
+///tweet
+///grab a comment that doesn't exist
+/// 	by profile id
+/// 	by trail id
+///insert a Comment and regrabbing it from sql
+/// 	again by trail
+///
+	public function testGetInvalidCommentByCommentId() : void {
+		// grab a profile id that exceeds the maximum allowable profile id
+		$comment = Comment::getCommentByCommentId($this->getPDO(), generateUuidV4());
+		$this->assertNull($comment);
+	}
+
+	public function testGetValidCommentByCommentProfileId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("comment");
+
+		// create and insert new comment to into mySQL
+		$commentId = generateUuidV4();
+		$comment = new Comment($commentId, $this->profile->getProfileId(),$this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
+		$comment->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Comment::getCommentByCommentProfileId($this->getPDO(), $comment->getCommentProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
+		$this->assertCount(1, $results);
+//		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Tweet", $results);
+
+		// grab the result from the array and validate it
+		$pdoComment = $results[0];
+
+		$this->assertEquals($pdoComment->getCommentId(), $commentId);
+		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
+//		$this->assertEquals($pdoComment->getCommentProfileId(), $this->trail->getTrailId());
+		$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT);
+	//format the date two seconds after beginning of time, for round off error
+	$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
+}
+public function testGetValidCommentByCommentProfileId() {
+	// count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("comment");
+
+	// create a new Comment and insert to into mySQL
+	$commentId = generateUuidV4();
+	$comment = new Comment($commentId, $this->profile->getProfileId(),$this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
+	$comment->insert($this->getPDO());
+
+	// grab the data from mySQL and enforce the fields match our expectations
+	$results = Comment::getCommentByCommentProfileId($this->getPDO(), $comment->getCommentProfileId());
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
+	$this->assertCount(1, $results);
+//	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Tweet", $results);
+
+	// grab the result from the array and validate it
+	$pdoComment = $results[0];
+
+	$this->assertEquals($pdoComment->getCommentId(), $commentId);
+	$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
+	$this->assertEquals($pdoComment->getCommentProfileId(), $this->trail->getTrailId());
+	$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT);
+	//format the date two seconds after beginning of time, for round off error
+	$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
+}
+
+	/**
+	 * test grabbing a Comment that does not exist
+	 * 	profile Id
+	 **/
+	public function testGetInvalidCommentByCommentProfileId() : void {
+		// grab a profile id that exceeds the maximum allowable profile id
+		$tweet = Comment ::getTweetByTweetProfileId($this->getPDO(), generateUuidV4());
+		$this->assertCount(0, $tweet);
+	}
+/**
+ * test grabbing a Comment that does not exist
+ * 	trail Id
+ **/
+public function testGetInvalidCommentByCommentTrailId() : void {
+	// grab a trail id  that exceeds the maximum allowable trail id
+	$comment = Comment::getCommentByCommentTrailId($this->getPDO(), generateUuidV4());
+	$this->assertCount(0, $comment);
+}
