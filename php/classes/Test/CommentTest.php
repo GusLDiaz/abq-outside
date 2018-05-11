@@ -9,7 +9,7 @@
 namespace Edu\Cnm\AbqOutside\Test;
 
 use Edu\Cnm\AbqOutside\{
-	Profile, Trail
+	Comment, Profile, Trail
 };
 
 // grab the class under scrutiny
@@ -57,14 +57,14 @@ class CommentTest extends AbqOutsideTest {
 //	$this->VALID_PROFILE_REFRESH_TOKEN = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
 
 
-		// create and insert a Profile to own the test (write the comment
+		// create and insert a Profile to own the test (write the comment)
 		//id email image Refreshtoken username
-		$this->profile = new Profile(generateUuidV4(), "email", "imagehandle", "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "username");//,$this->VALID_PROFILE_HASH, "+12125551212");
+		$this->profile = new Profile(generateUuidV4(), "email", "imagehandle", "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "username");//,$this->VALID_PROFILE_HASH, " 12125551212");
 		$this->profile->insert($this->getPDO());
 		// create trail To be commented on?
 		// do a  base api call first?
-		$this->trail = new Trail(generateUuidV4(), "7475773", "address", "imagehandle",)
-	// calculate the date (just use the time the unit test was setup...)
+		$this->trail = new Trail(generateUuidV4(), "7475773", "address", "imagehandle",);
+		// calculate the date (just use the time the unit test was setup...)
 		$this->$VALID_COMMENT_TIMESTAMP = new \DateTime();
 	}
 
@@ -72,12 +72,11 @@ class CommentTest extends AbqOutsideTest {
 
 	public function testInsertValidComment(): void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("comment");
 
 		// create a new Comment, refer to trail and profile, and insert to into mySQL
 		$commentId = generateUuidV4();
 		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
-		$comment
 		$comment->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -88,6 +87,55 @@ class CommentTest extends AbqOutsideTest {
 		$this->assertEquals($pdoComment->getCommmentContent(), $this->VALID_COMMENT_CONTENT);
 		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
-}
+	}
 
+
+	/**
+	 *      * test inserting a Comment, editing it, and then updating it
+	 *      **/
+	public function testUpdateValidComment(): void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("comment");
+
+		// create a new Comment and insert to into mySQL
+		$commentId = generateUuidV4();
+		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
+		$comment->insert($this->getPDO());
+
+		// edit and update it in mySQL
+		$comment->setCommentContent($this->VALID_COMMENT_CONTENT2);
+		$comment->update($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoComment = Comment::getCommentByCommentId($this->getPDO(), $comment->getCommentId());
+		$this->assertEquals($pdoComment->getCommentId(), $commentId);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
+		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoComment->getCommentTrailId(), $this->trail->getTrailId());
+		$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT2);
+		//format the date two seconds after beginning of time, for round off error
+		$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
+	}
+
+	/**
+	 *      * test creating and deleting a comment
+	 *      **/
+	public function testDeleteValidComment(): void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("comment");
+
+		// create a new Comment and insert to into mySQL
+		$commentId = generateUuidV4();
+		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
+		$comment->insert($this->getPDO());
+
+		// delete from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
+	 $comment->delete($this->getPDO());
+	 
+	       // use SQL data to enforce comment no longer exists
+	 $pdoComment = Comment::getCommentByCommentId($this->getPDO(), $comment->getCommentId());
+	 $this->assertNull($pdoComment);
+	 $this->assertEquals($numRows, $this->getConnection()->getRowCount("comment"));
+	 }
 }
