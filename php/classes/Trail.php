@@ -212,4 +212,34 @@ class Trail implements \JsonSerializable {
 		// store the trail name
 		$this->trailName = $newTrailName;
 	}
+	/**
+	 * accessor method for trail location
+	 *
+	 * @return string value of trail location
+	 **/
+	public function getTrailLocation() : string {
+		return($this->trailLocation);
+	}
+	/**
+	 * mutator method for trail location
+	 *
+	 * @param string $newTrailLocation new value of trail location
+	 * @throws \InvalidArgumentException if $newTrailLocation is not a string or insecure
+	 * @throws \RangeException if $newTrailLocation is > 200 characters
+	 * @throws \TypeError if $newTrailLocation is not a string
+	 **/
+	public function setTrailLocation(string $newTrailLocation) : void {
+		// verify the trail location is secure
+		$newTrailLocation = trim($newTrailLocation);
+		$newTrailLocation = filter_var($newTrailLocation, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newTrailLocation) === true) {
+			throw(new \InvalidArgumentException("trail location is empty or insecure"));
+		}
+		// verify if the location will fit in the database
+		if(strlen($newTrailLocation) > 200) {
+			throw(new \RangeException("trail location too large"));
+		}
+		// store the trail location
+		$this->trailLocation = $newTrailLocation;
+	}
 }
