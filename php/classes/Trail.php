@@ -256,4 +256,19 @@ class Trail implements \JsonSerializable {
 		$parameters = ["trailId" => $this->trailId->getBytes(), "trailExternalId" => $this->trailExternalId->getBytes(), "trailAddress" => $this->trailAddress, "trailImage" => $this->trailImage, "trailName" => $this->trailName, "trailLocation" => $this->trailLocation, "trailSummary" => $this->trailSummary, "trailAscent" => $this->trailAscent, "trailRating" => $this->trailRating, "trailLength" => $this->trailLength, "trailLat" => $this->trailLat, "trailLong" => $this->trailLong];
 		$statement->execute($parameters);
 	}
+	/**
+	 * deletes this Trail from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) : void {
+		// create query template
+		$query = "DELETE FROM trail WHERE trailId = :trailId";
+		$statement = $pdo->prepare($query);
+		// bind the member variables to the place holder in the template
+		$parameters = ["trailId" => $this->trailId->getBytes()];
+		$statement->execute($parameters);
+	}
 }
