@@ -16,32 +16,38 @@ class Trail implements \JsonSerializable {
 	 * id for this Trail; this is the primary key
 	 * @var Uuid $trailId
 	 **/
-	private $trailId;
+	protected $trailId;
 	/**
 	 * extrenal id for this Trail
 	 * @var Uuid $trailExternalId
 	 **/
-	private $trailExternalId;
+	protected $trailExternalId;
 	/**
 	 * physical address for this Trail
 	 * @var string $trailAddress
 	 **/
-	private $trailAddress;
+	protected $trailAddress;
 	/**
 	 * image of this Trail
 	 * @var string $trailImage
 	 **/
-	private $trailImage;
+	protected $trailImage;
 	/**
 	 * name of this Trail
 	 * @var string $trailName
 	 **/
-	private $trailName;
+	protected $trailName;
 	/**
 	 * detailed description of this Trail location
 	 * @var string $trailLocation
 	 **/
-	private $trailLocation;
+	protected $trailLocation;
+	/**
+	 * summary of this Trail
+	 * @var string $trailSummary
+	 **/
+	protected $trailSummary;
+
 	/**
 	 * constructor for this Trail
 	 *
