@@ -6,9 +6,8 @@ use Ramsey\Uuid\Uuid;
 /**
  *
  * This is the Trail class where we find data about each trail such as Id, Extrenal Id, Address, Image, Name, Location, Summary, Ascent, Rating, Length, Latitude and Longitude.
-
+ *
  * @author Jullyane Hawkins <jhawkins20@cnm.edu>
- * @coauthor Gus Liakos <gusliakos@gmail.com>
  * @version 1.0.0
  **/
 class Trail implements \JsonSerializable {
@@ -17,46 +16,33 @@ class Trail implements \JsonSerializable {
 	 * id for this Trail; this is the primary key
 	 * @var Uuid $trailId
 	 **/
-	protected $trailId;
+	private $trailId;
 	/**
-	 * external id for this Trail
-	 * attained from API /DDL
-	 * @var string *(char7)* $trailExternalId
+	 * extrenal id for this Trail
+	 * @var Uuid $trailExternalId
 	 **/
-	protected $trailExternalId;
+	private $trailExternalId;
 	/**
 	 * physical address for this Trail
-	 * attained from API /DDL
 	 * @var string $trailAddress
 	 **/
-	protected $trailAddress;
+	private $trailAddress;
 	/**
 	 * image of this Trail
-	 * attained from API /DDL
 	 * @var string $trailImage
 	 **/
-	protected $trailImage;
+	private $trailImage;
 	/**
 	 * name of this Trail
-	 * attained from API /DDL
 	 * @var string $trailName
 	 **/
-	protected $trailName;
+	private $trailName;
 	/**
 	 * detailed description of this Trail location
-	 * attained from API /DDL
 	 * @var string $trailLocation
 	 **/
-	//TODO DOCBLOCS STATE VARS
-	protected $trailLocation;
-	protected $trailSummary;
-	protected $trailAscent;
-	protected $trailSummary;
-	protected $trailRating;
-	protected $trailLat;
-	protected $trailLong;
-
-  /**
+	private $trailLocation;
+	/**
 	 * constructor for this Trail
 	 *
 	 * @param string|UUID $newTrailId id of this Trail
@@ -65,7 +51,6 @@ class Trail implements \JsonSerializable {
 	 * @param string $newTrailImage image of this Trail
 	 * @param string $newTrailName name of this Trail
 	 * @param string $newTrailLocation location of this trail
-
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -198,4 +183,3 @@ class Trail implements \JsonSerializable {
 		$this->trailImage = $newTrailImage;
 	}
 }
-for lat long range exceptions
