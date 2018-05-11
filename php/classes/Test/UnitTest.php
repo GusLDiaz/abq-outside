@@ -1,6 +1,6 @@
 <?php
 
-namespace Edu\Cnm\AbqOutside\Outside\Test;
+namespace Edu\Cnm\AbqOutside\Test;
 
 //use PHPUnit\Framework\TestCase;
 //use PHPUnit\DbUnit\TestCaseTrait;
