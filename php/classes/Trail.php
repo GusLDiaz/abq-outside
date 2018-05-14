@@ -315,6 +315,28 @@ class Trail implements \JsonSerializable {
 		return ($this->trailAscent);
 	}
 	/**
+	 * mutator method for trail ascent
+	 *
+	 * @param int $newTrailAscent new value of trail ascent
+	 * @throws \InvalidArgumentException if $newTrailAscent is not an int or insecure
+	 * @throws \RangeException if $newTrailAscent is > 255 characters
+	 * @throws \TypeError if $newTrailAscent is not an int
+	 **/
+	public function setTrailAscent(int $newTrailAscent): void {
+		// verify if the trail ascent is secure
+		$newTrailAscent = trim($newTrailAscent);
+		$newTrailAscent = filter_var($newTrailAscent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newTrailAscent) === true) {
+			throw(new \InvalidArgumentException("trail ascent is empty or insecure"));
+		}
+		// verify if the trail ascent will fit in the database
+		if(strlen($newTrailAscent) > 255) {
+			throw(new \RangeException("trail ascent is too large"));
+		}
+		// store the trail ascent
+		$this->trailAscent = $newTrailAscent;
+	}
+	/**
 	 * inserts this Trail into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
