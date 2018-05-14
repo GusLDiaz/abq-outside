@@ -24,5 +24,15 @@ class TrailTest extends AbqOutsideTest {
 	 * address of this trail
 	 * @var string $VALID_TRAILADDRESS2
 	 **/
-	protected $VALID_TRAILADDRESS2 = "this is still a valid address for this art";
+	protected $VALID_TRAILADDRESS2 = "this is still a valid address for this trail";
+	/**
+	 * trail image
+	 * @var string $VALID_TRAILIMAGE
+	 **/
+	protected $VALID_TRAILIMAGE = "http://www.protrails.com/protrails/trails/243.jpg";
+	/**
+	 * name of this trail
+	 * @var string $VALID_TRAILNAME
+	 **/
+	protected $VALID_TRAILNAME = "Rinconada Canyon Trail";
 }
