@@ -337,6 +337,35 @@ class Trail implements \JsonSerializable {
 		$this->trailAscent = $newTrailAscent;
 	}
 	/**
+	 *accessor method for trail rating
+	 * @return int for trail rating
+	 **/
+	public function getTrailRating() : int {
+		return ($this->trailRating);
+	}
+	/**
+	 * mutator method for trail rating
+	 *
+	 * @param int $newTrailRating new value of trail rating
+	 * @throws \InvalidArgumentException if $newTrailRating is not an int or insecure
+	 * @throws \RangeException if $newTrailRating is > 255 characters
+	 * @throws \TypeError if $newTrailRating is not an int
+	 **/
+	public function setTrailRating(int $newTrailRating): void {
+		// verify if the trail rating is secure
+		$newTrailRating = trim($newTrailRating);
+		$newTrailRating = filter_var($newTrailRating, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newTrailRating) === true) {
+			throw(new \InvalidArgumentException("trail rating is empty or insecure"));
+		}
+		// verify if the trail rating will fit in the database
+		if(strlen($newTrailRating) > 255) {
+			throw(new \RangeException("trail rating is too large"));
+		}
+		// store the trail rating
+		$this->trailRating = $newTrailRating;
+	}
+	/**
 	 * inserts this Trail into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
