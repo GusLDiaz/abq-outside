@@ -4,8 +4,8 @@ require_once("autoload.php");
 require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**
- *
- * This is the Trail class where we find data about each trail such as Id, Extrenal Id, Address, Image, Name, Location, Summary, Ascent, Rating, Length, Latitude and Longitude.
+ *ATTN: Line 156 externalId mutator | Line 334 trail ascent mutator
+ * This is the Trail class where we find data about each trail such as Id, External Id, Address, Image, Name, Location, Summary, Ascent, Rating, Length, Latitude and Longitude.
  *
  * @author Jullyane Hawkins <jhawkins20@cnm.edu>
  * @version 4.0.0
@@ -18,8 +18,8 @@ class Trail implements \JsonSerializable {
 	 **/
 	protected $trailId;
 	/**
-	 * extrenal id for this Trail
-	 * @var Uuid $trailExternalId
+	 * external id  ( from API )for this Trail
+	 * @var string $trailExternalId
 	 **/
 	protected $trailExternalId;
 	/**
@@ -76,7 +76,7 @@ class Trail implements \JsonSerializable {
 	 * constructor for this Trail
 	 *
 	 * @param string|UUID $newTrailId id of this Trail
-	 * @param string|UUID $newTrailExternalId id of this Trail
+	 * @param string $newTrailExternalId id of this Trail
 	 * @param string $newTrailAddress address of this Trail
 	 * @param string $newTrailImage image of this Trail
 	 * @param string $newTrailName name of this Trail
@@ -92,7 +92,7 @@ class Trail implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct($newTrailId, $newTrailExternalId, string $newTrailAddress, string $newTrailImage, string $newTrailName, string $newTrailLocation, string $newTrailSummary, int $newTrailAscent, int $newTrailRating, float $newTrailLength, float $newTrailLat, float $newTrailLong) {
+	public function __construct($newTrailId, string $newTrailExternalId, string $newTrailAddress, string $newTrailImage, string $newTrailName, string $newTrailLocation, string $newTrailSummary, int $newTrailAscent, int $newTrailRating, float $newTrailLength, float $newTrailLat, float $newTrailLong) {
 		try {
 			$this->setTrailId($newTrailId);
 			$this->setTrailExternalId($newTrailExternalId);
@@ -141,28 +141,29 @@ class Trail implements \JsonSerializable {
 	/**
 	 * accessor method for trail external id
 	 *
-	 * @return Uuid value of trail external id
+	 * @return string proper trail external id
 	 **/
-	public function getTrailExternalId() : Uuid {
+	public function getTrailExternalId(): string {
 		return($this->trailExternalId);
 	}
 	/**
 	 * mutator method for trail external id
 	 *
-	 * @param Uuid|string $newTrailExternalId new value of trail external id
+	 * @param string $newTrailExternalId new value of trail external id
 	 * @throws \RangeException if $newTrailExternalId is not positive
 	 * @throws \TypeError if $newTrailExternalId is not a uuid or string
 	 **/
-	public function setTrailExternalId($newTrailExternalId) : void {
-		try {
-			$uuid = self::validateUuid($newTrailExternalId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-		// convert and store the trail external id
-		$this->trailExternalId = $uuid;
-	}
+	//externalId from api Is a char7, mutator needs to reflect
+//	public function setTrailExternalId( string $newTrailExternalId) : void {
+//		try {
+//			$uuid = self::validateUuid($newTrailExternalId);
+//		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+//			$exceptionType = get_class($exception);
+//			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+//		}
+//		// convert and store the trail external id
+//		$this->trailExternalId = $uuid;
+//	}
 	/**
 	 * accessor method for trail address
 	 *
@@ -191,7 +192,7 @@ class Trail implements \JsonSerializable {
 			throw(new \RangeException("trail address too large"));
 		}
 		// store the address
-		$this->trailAddress = $newtrailAddress;
+		$this->trailAddress = $newTrailAddress;
 	}
 	/**
 	 * accessor method for trail image
@@ -330,15 +331,16 @@ class Trail implements \JsonSerializable {
 	 **/
 	public function setTrailAscent(int $newTrailAscent): void {
 		// verify if the trail ascent is secure
-		$newTrailAscent = trim($newTrailAscent);
-		$newTrailAscent = filter_var($newTrailAscent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newTrailAscent) === true) {
-			throw(new \InvalidArgumentException("trail ascent is empty or insecure"));
-		}
-		// verify if the trail ascent will fit in the database
-		if(strlen($newTrailAscent) > 255) {
-			throw(new \RangeException("trail ascent is too large"));
-		}
+		/**seems like you set this up for a string, its an int and mutators are slightly diff
+//		$newTrailAscent = trim($newTrailAscent);
+//		$newTrailAscent = filter_var($newTrailAscent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+//		if(empty($newTrailAscent) === true) {
+//			throw(new \InvalidArgumentException("trail ascent is empty or insecure"));
+//		}
+//		// verify if the trail ascent will fit in the database
+//		if(strlen($newTrailAscent) > 255) {
+//			throw(new \RangeException("trail ascent is too large"));
+//		}
 		// store the trail ascent
 		$this->trailAscent = $newTrailAscent;
 	}
@@ -359,18 +361,19 @@ class Trail implements \JsonSerializable {
 	 **/
 	public function setTrailRating(int $newTrailRating): void {
 		// verify if the trail rating is secure
-		$newTrailRating = trim($newTrailRating);
-		$newTrailRating = filter_var($newTrailRating, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newTrailRating) === true) {
-			throw(new \InvalidArgumentException("trail rating is empty or insecure"));
-		}
-		// verify if the trail rating will fit in the database
-		if(strlen($newTrailRating) > 255) {
-			throw(new \RangeException("trail rating is too large"));
-		}
-		// store the trail rating
-		$this->trailRating = $newTrailRating;
-	}
+			//see above ^ (line 334)
+//		$newTrailRating = trim($newTrailRating);
+//		$newTrailRating = filter_var($newTrailRating, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+//		if(empty($newTrailRating) === true) {
+//			throw(new \InvalidArgumentException("trail rating is empty or insecure"));
+//		}
+//		// verify if the trail rating will fit in the database
+//		if(strlen($newTrailRating) > 255) {
+//			throw(new \RangeException("trail rating is too large"));
+//		}
+//		// store the trail rating
+//		$this->trailRating = $newTrailRating;
+//	}
 	/** accessor method for trail length
 	 *
 	 * @return float value of trail length
@@ -382,7 +385,7 @@ class Trail implements \JsonSerializable {
 	 *
 	 * @param float $newTrailLength new value of trail length
 	 * @throws \InvalidArgumentException if $newTrailLength is not a float or insecure
-	 * @throws \RangeException if $newTrailLength is not within -90 to 90
+	 * @throws \RangeException if $newTrailLength is not within 1 - 25
 	 * @throws \TypeError if $newTrailLength is not a float
 	 **/
 	public function setTrailLength(float $newTrailLength) : void {
@@ -459,7 +462,7 @@ class Trail implements \JsonSerializable {
 		$query = "INSERT INTO trail(trailId, trailExternalId, trailAddress, trailImage, trailName, trailLocation, trailSummary, trailAscent, trailRating, trailLength, trailLat, trailLong) VALUES(:trailId, :trailExternalId, :trailAddress, :trailImage, :trailName, :trailLocation, :trailSummary, :trailAscent, :trailRating, :trailLength, :trailLat, :trailLong)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["trailId" => $this->trailId->getBytes(), "trailExternalId" => $this->trailExternalId->getBytes(), "trailAddress" => $this->trailAddress, "trailImage" => $this->trailImage, "trailName" => $this->trailName, "trailLocation" => $this->trailLocation, "trailSummary" => $this->trailSummary, "trailAscent" => $this->trailAscent, "trailRating" => $this->trailRating, "trailLength" => $this->trailLength, "trailLat" => $this->trailLat, "trailLong" => $this->trailLong];
+		$parameters = ["trailId" => $this->trailId->getBytes(), "trailExternalId" => $this->trailExternalId, "trailAddress" => $this->trailAddress, "trailImage" => $this->trailImage, "trailName" => $this->trailName, "trailLocation" => $this->trailLocation, "trailSummary" => $this->trailSummary, "trailAscent" => $this->trailAscent, "trailRating" => $this->trailRating, "trailLength" => $this->trailLength, "trailLat" => $this->trailLat, "trailLong" => $this->trailLong];
 		$statement->execute($parameters);
 	}
 	/**
@@ -488,7 +491,7 @@ class Trail implements \JsonSerializable {
 		// create query template
 		$query = "UPDATE trail SET trailExternalId = :trailExternalId, trailAddress = :trailAddress, trailName = :trailName, trailImage = :trailImage, trailLat = :trailLat, trailLocation = :trailLocation, trailLong = :trailLong, trailLength = :trailLength, trailSummary = :trailSummary, trailAscent = :trailAscent, trailRating = :trailRating WHERE trailId = :trailId";
 		$statement = $pdo->prepare($query);
-		$parameters = ["trailId" => $this->trailId->getBytes(), "trailExternalId" => $this->trailExternalId->getBytes(), "trailAddress" => $this->trailAddress, "trailImage" => $this->trailImage, "trailName" => $this->trailName, "trailLocation" => $this->trailLocation, "trailSummary" => $this->trailSummary, "trailAscent" => $this->trailAscent, "trailRating" => $this->trailRating, "trailLength" => $this->trailLength, "trailLat" => $this->trailLat, "trailLong" => $this->trailLong];
+		$parameters = ["trailId" => $this->trailId->getBytes(), "trailExternalId" => $this->trailExternalId, "trailAddress" => $this->trailAddress, "trailImage" => $this->trailImage, "trailName" => $this->trailName, "trailLocation" => $this->trailLocation, "trailSummary" => $this->trailSummary, "trailAscent" => $this->trailAscent, "trailRating" => $this->trailRating, "trailLength" => $this->trailLength, "trailLat" => $this->trailLat, "trailLong" => $this->trailLong];
 		$statement->execute($parameters);
 	}
 	/**
