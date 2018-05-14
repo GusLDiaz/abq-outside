@@ -16,6 +16,16 @@ class ProfileTest extends AbqOutsideTest {
 	 */
 	protected $VALID_PROFILE_ID;
 	/**
+	 * valid email to use
+	 * @var string $VALID_EMAIL
+	 **/
+	protected $VALID_PROFILE_EMAIL = "test@phpunit.de";
+	/**
+	 * valid image url for OAUTH
+	 * @var string $VALID_PROFILE_IMAGE_URL
+	 **/
+	protected $VALID_PROFILE_IMAGE_URL = "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif";
+	/**
 	 * placeholder until account activation is created
 	 * @var string $VALID_PROFILE_REFRESH_TOKEN
 	 */
@@ -30,25 +40,36 @@ class ProfileTest extends AbqOutsideTest {
 	 * @var string $VALID_PROFILE_USERNAME2
 	 **/
 	protected $VALID_PROFILE_USERNAME2 = "stillpassingprofile";
-	/**
-	 * valid image url for OAUTH
-	 * @var string $VALID_PROFILE_IMAGE_URL
-	 **/
-	protected $VALID_PROFILE_IMAGE_URL = "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif";
-	/**
-	 * valid email to use
-	 * @var string $VALID_EMAIL
-	 **/
-	protected $VALID_PROFILE_EMAIL = "test@phpunit.de";
-	/**re: comment_Content_2 do we need state vars for updated fields of prof. if theyre coming from OAUTH (GOOGLE?)
-*/
 
-public final function setUp(): void {
-	// run setUp() method
-	parent::setUp();
-//	$password = "abc123";
-//	$this->VALID_PROFILE_REFRESH_TOKEN = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
-}
+
+	/**re: comment_Content_2 do we need state vars for updated fields of prof. if theyre coming from OAUTH (GOOGLE?)
+	 */
+
+	public final function setUp(): void {
+		// run setUp() method
+		parent::setUp();
+		$this->VALID_PROFILE_REFRESH_TOKEN = bin2hex(random_bytes(16));
+	}
+
+	/**
+	 * test inserting a valid Profile and verify that the actual mySQL data matches
+	 **/
+	public function testInsertValidProfile(): void {
+		// count the number of rows for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		$profileId = generateUuidV4();
+		//	//order: profileId email image Refresh token username
+		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);
+		$profile->insert($this->getPDO());
+
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
+		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_PROFILE_IMAGE_URL);
+		$this->assertEquals($pdoProfile->getProfileRefreshToken(), $this->VALID_PROFILE_REFRESH_TOKEN);
+		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_PROFILE_USERNAME);
+	}
 
 //
 //	//order: profileId email image Refresh token username
