@@ -373,7 +373,6 @@ class Trail implements \JsonSerializable {
 	}
 	/** accessor method for trail length
 	 *
-	 *
 	 * @return float value of trail length
 	 **/
 	public function getTrailLength() : float {
@@ -388,14 +387,39 @@ class Trail implements \JsonSerializable {
 	 **/
 	public function setTrailLength(float $newTrailLength) : void {
 		// verify if the length exists
-		if(floatval($newTrailLength) > 90) {
-			throw(new \RangeException("trail length is not between -90 and 90"));
+		if(floatval($newTrailLength) > 25) {
+			throw(new \RangeException("trail length is not between 1 and 25"));
 		}
-		if (floatval($newTrailLength) < -90) {
-			throw(new \RangeException("trail length is not between -90 and 90"));
+		if (floatval($newTrailLength) < 1) {
+			throw(new \RangeException("trail length is not between 1 and 25"));
 		}
 		// store the length
 		$this->trailLength = $newTrailLength;
+	}
+	/** accessor method for trail latitude
+	 *
+	 * @return float value of trail latitude
+	 **/
+	public function getTrailLat() : float {
+		return($this->trailLat);
+	}
+	/** mutator method for trail latitude
+	 *
+	 * @param float $newTrailLat new value of trail latitude
+	 * @throws \InvalidArgumentException if $newTrailLat is not a float or insecure
+	 * @throws \RangeException if $newTrailLat is not within -90 to 90
+	 * @throws \TypeError if $newTrailLat is not a float
+	 **/
+	public function setTrailLat(float $newTrailLat) : void {
+		// verify if the latitude exists
+		if(floatval($newTrailLat) > 90) {
+			throw(new \RangeException("trail latitude is not between -90 and 90"));
+		}
+		if (floatval($newTrailLat) < -90) {
+			throw(new \RangeException("trail latitude is not between -90 and 90"));
+		}
+		// store the latitude
+		$this->trailLat = $newTrailLat;
 	}
 	/**
 	 * inserts this Trail into mySQL
