@@ -15,5 +15,14 @@ require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
  * @author Jullyane Hawkins <jhawkins20@cnm.edu>
  **/
 class TrailTest extends AbqOutsideTest {
-
+	/**
+	 * address of this trail
+	 * @var string $VALID_TRAILADDRESS
+	 **/
+	protected $VALID_TRAILADDRESS = "7601 St Josephs Ave, Albuquerque, NM 87120";
+	/**
+	 * address of this trail
+	 * @var string $VALID_TRAILADDRESS2
+	 **/
+	protected $VALID_TRAILADDRESS2 = "this is still a valid address for this art";
 }
