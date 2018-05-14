@@ -108,7 +108,7 @@ class ProfileTest extends AbqOutsideTest {
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profile"));
 	}
 	/**
-	 * test inserting a Profile and regrabbing it from mySQL
+	 * test inserting a Profile and re-grabbing it from mySQL
 	 **/
 	public function testGetValidProfileByProfileId() : void {
 		// count the number of rows and save it for later
