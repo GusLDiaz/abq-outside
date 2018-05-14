@@ -528,6 +528,39 @@ class Trail implements \JsonSerializable {
 		return($trail);
 	}
 	/**
+	 * gets the Trail by distance
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param float $trailLat latitude coordinate of where trail is
+	 * @param float $trailLong longitude coordinate of where trail is
+	 * @param float $distance distance in miles that the trail is searched
+	 * @return \SplFixedArray SplFixedArray of pieces of trail found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 * **/
+	public static function getTrailByDistance(\PDO $pdo, float $trailLat, float $trailLong, float $distance) : \SplFixedArray {
+		// create query template
+		$query = "SELECT trailId, trailExternalId, trailAddress, trailImage, trailName, trailLocation, trailSummary, trailAscent, trailRating, trailLength, trailLat, trailLong FROM trail WHERE haversine(:userLong, :userLat, artLong, artLat) < :distance";
+		$statement = $pdo->prepare($query);
+		// bind the trail distance to the place holder in the template
+		$parameters = ["distance" => $distance, "trailLat" => $trailLat, "trailLong" => $trailLong];
+		$statement->execute($parameters);
+		// build an array of trail
+		$trails = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$trail = new Trail($row["trailId"], $row["trailExternalId"], $row["trailAddress"], $row["trailImage"], $row["trailName"], $row["trailLocation"], $row["trailSummary"], $row["trailAscent"], $row["trailRating"], $row["trailLength"], $row["trailLat"], $row["trailLong"]);
+				$trails[$trails->key()] = $trail;
+				$trails->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($trails);
+	}
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
