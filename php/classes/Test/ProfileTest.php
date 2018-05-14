@@ -17,7 +17,7 @@ class ProfileTest extends AbqOutsideTest {
 	protected $VALID_PROFILE_ID;
 	/**
 	 * valid email to use
-	 * @var string $VALID_EMAIL
+	 * @var string $VALID_PROFILE_EMAIL
 	 **/
 	protected $VALID_PROFILE_EMAIL = "test@phpunit.de";
 	/**
@@ -71,15 +71,116 @@ class ProfileTest extends AbqOutsideTest {
 		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_PROFILE_USERNAME);
 	}
 
-//
-//	//order: profileId email image Refresh token username
-//	$this->profile = new Profile(generateUuidV4(), "email", "imagehandle", "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "username");//,$this->VALID_PROFILE_HASH, " 12125551212");
-//	$this->profile->insert($this->getPDO());
-//	// create trail To be commented on?
-//	// do a  base api call first?
-//	$this->trail = new Trail(generateUuidV4(), "7475773", "address", "imagehandle",);
-//	// calculate the date (just use the time the unit test was setup...)
-//	$this->VALID_COMMENT_TIMESTAMP = new \DateTime();
-//}
-
+	/**
+	 * test inserting a Profile, editing it, and then updating it
+	 **/
+	public function testUpdateValidProfile() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		// create a new Profile and insert to into mySQL
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);		$profile->insert($this->getPDO());
+		// edit the Profile and update it in mySQL
+		$profile->update($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
+		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_PROFILE_IMAGE_URL);
+		$this->assertEquals($pdoProfile->getProfileRefreshToken(), $this->VALID_PROFILE_REFRESH_TOKEN);
+		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_PROFILE_USERNAME);
+	}
+	/**
+	 * test creating a Profile and then deleting it
+	 **/
+	public function testDeleteValidProfile() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);		$profile->insert($this->getPDO());
+		// delete the Profile from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$profile->delete($this->getPDO());
+		// grab the data from mySQL and enforce the Profile does not exist
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertNull($pdoProfile);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profile"));
+	}
+	/**
+	 * test inserting a Profile and regrabbing it from mySQL
+	 **/
+	public function testGetValidProfileByProfileId() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);		$profile->insert($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
+		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_PROFILE_IMAGE_URL);
+		$this->assertEquals($pdoProfile->getProfileRefreshToken(), $this->VALID_PROFILE_REFRESH_TOKEN);
+		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_PROFILE_USERNAME);
+	}
+	/**
+	 * test grabbing a Profile that does not exist
+	 **/
+	public function testGetInvalidProfileByProfileId() : void {
+		// grab a profile id that exceeds the maximum allowable profile id
+		$fakeProfileId = generateUuidV4();
+		$profile = Profile::getProfileByProfileId($this->getPDO(), $fakeProfileId );
+		$this->assertNull($profile);
+	}
+	/**
+	 * test grabbing a Profile by email
+	 **/
+	public function testGetValidProfileByEmail() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);		$profile->insert($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfileByProfileEmail($this->getPDO(), $profile->getProfileEmail());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
+		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_PROFILE_IMAGE_URL);
+		$this->assertEquals($pdoProfile->getProfileRefreshToken(), $this->VALID_PROFILE_REFRESH_TOKEN);
+		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_PROFILE_USERNAME);
+	}
+	/**
+	 * test grabbing a Profile by an email that does not exists
+	 **/
+	public function testGetInvalidProfileByEmail() : void {
+		// grab an email that does not exist
+		$profile = Profile::getProfileByProfileEmail($this->getPDO(), "does@not.exist");
+		$this->assertNull($profile);
+	}
+	/**
+	 * test grabbing a profile by its refresh token
+	 */
+	public function testGetValidProfileByRefreshToken() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);		$profile->insert($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfileByProfileRefreshToken($this->getPDO(), $profile->getProfileRefreshToken());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
+		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_PROFILE_IMAGE_URL);
+		$this->assertEquals($pdoProfile->getProfileRefreshToken(), $this->VALID_PROFILE_REFRESH_TOKEN);
+		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_PROFILE_USERNAME);
+	}
+	/**
+	 * test grabbing a Profile by a refresh token that does not exists
+	 **/
+	public function testGetInvalidProfileRefresh() : void {
+		// grab an email that does not exist
+		$profile = Profile::getProfileByProfileRefreshToken($this->getPDO(), "6675636b646f6e616c646472756d7066");
+		$this->assertNull($profile);
+	}
 }
