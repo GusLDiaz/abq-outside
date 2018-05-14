@@ -84,12 +84,15 @@ class Trail implements \JsonSerializable {
 	 * @param string $newTrailSummary summary of this trail
 	 * @param Int $newTrailAscent int containing trail ascent
 	 * @param Int $newTrailRating int containing trail rating
+	 * @param float $newTrailLength length of this trail
+	 * @param float $newTrailLat latitude of this trail
+	 * @param float $newTrailLong longitude of this trail
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct($newTrailId, $newTrailExternalId, string $newTrailAddress, string $newTrailImage, string $newTrailName, string $newTrailLocation, string $newTrailSummary, int $newTrailAscent, int $newTrailRating) {
+	public function __construct($newTrailId, $newTrailExternalId, string $newTrailAddress, string $newTrailImage, string $newTrailName, string $newTrailLocation, string $newTrailSummary, int $newTrailAscent, int $newTrailRating, float $newTrailLength, float $newTrailLat, float $newTrailLong) {
 		try {
 			$this->setTrailId($newTrailId);
 			$this->setTrailExternalId($newTrailExternalId);
@@ -100,6 +103,9 @@ class Trail implements \JsonSerializable {
 			$this->setTrailSummary($newTrailSummary);
 			$this->setTrailAscent($newTrailAscent);
 			$this->setTrailRating($newTrailRating);
+			$this->setTrailLength($newTrailLength);
+			$this->setTrailLat($newTrailLat);
+			$this->setTrailLong($newTrailLong);
 		}
 			//determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -364,6 +370,32 @@ class Trail implements \JsonSerializable {
 		}
 		// store the trail rating
 		$this->trailRating = $newTrailRating;
+	}
+	/** accessor method for trail length
+	 *
+	 *
+	 * @return float value of trail length
+	 **/
+	public function getTrailLength() : float {
+		return($this->trailLength);
+	}
+	/** mutator method for trail length
+	 *
+	 * @param float $newTrailLength new value of trail length
+	 * @throws \InvalidArgumentException if $newTrailLength is not a float or insecure
+	 * @throws \RangeException if $newTrailLength is not within -90 to 90
+	 * @throws \TypeError if $newTrailLength is not a float
+	 **/
+	public function setTrailLength(float $newTrailLength) : void {
+		// verify if the length exists
+		if(floatval($newTrailLength) > 90) {
+			throw(new \RangeException("trail length is not between -90 and 90"));
+		}
+		if (floatval($newTrailLength) < -90) {
+			throw(new \RangeException("trail length is not between -90 and 90"));
+		}
+		// store the length
+		$this->trailLength = $newTrailLength;
 	}
 	/**
 	 * inserts this Trail into mySQL
