@@ -48,7 +48,7 @@ class ProfileTest extends AbqOutsideTest {
 	public final function setUp(): void {
 		// run setUp() method
 		parent::setUp();
-		$this->VALID_PROFILE_REFRESH_TOKEN = bin2hex(random_bytes(16));
+		$this->VALID_PROFILE_REFRESH_TOKEN = bin2hex(random_bytes(63));
 	}
 
 	/**
@@ -178,7 +178,7 @@ class ProfileTest extends AbqOutsideTest {
 	/**
 	 * test grabbing a Profile by a refresh token that does not exists
 	 **/
-	public function testGetInvalidProfileRefresh() : void {
+	public function testGetInvalidProfileByRefreshToken() : void {
 		// grab an email that does not exist
 		$profile = Profile::getProfileByProfileRefreshToken($this->getPDO(), "6675636b646f6e616c646472756d7066");
 		$this->assertNull($profile);
