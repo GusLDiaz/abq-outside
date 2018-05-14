@@ -421,6 +421,32 @@ class Trail implements \JsonSerializable {
 		// store the latitude
 		$this->trailLat = $newTrailLat;
 	}
+	/** accessor method for trail longitude
+	 *
+	 *
+	 * @return float value of trail longitude
+	 **/
+	public function getTrailLong() : float {
+		return($this->trailLong);
+	}
+	/** mutator method for trail longitude
+	 *
+	 * @param float $newTrailLong new value of trail longitude
+	 * @throws \InvalidArgumentException if $newTrailLong is not a float or insecure
+	 * @throws \RangeException if $newTrailLong is not within -180 to 180
+	 * @throws \TypeError if $newTrailLong is not a float
+	 **/
+	public function setTrailLong(float $newTrailLong) : void {
+		// verify the longitude exists
+		if(floatval($newTrailLong) > 180) {
+			throw(new \RangeException("trail longitude is not between -180 and 180"));
+		}
+		if (floatval($newTrailLong) < -180) {
+			throw(new \RangeException("trail longitude is not between -180 and 180"));
+		}
+		// store the longitude
+		$this->trailLong = $newTrailLong;
+	}
 	/**
 	 * inserts this Trail into mySQL
 	 *
