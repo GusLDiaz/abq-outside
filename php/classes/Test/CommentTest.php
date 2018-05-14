@@ -50,17 +50,16 @@ class CommentTest extends AbqOutsideTest {
 	protected final function setUp(): void {
 		// run setUp() method
 		parent::setUp();
-//	$password = "abc123";
-//	$this->VALID_PROFILE_REFRESH_TOKEN = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
-
+		$this->VALID_PROFILE_REFRESH_TOKEN = bin2hex(random_bytes(16));
 
 		// create and insert a Profile to own the test (write the comment)
 		//order: profileId email image Refresh token username
-		$this->profile = new Profile(generateUuidV4(), "email", "imagehandle", "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "username");//,$this->VALID_PROFILE_HASH, " 12125551212");
+		$this->profile = new Profile(generateUuidV4(), "email", "imagehandle", "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "username");
 		$this->profile->insert($this->getPDO());
-		// create trail To be commented on?
+		// create trail to be commented on
 		// do a  base api call first?
-		$this->trail = new Trail(generateUuidV4(), "7475773", "address", "imagehandle",);
+		//trail order: trailId, trailExternalId,trailAddress,trailImage,trailName,trailLocation, trailSummary, trailAscent, trailRating, trailLength,trailLat,trailLong
+		$this->trail = new Trail(generateUuidV4(), "7475773", "address", "imagehandle", "trailname","trail location","trail description summary","13","3", "13.3","81.6","21.5");
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_COMMENT_TIMESTAMP = new \DateTime();
 	}
