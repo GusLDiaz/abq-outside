@@ -47,7 +47,31 @@ class Trail implements \JsonSerializable {
 	 * @var string $trailSummary
 	 **/
 	protected $trailSummary;
-
+	/**
+	 * ascent of this Trail
+	 * @var int $trailAscent
+	 **/
+	protected $trailAscent;
+	/**
+	 * rating of this Trail
+	 * @var int $trailRating
+	 **/
+	protected $trailRating;
+	/**
+	 * length of this Trail
+	 * @var float $trailLength;
+	 **/
+	protected $trailLength;
+	/**
+	 * latitude of this Trail
+	 * @var float $trailLat;
+	 **/
+	protected $trailLat;
+	/**
+	 * longitude of this Trail
+	 * @var float $trailLong;
+	 **/
+	protected $trailLong;
 	/**
 	 * constructor for this Trail
 	 *
