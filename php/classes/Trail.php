@@ -81,12 +81,13 @@ class Trail implements \JsonSerializable {
 	 * @param string $newTrailImage image of this Trail
 	 * @param string $newTrailName name of this Trail
 	 * @param string $newTrailLocation location of this trail
+	 * @param string $newTrailSummary summary of this trail
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct($newTrailId, $newTrailExternalId, string $newTrailAddress, string $newTrailImage, string $newTrailName, string $newTrailLocation) {
+	public function __construct($newTrailId, $newTrailExternalId, string $newTrailAddress, string $newTrailImage, string $newTrailName, string $newTrailLocation, string $newTrailSummary) {
 		try {
 			$this->setTrailId($newTrailId);
 			$this->setTrailExternalId($newTrailExternalId);
@@ -94,6 +95,7 @@ class Trail implements \JsonSerializable {
 			$this->setTrailImage($newTrailImage);
 			$this->setTrailName($newTrailName);
 			$this->setTrailLocation($newTrailLocation);
+			$this->setTrailSummary($newTrailSummary);
 		}
 			//determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -270,6 +272,14 @@ class Trail implements \JsonSerializable {
 		}
 		// store the trail location
 		$this->trailLocation = $newTrailLocation;
+	}
+	/**
+	 * accessor method for trail summary
+	 *
+	 * @return string value of trail summary
+	 **/
+	public function getTrailSummary() : string {
+		return($this->trailSummary);
 	}
 	/**
 	 * inserts this Trail into mySQL
