@@ -386,7 +386,7 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the profile by profile Id
+	 * gets the profile by profile username
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $profileUsername profile id to search for
