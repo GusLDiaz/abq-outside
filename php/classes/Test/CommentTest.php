@@ -135,12 +135,7 @@ class CommentTest extends AbqOutsideTest {
 		$this->assertNull($pdoComment);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("comment"));
 	}
-///
-///grab a comment that doesn't exist
-/// 	by profile id
-/// 	by trail id
-///insert a Comment and regrabbing it from sql
-/// 	again by trail
+
 	/**
 	 * test grabbing a comment out of range
 	 * commentId
