@@ -157,18 +157,33 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
-	 * @return string
+	 * accessor method for profile Refresh token
+	 * @return string value of the Refresh token
 	 */
-	public function getProfileRefreshToken(): string {
-		return $this->profileRefreshToken;
+	public function getProfileRefreshToken() : ?string {
+		return ($this->profileRefreshToken);
 	}
-
 	/**
-	 * @param string $profileRefreshToken
+	 * mutator method for profile Refresh token
+	 * @param string $newProfileRefreshToken
+	 * @throws \InvalidArgumentException  if the token is not a string or insecure
+	 * @throws \RangeException if the token is not exactly 128 characters
+	 * @throws \TypeError if the activation token is not a string
 	 */
-	public function setProfileRefreshToken(string $profileRefreshToken): void {
-		//TODO HANDLE SAME WAY AS PROFILE ACTIVATION TOKEN
-		$this->profileRefreshToken = $profileRefreshToken;
+	public function setProfileRefreshToken(?string $newProfileRefreshToken): void {
+		if($newProfileRefreshToken === null) {
+			$this->profileRefreshToken = null;
+			return;
+		}
+		$newProfileRefreshToken = strtolower(trim($newProfileRefreshToken));
+		if(ctype_xdigit($newProfileRefreshToken) === false) {
+			throw(new\InvalidArgumentException("user activation is not valid"));
+		}
+		//make sure user activation token is only 128 characters
+		if(strlen($newProfileRefreshToken) !== 128) {
+			throw(new\InvalidArgumentException("user activation token has to be 32"));
+		}
+		$this->profileRefreshToken = $newProfileRefreshToken;
 	}
 
 
