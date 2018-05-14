@@ -492,6 +492,42 @@ class Trail implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 	/**
+	 * gets the Trail by trailId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $trailId trail id to search for
+	 * @return Trail|null Trail found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
+	 **/
+	public static function getTrailByTrailId(\PDO $pdo, $trailId) : ?Trail {
+		// sanitize the trailId before searching
+		try {
+			$trailId = self::validateUuid($trailId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		// create query template
+		$query = "SELECT trailId, trailExternalId, trailAddress, trailImage, trailName, trailLocation, trailSummary, trailAscent, trailRating, trailLength, trailLat, trailLong FROM trail WHERE trailId = :trailId";
+		$statement = $pdo->prepare($query);
+		// bind the trail id to the place holder in the template
+		$parameters = ["trailId" => $trailId->getBytes()];
+		$statement->execute($parameters);
+		// grab the trail from mySQL
+		try {
+			$trail = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$trail = new Trail($row["trailId"], $row["trailExternalId"], $row["trailAddress"], $row["trailImage"], $row["trailName"], $row["trailLocation"], $row["trailSummary"], $row["trailAscent"], $row["trailRating"], $row["trailLength"], $row["trailLat"], $row["trailLong"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($trail);
+	}
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
