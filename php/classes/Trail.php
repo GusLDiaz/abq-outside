@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
  * This is the Trail class where we find data about each trail such as Id, Extrenal Id, Address, Image, Name, Location, Summary, Ascent, Rating, Length, Latitude and Longitude.
  *
  * @author Jullyane Hawkins <jhawkins20@cnm.edu>
- * @version 1.0.0
+ * @version 4.0.0
  **/
 class Trail implements \JsonSerializable {
 	use ValidateUuid;
@@ -490,5 +490,15 @@ class Trail implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		$parameters = ["trailId" => $this->trailId->getBytes(), "trailExternalId" => $this->trailExternalId->getBytes(), "trailAddress" => $this->trailAddress, "trailImage" => $this->trailImage, "trailName" => $this->trailName, "trailLocation" => $this->trailLocation, "trailSummary" => $this->trailSummary, "trailAscent" => $this->trailAscent, "trailRating" => $this->trailRating, "trailLength" => $this->trailLength, "trailLat" => $this->trailLat, "trailLong" => $this->trailLong];
 		$statement->execute($parameters);
+	}
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() : array {
+		$fields = get_object_vars($this);
+		$fields["trailId"] = $this->trailId->toString();
+		return($fields);
 	}
 }
