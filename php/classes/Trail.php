@@ -282,6 +282,28 @@ class Trail implements \JsonSerializable {
 		return($this->trailSummary);
 	}
 	/**
+	 * mutator method for trail summary
+	 *
+	 * @param string $newTrailSummary new value of trail summary
+	 * @throws \InvalidArgumentException if $newTrailSummary is not a string or insecure
+	 * @throws \RangeException if $newTrailSummary is > 200 characters
+	 * @throws \TypeError if $newTrailSummary is not a string
+	 **/
+	public function setTrailSummary(string $newTrailSummary) : void {
+		// verify if the summary is secure
+		$newTrailSummary = trim($newTrailSummary);
+		$newTrailSummary = filter_var($newTrailSummary, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newTrailSummary) === true) {
+			throw(new \InvalidArgumentException("trail summary is empty or insecure"));
+		}
+		// verify the trail summary will fit in the database
+		if(strlen($newTrailSummary) > 200) {
+			throw(new \RangeException("trail summary too large"));
+		}
+		// store the summary
+		$this->trailSummary = $newTrailSummary;
+	}
+	/**
 	 * inserts this Trail into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
