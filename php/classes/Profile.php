@@ -181,7 +181,7 @@ class Profile implements \JsonSerializable {
 		}
 		//make sure user activation token is only 128 characters
 		if(strlen($newProfileRefreshToken) !== 128) {
-			throw(new\InvalidArgumentException("user activation token has to be 128"));
+			throw(new\RangeException("user activation token has to be 128"));
 		}
 		$this->profileRefreshToken = $newProfileRefreshToken;
 	}
@@ -294,6 +294,120 @@ class Profile implements \JsonSerializable {
 
 		// bind the profile id to the place holder in the template
 		$parameters = ["profileId" => $profileId->getBytes()];
+		$statement->execute($parameters);
+
+		// grab the profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$profile = new Profile($row["profileId"], $row["profileEmail"], $row["profileImage"], $row["profileRefreshToken"], $row["profileUsername"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($profile);
+	}
+
+	/**
+	 * gets the Profile by email
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $profileEmail email to search for
+	 * @return Profile|null Profile or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getProfileByProfileEmail(\PDO $pdo, string $profileEmail): ?Profile {
+		// sanitize the email before searching
+		$profileEmail = trim($profileEmail);
+		$profileEmail = filter_var($profileEmail, FILTER_VALIDATE_EMAIL);
+		if(empty($profileEmail) === true) {
+			throw(new \PDOException("not a valid email"));
+		}
+		// create query template
+		$query = "SELECT profileId, profileEmail, profileImage, profileRefreshToken, profileUsername FROM profile WHERE profileEmail = :profileEmail";
+		$statement = $pdo->prepare($query);
+		// bind the profile id to the place holder in the template
+		$parameters = ["profileEmail" => $profileEmail];
+		$statement->execute($parameters);
+		// grab the Profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$profile = new Profile($row["profileId"], $row["profileEmail"], $row["profileImage"], $row["profileRefreshToken"], $row["profileUsername"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($profile);
+	}
+
+	/**
+	 * get the profile by profile refresh token
+	 *
+	 * @param string $profileRefreshToken
+	 * @param \PDO object $pdo
+	 * @return Profile|null Profile or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public
+	static function getProfileByProfileRefreshToken(\PDO $pdo, string $profileRefreshToken) : ?Profile {
+		//make sure activation token is in the right format and that it is a string representation of a hexadecimal
+		$profileRefreshToken = trim($profileRefreshToken);
+		if(ctype_xdigit($profileRefreshToken) === false) {
+			throw(new \InvalidArgumentException("profile refresh token is empty or in the wrong format"));
+		}
+		//create the query template
+		$query = "SELECT profileId, profileEmail, profileImage, profileRefreshToken, profileUsername FROM profile WHERE profileRefreshToken = :profileRefreshToken";
+		$statement = $pdo->prepare($query);
+		// bind the profile refresh token to the placeholder in the template
+		$parameters = ["profileRefreshToken" => $profileRefreshToken];
+		$statement->execute($parameters);
+		// grab the Profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$profile = new Profile($row["profileId"], $row["profileEmail"], $row["profileImage"], $row["profileRefreshToken"], $row["profileUsername"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($profile);
+	}
+
+	/**
+	 * gets the profile by profile Id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $profileUsername profile id to search for
+	 * @return profile|null profile found or null if not found
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
+	 **/
+	public static function getProfileByProfileUsername(\PDO $pdo, $profileUsername): ?profile {
+		// sanitize the profile before searching
+		try {
+			$profileUsername = self::validateUuid($profileUsername);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		// create query template
+		$query = "SELECT profileId, profileEmail, profileImage, profileRefreshToken, profileUsername FROM profile WHERE profileUsername = :profileUsername";
+		$statement = $pdo->prepare($query);
+
+		// bind the profile username to the place holder in the template
+		$parameters = ["profileUsername" => $profileUsername->getBytes()];
 		$statement->execute($parameters);
 
 		// grab the profile from mySQL
