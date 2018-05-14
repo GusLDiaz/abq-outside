@@ -60,6 +60,7 @@ class Comment implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
+	//hint the parameters
 	public function __construct($newCommentId, $newCommentProfileId = null, string $newCommentTrailId, $newCommentContent, $newCommentTimestamp = null) {
 		try {
 			$this->setcommentId($newCommentId);
@@ -185,7 +186,7 @@ class Comment implements \JsonSerializable {
 		}
 
 		// verify the comment content id will fit in the database
-		if(strlen($newCommentContent) > 140) {
+		if(strlen($newCommentContent) > 256) {
 			throw(new \RangeException("comment content too large"));
 		}
 
@@ -370,7 +371,7 @@ class Comment implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getCommentBycommentTrailId(\PDO $pdo, string $commentTrailId): \SplFixedArray {
+	public static function getCommentByCommentTrailId(\PDO $pdo, string $commentTrailId): \SplFixedArray {
 		// sanitize the description before searching
 		$commentTrailId = trim($commentTrailId);
 		$commentTrailId = filter_var($commentTrailId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -498,35 +499,6 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * gets all Comments
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @return \SplFixedArray SplFixedArray of Comments found or null if not found
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
-	 **/
-	public static function getAllComments(\PDO $pdo): \SPLFixedArray {
-		// create query template
-		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent,  commentTimestamp FROM comment";
-		$statement = $pdo->prepare($query);
-		$statement->execute();
-
-		// build an array of comments
-		$comments = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
-				$comment = new Comment($row["commentId"], $row["commentProfileId"], $row["commentTrailId"], $row["commentContent"], $row["commentTimestamp"]);
-				$comments[$comments->key()] = $comment;
-				$comments->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
-		}
-		return ($comments);
-	}
-	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
@@ -536,6 +508,7 @@ class Comment implements \JsonSerializable {
 
 		$fields["commentId"] = $this->commentId->toString();
 		$fields["commentProfileId"] = $this->commentProfileId->toString();
+		$fields["commentTrailId"] = $this->commentTrailId->toString();
 
 		//format the date so that the front end can consume it
 		$fields["commentTimestamp"] = round(floatval($this->commentTimestamp->format("U.u")) * 1000);
