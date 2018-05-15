@@ -70,7 +70,6 @@ class ProfileTest extends AbqOutsideTest {
 		$this->assertEquals($pdoProfile->getProfileRefreshToken(), $this->VALID_PROFILE_REFRESH_TOKEN);
 		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_PROFILE_USERNAME);
 	}
-
 	/**
 	 * test inserting a Profile, editing it, and then updating it
 	 **/
