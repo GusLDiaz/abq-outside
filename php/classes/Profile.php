@@ -180,7 +180,7 @@ class Profile implements \JsonSerializable {
 			throw(new\InvalidArgumentException("user activation is not valid"));
 		}
 		//make sure user activation token is only 128 characters
-		if(strlen($newProfileRefreshToken) !== 128) {
+		if(strlen($newProfileRefreshToken) > 128) {
 			throw(new\RangeException("user activation token has to be 128"));
 		}
 		$this->profileRefreshToken = $newProfileRefreshToken;
