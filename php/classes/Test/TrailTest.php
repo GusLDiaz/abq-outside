@@ -26,6 +26,11 @@ class TrailTest extends AbqOutsideTest {
 	 **/
 	protected $VALID_TRAILADDRESS = "13 Reel Avenue, Albuquerque, NM 87111";
 	/**
+	 * address of this trail
+	 * @var string $VALID_TRAILADDRESS2
+	 **/
+	protected $VALID_TRAILADDRESS2 = "this is still a valid address for this trail";
+	/**
 	 * trail image
 	 * @var string $VALID_TRAILIMAGE
 	 **/
@@ -107,13 +112,15 @@ class TrailTest extends AbqOutsideTest {
 		$trail = new Trail($trailId, $this->VALID_TRAILEXTERNALID, $this->VALID_TRAILADDRESS, $this->VALID_TRAILIMAGE, $this->VALID_TRAILNAME, $this->VALID_TRAILLOCATION, $this->VALID_TRAILSUMMARY, $this->VALID_TRAILASCENT, $this->VALID_TRAILRATING, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLATITUDE, $this->VALID_TRAILLONGITUDE);
 		$trail->insert($this->getPDO());
 		// edit the Trail and update it in mySQL
+		//todo actually update the value
 		$trail->setTrailAddress($this->VALID_TRAILADDRESS);
 		$trail->update($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoTrail = Trail::getTrailByTrailId($this->getPDO(), $trail->getTrailId());
+		//todo assertEquals all the things
 		$this->assertEquals($pdoTrail->getTrailId(), $trailId);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("trail"));
-		$this->assertEquals($pdoArt->getTrailAddress(), $this->VALID_TRAILADDRESS);
+		$this->assertEquals($pdoTrail->getTrailAddress(), $this->VALID_TRAILADDRESS);
 	}
 	/**
 	 * test creating a Trail and then deleting it
@@ -160,6 +167,15 @@ class TrailTest extends AbqOutsideTest {
 		// grab the result from the array and validate it
 		$pdoTrail = $results[0];
 		$this->assertEquals($pdoTrail->getTrailId(), $trailId);
+		$this->assertEquals($pdoTrail->getTrailExternalId(), $this->VALID_TRAILEXTERNALID);
+		$this->assertEquals($pdoTrail->getTrailAddress(), $this->VALID_TRAILADDRESS);
+		$this->assertEquals($pdoTrail->getTrailImage(), $this->VALID_TRAILIMAGE);
+		$this->assertEquals($pdoTrail->getTrailName(), $this->VALID_TRAILNAME);
+		$this->assertEquals($pdoTrail->getTrailLocation(), $this->VALID_TRAILLOCATION);
+		$this->assertEquals($pdoTrail->getTrailSummary(), $this->VALID_TRAILSUMMARY);
+		$this->assertEquals($pdoTrail->getTrailAscent(), $this->VALID_TRAILASCENT);
+		$this->assertEquals($pdoTrail->getTrailRating(), $this->VALID_TRAILRATING);
+		$this->assertEquals($pdoTrail->getTrailLength(), $this->VALID_TRAILLENGTH);
 		$this->assertEquals($pdoTrail->getTrailLat(), $this->VALID_TRAILLAT);
 		$this->assertEquals($pdoTrail->getTrailLong(), $this->VALID_TRAILLONG);
 	}
@@ -187,7 +203,7 @@ class TrailTest extends AbqOutsideTest {
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\AbqOutside\\Trail", $results);
 		// grab the result from the array and validate it
-		$pdoArt = $results[0];
+		$pdoTrail = $results[0];
 		$this->assertEquals($pdoTrail->getTrailId(), $trailId);
 		$this->assertEquals($pdoTrail->getTrailExternalId(), $this->VALID_TRAILEXTERNALID);
 		$this->assertEquals($pdoTrail->getTrailAddress(), $this->VALID_TRAILADDRESS);
