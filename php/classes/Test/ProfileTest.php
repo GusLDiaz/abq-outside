@@ -9,11 +9,6 @@
 namespace Edu\Cnm\AbqOutside\Test;
 use Edu\Cnm\AbqOutside\Profile;
 
-// grab the class under scrutiny
-require_once(dirname(__DIR__) . "/autoload.php");
-// grab the uuid generator
-require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
-
 class ProfileTest extends AbqOutsideTest {
 	/**
 	 * test generated UUID
