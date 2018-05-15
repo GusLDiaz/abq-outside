@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Gusli
- * Date: 5/11/2018
- * Time: 12:45 PM
- */
-
 namespace Edu\Cnm\AbqOutside\Test;
+
 use Edu\Cnm\AbqOutside\Profile;
 
 class ProfileTest extends AbqOutsideTest {
