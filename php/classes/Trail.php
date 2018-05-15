@@ -18,7 +18,7 @@ class Trail implements \JsonSerializable {
 	 **/
 	protected $trailId;
 	/**
-	 * external id  ( from API )for this Trail
+	 * external id (from API)for this Trail
 	 * @var string $trailExternalId
 	 **/
 	protected $trailExternalId;
@@ -153,17 +153,20 @@ class Trail implements \JsonSerializable {
 	 * @throws \RangeException if $newTrailExternalId is not positive
 	 * @throws \TypeError if $newTrailExternalId is not a uuid or string
 	 **/
-	//externalId from api Is a char7, mutator needs to reflect
-//	public function setTrailExternalId( string $newTrailExternalId) : void {
-//		try {
-//			$uuid = self::validateUuid($newTrailExternalId);
-//		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-//			$exceptionType = get_class($exception);
-//			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-//		}
-//		// convert and store the trail external id
-//		$this->trailExternalId = $uuid;
-//	}
+	public function setTrailExternalId(string $newTrailExternalId) : void {
+		// verify the external Id is secure
+		$newTrailExternalId = trim($newTrailExternalId);
+		$newTrailExternalId = filter_var($newTrailExternalId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newTrailExternalId) === true) {
+			throw(new \InvalidArgumentException("trail external id is empty or insecure"));
+		}
+		// verify the external id will fit in the database
+		if(strlen($newTrailExternalId) > 200) {
+			throw(new \RangeException("trail external id too large"));
+		}
+		// store the address
+		$this->trailExternalId = $newTrailExternalId;
+	}
 	/**
 	 * accessor method for trail address
 	 *
@@ -329,20 +332,11 @@ class Trail implements \JsonSerializable {
 	 * @throws \RangeException if $newTrailAscent is > 255 characters
 	 * @throws \TypeError if $newTrailAscent is not an int
 	 **/
-	public function setTrailAscent(int $newTrailAscent): void {
-		// verify if the trail ascent is secure
-		/**seems like you set this up for a string, its an int and mutators are slightly diff
-//		$newTrailAscent = trim($newTrailAscent);
-//		$newTrailAscent = filter_var($newTrailAscent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-//		if(empty($newTrailAscent) === true) {
-//			throw(new \InvalidArgumentException("trail ascent is empty or insecure"));
-//		}
-//		// verify if the trail ascent will fit in the database
-//		if(strlen($newTrailAscent) > 255) {
-//			throw(new \RangeException("trail ascent is too large"));
-//		}
-		// store the trail ascent
-		$this->trailAscent = $newTrailAscent;
+	public function setTrailAscent(int $newTrailAscent) {
+		if($newTrailAscent < -32768 || $newTrailAscent > 32767) {
+			throw(new RangeException("Trail ascent not positive"));
+		}
+		$this->trailAscent = intval($newTrailAscent);
 	}
 	/**
 	 *accessor method for trail rating
@@ -359,21 +353,12 @@ class Trail implements \JsonSerializable {
 	 * @throws \RangeException if $newTrailRating is > 255 characters
 	 * @throws \TypeError if $newTrailRating is not an int
 	 **/
-	public function setTrailRating(int $newTrailRating): void {
-		// verify if the trail rating is secure
-			//see above ^ (line 334)
-//		$newTrailRating = trim($newTrailRating);
-//		$newTrailRating = filter_var($newTrailRating, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-//		if(empty($newTrailRating) === true) {
-//			throw(new \InvalidArgumentException("trail rating is empty or insecure"));
-//		}
-//		// verify if the trail rating will fit in the database
-//		if(strlen($newTrailRating) > 255) {
-//			throw(new \RangeException("trail rating is too large"));
-//		}
-//		// store the trail rating
-//		$this->trailRating = $newTrailRating;
-//	}
+	public function setTrailRating(int $newTrailRating) {
+		if($newTrailRating < 0 || $newTrailRating > 5) {
+			throw(new RangeException("Trail rating not positive"));
+		}
+		$this->trailRating = intval($newTrailRating);
+	}
 	/** accessor method for trail length
 	 *
 	 * @return float value of trail length
