@@ -4,7 +4,9 @@ use Edu\Cnm\AbqOutside\Profile;
 
 //require_once the base test class
 
+require_once("AbqOutsideTest.php");
 require_once(dirname(__DIR__) . "/autoload.php");
+
 
 class ProfileTest extends AbqOutsideTest {
 	/**
