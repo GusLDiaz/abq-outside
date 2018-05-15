@@ -4,7 +4,6 @@ require_once("autoload.php");
 require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**
- *ATTN: Line 156 externalId mutator | Line 334 trail ascent mutator
  * This is the Trail class where we find data about each trail such as Id, External Id, Address, Image, Name, Location, Summary, Ascent, Rating, Length, Latitude and Longitude.
  *
  * @author Jullyane Hawkins <jhawkins20@cnm.edu>
@@ -82,8 +81,8 @@ class Trail implements \JsonSerializable {
 	 * @param string $newTrailName name of this Trail
 	 * @param string $newTrailLocation location of this trail
 	 * @param string $newTrailSummary summary of this trail
-	 * @param Int $newTrailAscent int containing trail ascent
-	 * @param Int $newTrailRating int containing trail rating
+	 * @param int $newTrailAscent int containing trail ascent
+	 * @param int $newTrailRating int containing trail rating
 	 * @param float $newTrailLength length of this trail
 	 * @param float $newTrailLat latitude of this trail
 	 * @param float $newTrailLong longitude of this trail
