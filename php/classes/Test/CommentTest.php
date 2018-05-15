@@ -1,23 +1,25 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Gusli
- * Date: 5/8/2018
- * Time: 2:43 PM
- */
-
 namespace Edu\Cnm\AbqOutside\Test;
 
 use Edu\Cnm\AbqOutside\{
 	Comment, Profile, Trail
 };
 // grab the class under scrutiny
-//require_once(dirname(__DIR__) . "/autoload.php");
+require_once(dirname(__DIR__) . "/autoload.php");
 
 // grab the uuid generator
-//require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
+require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
 
-
+/**
+ * Full PHPUnit test for the Tweet class
+ *
+ * This is a complete PHPUnit test of the Comment class. It is complete because *ALL* enabled methods
+ * are tested for both invalid and valid inputs.
+ *
+ * @see Comment
+ * @author Gus Liakos <gusliakos@outlook.com>
+ * @author Dylan McDonald <dmcdonald21@cnm.edu>
+ */
 class CommentTest extends AbqOutsideTest {
 	/**
 	 * Profile that created comment for foreign key relations
@@ -38,7 +40,7 @@ class CommentTest extends AbqOutsideTest {
 	protected $VALID_COMMENT_CONTENT = "PHPUnit test passing";
 	/**
 	 * content of the updated comment
-	 * @var string $VALID_COMMENT_CONTENT2
+	 * @var string $VALID_COMMENTCONTENT2
 	 **/
 	protected $VALID_COMMENT_CONTENT2 = "PHPUnit test still passing";
 	/**
@@ -56,6 +58,7 @@ class CommentTest extends AbqOutsideTest {
 		//order: profileId email image Refresh token username
 		$this->profile = new Profile(generateUuidV4(), "email", "imagehandle", "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "username");
 		$this->profile->insert($this->getPDO());
+
 		// create trail to be commented on
 		// do a  base api call first?
 		//trail order: trailId, trailExternalId,trailAddress,trailImage,trailName,trailLocation, trailSummary, trailAscent, trailRating, trailLength,trailLat,trailLong
@@ -66,7 +69,6 @@ class CommentTest extends AbqOutsideTest {
 		$this->VALID_COMMENT_TIMESTAMP = new \DateTime();
 	}
 
-//
 	/**
 	 * test adding a new comment to system
 	 *
@@ -89,6 +91,7 @@ class CommentTest extends AbqOutsideTest {
 		$this->assertEquals($pdoComment->getCommmentContent(), $this->VALID_COMMENT_CONTENT);
 		$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
 	}
+
 	/**
 	 * test inserting a comment, editing it, and then updating it
 	 *      **/
@@ -146,6 +149,7 @@ class CommentTest extends AbqOutsideTest {
 		$comment = Comment::getCommentByCommentId($this->getPDO(), generateUuidV4());
 		$this->assertNull($comment);
 	}
+
 	/**
 	 * test grabbing a comment by its profile
 	 * profile Id
@@ -170,11 +174,12 @@ class CommentTest extends AbqOutsideTest {
 
 		$this->assertEquals($pdoComment->getCommentId(), $commentId);
 		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
-//		$this->assertEquals($pdoComment->getCommentTrailId(), $this->trail->getTrailId());
+		$this->assertEquals($pdoComment->getCommentTrailId(), $this->trail->getTrailId());
 		$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT);
 		//format the date two seconds after beginning of time, for round off error
 		$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
 	}
+
 	/**
  	* test grabbing a comment by its trail
  	* trail Id

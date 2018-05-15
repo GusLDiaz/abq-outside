@@ -284,7 +284,7 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the Comment by comment Id
+	 * gets the Comment by commentId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $commentId comment id to search for
@@ -343,9 +343,11 @@ class Comment implements \JsonSerializable {
 		// create query template
 		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment WHERE commentProfileId = :commentProfileId";
 		$statement = $pdo->prepare($query);
+
 		// bind the comment profile id to the place holder in the template
 		$parameters = ["commentProfileId" => $commentProfileId->getBytes()];
 		$statement->execute($parameters);
+
 		// build an array of comments
 		$comments = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
