@@ -3,7 +3,7 @@
 namespace Edu\Cnm\AbqOutside;
 require_once("autoload.php");
 //require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
-require_once(ramsey)
+
 
 class DataDownloader {
 	/**
@@ -64,12 +64,12 @@ class DataDownloader {
 			$trailSummary = $value->summary;
 			$trailAscent = $value->ascent;
 			$trailRating = $value->stars;
-		try {
-			$trail = new Trail($trailId, $trailExternalId, $trailAddress, $trailImage, $trailName, $trailLocation, $trailSummary, $trailAscent, $trailRating, $trailLength, $trailLat, $trailLong);
-			$trail->insert($pdo);
-		} catch(\TypeError $typeError) {
-			//echo("Gus");
-		}
+//		try {
+//			$trail = new Trail($trailId, $trailExternalId, $trailAddress, $trailImage, $trailName, $trailLocation, $trailSummary, $trailAscent, $trailRating, $trailLength, $trailLat, $trailLong);
+//			$trail->insert($pdo);
+//		} catch(\TypeError $typeError) {
+//			//echo("Gus");
+//		}
 	}
 
 	/** @param $url
