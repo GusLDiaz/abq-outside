@@ -37,168 +37,152 @@ class DataDownloader {
 	 *
 	 * |||||||
 	 */
-	//for get trails by id:
-	//get all trails within a max distance of, say $d= 42 (miles, from lat/long of STEMULUS center)
-	//store the Ids of these trails in an array $zoneTrails, maybe with key of concatanated lat/long?
-	//iterate several calls of say, 10 ids, and store the info
-	public static function getTrailCache() {
-		$options = [];
-		$options["http"] = [];
-		$options["http"]["method"] = "HEAD";
-		$context = stream_context_create($options);
-		$fileDownloader = fopen()
-		$urlG = 	https://www.hikingproject.com/data/get-trails?lat=35.085470&lon=-106.649072&maxDistance=10&key=200265121-1809e265008042f9977e435839863103
-		35.085470, -106.649072)
-		$trailCache=
 
-	foreach($trailCache as $value) {
-			//replace placeholder inside $urlX with trailId
+//	public static function craftUrl() {
+//	};
 
-		$urlX = placeholder->tempUrl
-		$contents = file_get_contents($urlX);
-		$contents = utf8_encode($contents);
-		$features = json_decode($contents);
-	}}
-/**
- * Gets the eTag from a file url
- *
- * @param string $url to grab from
- * @return string $eTag to be compared to previous eTag to determine last download
- * @throws \RuntimeException if stream cant be opened.
- **/
-	public static function getMetaData(string $url, string $eTag) {
-//		if($eTag !== "art") {
-//			throw(new \RuntimeException("not a valid etag", 400));
+	public static function pullTrails() {
+		$features = null;
+		$urlG = "https://www.hikingproject.com/data/get-trails?lat=35.085470&lon=-106.649072&maxDistance=200&maxResults=500&key=200265121-1809e265008042f9977e435839863103";
+//		try {
+//			$features = DataDownloader::readDataJson($urlG);
+//		} catch
 //		}
-			//set up nested array $options
-			$options = [];
-			$options["http"] = [];
-			$options["http"]["method"] = "HEAD";
-			//options
-
-			//Must be an associative array of associative arrays in the format $arr['wrapper']['option'] = $value.
-			//Refer to context options for a list of available wrappers and options
-			//Default to an empty array.
-			$context = stream_context_create($options);
-			//fopen( filename, mode, [boolean --false], [context]) | binds a resource (filename) to a stream($fileDownloader)
-			$fileDownloader = fopen($url, 'r', false, $context);
-			$metaData = stream_get_meta_data($fileDownloader);
-			//throw exception if stream doesn't work
-			if($fileDownloader === false) {
-				throw(new \RuntimeException("unable to open HTTP stream"));
-			}
-			fclose($fileDownloader);
-
-			//store wrapper data from stream of $url in $header
-			$header = $metaData["wrapper_data"];
-			//set $eTag as null to start
-			$eTag = null;
-
-			//In PHP 7, foreach does not use the internal array pointer. @doc- foreach
-
-			//iterate through wrapper data ($header), assigning current element to $value
-			foreach($header as $value) {
-				//break up string ($value) by delimiter (":") | store in array $explodeETag
-				$explodeETag = explode(":", $value);
-				//find "Etag" in array-- false or first matching key
-				//http://php.net/manual/en/function.stream-get-meta-data.php
-				$findETag = array_search("ETag", $explodeETag);
-				//if they don't find anything assign 1 to $eTag (see 63)
-				if($findETag !== false) {
-					$eTag = $explodeETag[1];
-				}
-			}
-			if($eTag === null) {
-				throw(new \RuntimeException("etag cannot be found", 404));
-			}
-			$config = parse_ini_file("/etc/apache2/capstone-mysql/outside.ini");
-			$eTags = json_decode($config["etags"]);
-			$previousETag = $eTags->art;
-			if($previousETag < $eTag) {
-				return ($eTag);
-			} else {
-				throw(new \OutOfBoundsException("Gus", 401));
-			}
-		}
-
-	/**
-	 *
-	 * Decodes Json file, converts to string, sifts through the string and inserts the data into database
-	 *
-	 * @param string $url
-	 * @throws \PDOException for PDO related errors
-	 * @throws \Exception catch-all exceptions
-	 * @return \SplFixedArray $allData
-	 *
-	 **/
-	public function readDataJson($url) {
-			// http://php.net/manual/en/function.stream-context-create.php creates a stream for file input
-			$context = stream_context_create(["http" => ["ignore_errors" => true, "method" => "GET"]]);
-			try {
-				// http://php.net/manual/en/function.file-get-contents.php file-get-contents returns file in string context
-				if(($jsonData = file_get_contents($url, null, $context)) === false) {
-					throw(new \RuntimeException("cannot connect to city server"));
-				}
-				//decode the Json file
-				$jsonConverted = json_decode($jsonData);
-				//format
-				$jsonFeatures = $jsonConverted->features;
-				//create array from the converted Json file
-				$features = \SplFixedArray::fromArray($jsonFeatures);
-			} catch(\Exception $exception) {
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
-			return ($features);
-		}
-
-	public static function downloadFromX() {
-			$urlX = "http://json";
-			/**
-			 *run getMetaData and catch exception if the data hasn't changed
-			 **/
-			$features = null;
-			try {
-				DataDownloader::getMetaData($urlX, "string");
-				$contents = file_get_contents($urlX);
-				$contents = utf8_encode($contents);
-				$features = json_decode($contents);
-//			$features = DataDownloader::readDataJson($urlX);
-				$eTagX = DataDownloader::getMetaData($urlX, "string");
-				$config = parse_ini_file("/etc/apache2/capstone-mysql/outside.ini");
-				$eTags = json_decode($config["etags"]);
-				$eTags->art * = $eTagX;
-				$config["etags"] = json_encode($eTags);
-//			writeConfig($config, "/etc/apache2/capstone-mysql/streetart.ini");
-			} catch(\OutOfBoundsException $outOfBoundsException) {
-				echo("no new art data found");
-			}
-			return ($features);
-		}
-
-	/**
-	 *assigns data from object->features->attributes
-	 **/
-	public static function getTrails(\SplFixedArray $features) {
-		$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/outside.ini");
-		foreach($features as $feature) {
+		$features = self::readDataJson($urlG);
+		foreach($features as $value)
+			echo $value;
 			$trailId = generateUuidV4();
-			$trailExternalId = $feature->attributes->Id
-			$trailAddress = $feature->attributes->ADDRESS;
-			$trailImage = $feature->attributes->JPG_URL;
-			$trailName = $feature->attributes->;
-			$trailLocation = $feature->attributes->LOCATION;
-			$trailLat = $feature->attributes->Y;
-			$trailLong = $feature->attributes->X;
-			$trailLength = $feature->attributes->TYPE;
-			$trailSummary = $feature->attributes->YEAR;
-			$trailAscent =;
-			$trailRating =;
-			try {
-				$trail = new Trail($trailId, $trailExternalId, $trailAddress, $trailImage, $trailName, $trailLocation, $trailSummary, $trailAscent, $trailRating, $trailLength, $trailLat, $trailLong);
-				$trail->insert($pdo);
-			} catch(\TypeError $typeError) {
-				echo("Gus");
+			$trailExternalId = $value->id;
+		//$trailAddress = $value->attributes->ADDRESS;
+			$trailAddress = "outdoors";
+			$trailImage = $value->imgMedium;
+			$trailName = $value->name;
+			$trailLocation = $value->location;
+			$trailLat = $value->latitude;
+			$trailLong = $value->longitude;
+			$trailLength = $value->length;
+			$trailSummary = $value->summary;
+			$trailAscent = $value->ascent;
+			$trailRating = $value->stars;
+		try {
+			$trail = new Trail($trailId, $trailExternalId, $trailAddress, $trailImage, $trailName, $trailLocation, $trailSummary, $trailAscent, $trailRating, $trailLength, $trailLat, $trailLong);
+			$trail->insert($pdo);
+		} catch(\TypeError $typeError) {
+			//echo("Gus");
+		}
+	}
+
+	/** @param $url
+	 *  $url and go from there. just straight up craft this and use it
+	 */
+	public function readDataJson($url) {
+
+		$context = stream_context_create(["http" => ["ignore_errors" => true, "method" => "GET"]]);
+		try {
+			//file-get-contents returns file in string context
+			if(($jsonData = file_get_contents($url, null, $context)) === false) {
+				throw(new \RuntimeException("cannot connect to city server"));
 			}
+			//decode the Json file
+			$jsonConverted = json_decode($jsonData);
+			//format
+			$jsonFeatures = $jsonConverted->features;
+			//create array from the converted Json file
+			$features = \SplFixedArray::fromArray($jsonFeatures);
+		} catch(\Exception $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($features);
 	}
-	}
+
 }
+
+//$client = new GuzzleHttp\Client{
+//['base_uri' => 'https://www.hikingproject.com/data/']
+//};
+//$response = $client->request('get-trails', 'https://www.hikingproject.com/data/get-trails?lat=35.085470&lon=-106.649072&maxDistance=200&maxResults=500&key=200265121-1809e265008042f9977e435839863103');
+//var_dump($response);
+//$data = $response->getBody();
+//echo $data;
+//$data = json_decode($data, true);
+//$cache = $data->trails;
+////count the cache
+//$trailArray = \SplFixedArray::fromArray($cache);
+
+
+//public static function getTrails(\SplFixedArray $data) {
+//	//$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/outside.ini")
+//	$pdo = getConnection("/etc/apache2/capstone-mysql/outside.ini");
+//	foreach($data as $feature) {
+//		$trailId = generateUuidV4();
+//		$trailExternalId = $feature->attributes->Id
+//			$trailAddress = $feature->attributes->ADDRESS;
+//			$trailImage = $feature->attributes->JPG_URL;
+//			$trailName = $feature->attributes->;
+//			$trailLocation = $feature->attributes->LOCATION;
+//			$trailLat = $feature->attributes->Y;
+//			$trailLong = $feature->attributes->X;
+//			$trailLength = $feature->attributes->TYPE;
+//			$trailSummary = $feature->attributes->YEAR;
+//			$trailAscent =;
+//			$trailRating =;
+//			try {
+//				$trail = new Trail($trailId, $trailExternalId, $trailAddress, $trailImage, $trailName, $trailLocation, $trailSummary, $trailAscent, $trailRating, $trailLength, $trailLat, $trailLong);
+//				$trail->insert($pdo);
+//			} catch(\TypeError $typeError) {
+//				echo("Gus");
+//			}
+//
+//}
+// = $body->getContents();
+
+//public function readDataJson($urlX) {
+//	// http://php.net/manual/en/function.stream-context-create.php creates a stream for file input
+//	$context = stream_context_create(["http" => ["ignore_errors" => true, "method" => "GET"]]);
+//	try {
+//		// http://php.net/manual/en/function.file-get-contents.php file-get-contents returns file in string context
+//		if(($jsonData = file_get_contents($urlX, null, $context)) === false) {
+//			throw(new \RuntimeException("cannot connect to city server"));
+//		}
+//		//decode the Json file
+//		$jsonConverted = json_decode($jsonData);
+//		//format
+//		$jsonFeatures = $jsonConverted->features;
+//		//create array from the converted Json file
+//		$data = \SplFixedArray::fromArray($jsonFeatures);
+//	} catch(\Exception $exception) {
+//		throw(new \PDOException($exception->getMessage(), 0, $exception));
+//	}
+//	return ($data);
+//}
+//public static function getTrails(\SplFixedArray $data) {
+//	//$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/outside.ini")
+//	$pdo = getConnection("/etc/apache2/capstone-mysql/outside.ini");
+//	foreach($data as $feature) {
+//		$trailId = generateUuidV4();
+//		$trailExternalId = $feature->attributes->Id
+//			$trailAddress = $feature->attributes->ADDRESS;
+//			$trailImage = $feature->attributes->JPG_URL;
+//			$trailName = $feature->attributes->;
+//			$trailLocation = $feature->attributes->LOCATION;
+//			$trailLat = $feature->attributes->Y;
+//			$trailLong = $feature->attributes->X;
+//			$trailLength = $feature->attributes->TYPE;
+//			$trailSummary = $feature->attributes->YEAR;
+//			$trailAscent =;
+//			$trailRating =;
+//			try {
+//				$trail = new Trail($trailId, $trailExternalId, $trailAddress, $trailImage, $trailName, $trailLocation, $trailSummary, $trailAscent, $trailRating, $trailLength, $trailLat, $trailLong);
+//				$trail->insert($pdo);
+//			} catch(\TypeError $typeError) {
+//				echo("Gus");
+//			}
+//?>
+
+
+// Create a client with a base URI
+$client = new GuzzleHttp\Client(['base_uri' => 'https://foo.com/api/']);
+// Send a request to https://foo.com/api/test
+$response = $client->request('GET', 'test');
+// Send a request to https://foo.com/root
+$response = $client->request('GET', '/root');
