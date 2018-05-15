@@ -18,7 +18,7 @@ CREATE TABLE profile (
 CREATE TABLE trail (
 	trailId BINARY(16) NOT NULL,
 	trailAddress VARCHAR(255),
-	trailAscent INT,
+	trailAscent SMALLINT,
 	trailImage VARCHAR(255),
 	trailLat DECIMAL (12,9),
 	trailLength DECIMAL (6,3),
