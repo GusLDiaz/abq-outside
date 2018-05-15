@@ -7,6 +7,7 @@
  */
 
 namespace Edu\Cnm\AbqOutside\Test;
+use Edu\Cnm\AbqOutside\Profile;
 
 
 class ProfileTest extends AbqOutsideTest {
