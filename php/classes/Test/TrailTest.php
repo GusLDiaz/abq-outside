@@ -171,4 +171,34 @@ class TrailTest extends AbqOutsideTest {
 		$trail = Trail::getTrailByDistance($this->getPDO(), 040.717274011, 040.717274011, 7);
 		$this->assertCount(0, $trail);
 	}
+	/**
+	 * test grabbing all Trails
+	 **/
+	public function testGetAllValidTrails() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("trail");
+		// create a new Trail and insert to into mySQL
+		$trailId = generateUuidV4();
+		$trail = new Trail($trailId, $this->VALID_TRAILEXTERNALID, $this->VALID_TRAILADDRESS, $this->VALID_TRAILIMAGE, $this->VALID_TRAILNAME, $this->VALID_TRAILLOCATION, $this->VALID_TRAILSUMMARY, $this->VALID_TRAILASCENT, $this->VALID_TRAILRATING, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLATITUDE, $this->VALID_TRAILLONGITUDE);
+		$trail->insert($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Trail::getAllTrails($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("trail"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\AbqOutside\\Trail", $results);
+		// grab the result from the array and validate it
+		$pdoArt = $results[0];
+		$this->assertEquals($pdoTrail->getTrailId(), $trailId);
+		$this->assertEquals($pdoTrail->getTrailExternalId(), $this->VALID_TRAILEXTERNALID);
+		$this->assertEquals($pdoTrail->getTrailAddress(), $this->VALID_TRAILADDRESS);
+		$this->assertEquals($pdoTrail->getTrailImage(), $this->VALID_TRAILIMAGE);
+		$this->assertEquals($pdoTrail->getTrailName(), $this->VALID_TRAILNAME);
+		$this->assertEquals($pdoTrail->getTrailLocation(), $this->VALID_TRAILLOCATION);
+		$this->assertEquals($pdoTrail->getTrailSummary(), $this->VALID_TRAILSUMMARY);
+		$this->assertEquals($pdoTrail->getTrailAscent(), $this->VALID_TRAILASCENT);
+		$this->assertEquals($pdoTrail->getTrailRating(), $this->VALID_TRAILRATING);
+		$this->assertEquals($pdoTrail->getTrailLength(), $this->VALID_TRAILLENGTH);
+		$this->assertEquals($pdoTrail->getTrailLat(), $this->VALID_TRAILLAT);
+		$this->assertEquals($pdoTrail->getTrailLong(), $this->VALID_TRAILLONG);
+	}
 }
