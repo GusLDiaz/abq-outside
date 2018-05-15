@@ -6,7 +6,7 @@
  * Time: 12:45 PM
  */
 
-use Edu\Cnm\AbqOutside\Test;
+namespace Edu\Cnm\AbqOutside\Test;
 
 
 class ProfileTest extends AbqOutsideTest {
