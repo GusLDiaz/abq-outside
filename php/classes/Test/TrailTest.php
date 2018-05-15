@@ -133,4 +133,34 @@ class TrailTest extends AbqOutsideTest {
 		$this->assertNull($pdoTrail);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("trail"));
 	}
+	/**
+	 * test grabbing a Trail that does not exist
+	 **/
+	public function testGetInvalidTrailByTrailId() : void {
+		// grab a trail id that exceeds the maximum allowable trail id
+		$trail = Trail::getTrailByTrailId($this->getPDO(), generateUuidV4());
+		$this->assertNull($trail);
+	}
+	/**
+	 * test grabbing a Trail by trail distance
+	 **/
+	public function testGetValidTrailByDistance() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("trail");
+		// create a new Trail and insert to into mySQL
+		$trailId = generateUuidV4();
+		$trail = new Trail($trailId, $this->VALID_TRAILEXTERNALID, $this->VALID_TRAILADDRESS, $this->VALID_TRAILIMAGE, $this->VALID_TRAILNAME, $this->VALID_TRAILLOCATION, $this->VALID_TRAILSUMMARY, $this->VALID_TRAILASCENT, $this->VALID_TRAILRATING, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLATITUDE, $this->VALID_TRAILLONGITUDE);
+		$trail->insert($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Trail::getTrailByDistance($this->getPDO(), 48, 192, 100);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("trail"));
+		$this->assertCount(1, $results);
+		// enforce no other objects are bleeding into the test
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\AbqOutside\\Trail", $results);
+		// grab the result from the array and validate it
+		$pdoTrail = $results[0];
+		$this->assertEquals($pdoTrail->getTrailId(), $trailId);
+		$this->assertEquals($pdoTrail->getTrailLat(), $this->VALID_TRAILLAT);
+		$this->assertEquals($pdoTrail->getTrailLong(), $this->VALID_TRAILLONG);
+	}
 }
