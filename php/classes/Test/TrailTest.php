@@ -44,7 +44,7 @@ class TrailTest extends AbqOutsideTest {
 	 * latidude of this trail
 	 * @var float $VALID_TRAILLATITUDE
 	 **/
-	protected $VALID_TRAILLAT = 48;
+	protected $VALID_TRAILLAT =35.08455;
 	/**
 	 * length of this trail
 	 * @var float $VALID_TRAILLENGTH
@@ -59,7 +59,7 @@ class TrailTest extends AbqOutsideTest {
 	 * longitude of this trail
 	 * @var float $VALID_TRAILLONGITUDE
 	 **/
-	protected $VALID_TRAILLONG = 192;
+	protected $VALID_TRAILLONG = -106.6491;
 	/**
 	 * name of this trail
 	 * @var string $VALID_TRAILNAME
@@ -167,7 +167,7 @@ class TrailTest extends AbqOutsideTest {
 		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
 		$trail->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Trail::getTrailByDistance($this->getPDO(), 48, 192, 100);
+		$results = Trail::getTrailByDistance($this->getPDO(), 35.0855, -106.6491, 100);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("trail"));
 		$this->assertCount(1, $results);
 		// enforce no other objects are bleeding into the test
