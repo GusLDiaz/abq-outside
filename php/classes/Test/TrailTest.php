@@ -16,11 +16,6 @@ require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
  **/
 class TrailTest extends AbqOutsideTest {
 	/**
-	 * external id of this trail
-	 * @var string $VALID_TRAILEXTERNALID
-	 **/
-	protected $VALID_TRAILEXTERNALID = "313572";
-	/**
 	 * address of this trail
 	 * @var string $VALID_TRAILADDRESS
 	 **/
@@ -31,50 +26,55 @@ class TrailTest extends AbqOutsideTest {
 	 **/
 	protected $VALID_TRAILADDRESS2 = "this is still a valid address for this trail";
 	/**
-	 * trail image
-	 * @var string $VALID_TRAILIMAGE
-	 **/
-	protected $VALID_TRAILIMAGE = "https://i.ytimg.com/vi/pwFKqTGHbaU/maxresdefault.jpg";
-	/**
-	 * name of this trail
-	 * @var string $VALID_TRAILNAME
-	 **/
-	protected $VALID_TRAILNAME = "Variable Valley";
-	/**
-	 * location of this trail
-	 * @var string $VALID_TRAILLOCATION
-	 **/
-	protected $VALID_TRAILLOCATION = "Labyrinth of Loops";
-	/**
-	 * summary of this trail
-	 * @var string $VALID_TRAILSUMMARY
-	 **/
-	protected $VALID_TRAILSUMMARY = "The Variable Valley offers an insight into the natural resources of this region.";
-	/**
 	 * ascent of this Trail
 	 * @var int $VALID_TRAILASCENT
 	 **/
 	protected $VALID_TRAILASCENT = 40;
 	/**
-	 * rating of this Trail
-	 * @var int $VALID_TRAILRATING
+	 * external id of this trail
+	 * @var string $VALID_TRAILEXTERNALID
 	 **/
-	protected $VALID_TRAILRATING = 4;
+	protected $VALID_TRAILEXTERNALID = "313572";
 	/**
-	 * length of this trail
-	 * @var float $VALID_TRAILLENGTH
+	 * trail image
+	 * @var string $VALID_TRAILIMAGE
 	 **/
-	protected $VALID_TRAILLENGTH = 3.14;
+	protected $VALID_TRAILIMAGE = "https://i.ytimg.com/vi/pwFKqTGHbaU/maxresdefault.jpg";
 	/**
 	 * latidude of this trail
 	 * @var float $VALID_TRAILLATITUDE
 	 **/
 	protected $VALID_TRAILLAT = 48;
 	/**
+	 * length of this trail
+	 * @var float $VALID_TRAILLENGTH
+	 **/
+	protected $VALID_TRAILLENGTH = 3.14;
+	/**
+	 * location of this trail
+	 * @var string $VALID_TRAILLOCATION
+	 **/
+	protected $VALID_TRAILLOCATION = "Labyrinth of Loops";
+	/**
 	 * longitude of this trail
 	 * @var float $VALID_TRAILLONGITUDE
 	 **/
 	protected $VALID_TRAILLONG = 192;
+	/**
+	 * name of this trail
+	 * @var string $VALID_TRAILNAME
+	 **/
+	protected $VALID_TRAILNAME = "Variable Valley";
+	/**
+	 * rating of this Trail
+	 * @var float $VALID_TRAILRATING
+	 **/
+	protected $VALID_TRAILRATING = 4;
+	/**
+	 * summary of this trail
+	 * @var string $VALID_TRAILSUMMARY
+	 **/
+	protected $VALID_TRAILSUMMARY = "The Variable Valley offers an insight into the natural resources of this region.";
 	/**
 	 * test inserting a valid Trail and verify that the actual mySQL data matches
 	 **/
@@ -83,23 +83,23 @@ class TrailTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("trail");
 		// create a new Trail and insert to into mySQL
 		$trailId = generateUuidV4();
-		$trail = new Trail($trailId, $this->VALID_TRAILEXTERNALID, $this->VALID_TRAILADDRESS, $this->VALID_TRAILIMAGE, $this->VALID_TRAILNAME, $this->VALID_TRAILLOCATION, $this->VALID_TRAILSUMMARY, $this->VALID_TRAILASCENT, $this->VALID_TRAILRATING, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLATITUDE, $this->VALID_TRAILLONGITUDE);
+		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
 		$trail->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoTrail = Trail::getTrailByTrailId($this->getPDO(), $trail->getTrailId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("trail"));
 		$this->assertEquals($pdoTrail->getTrailId(), $trailId);
-		$this->assertEquals($pdoTrail->getTrailExternalId(), $this->VALID_TRAILEXTERNALID);
 		$this->assertEquals($pdoTrail->getTrailAddress(), $this->VALID_TRAILADDRESS);
-		$this->assertEquals($pdoTrail->getTrailImage(), $this->VALID_TRAILIMAGE);
-		$this->assertEquals($pdoTrail->getTrailName(), $this->VALID_TRAILNAME);
-		$this->assertEquals($pdoTrail->getTrailLocation(), $this->VALID_TRAILLOCATION);
-		$this->assertEquals($pdoTrail->getTrailSummary(), $this->VALID_TRAILSUMMARY);
 		$this->assertEquals($pdoTrail->getTrailAscent(), $this->VALID_TRAILASCENT);
-		$this->assertEquals($pdoTrail->getTrailRating(), $this->VALID_TRAILRATING);
-		$this->assertEquals($pdoTrail->getTrailLength(), $this->VALID_TRAILLENGTH);
+		$this->assertEquals($pdoTrail->getTrailExternalId(), $this->VALID_TRAILEXTERNALID);
+		$this->assertEquals($pdoTrail->getTrailImage(), $this->VALID_TRAILIMAGE);
 		$this->assertEquals($pdoTrail->getTrailLat(), $this->VALID_TRAILLAT);
+		$this->assertEquals($pdoTrail->getTrailLength(), $this->VALID_TRAILLENGTH);
+		$this->assertEquals($pdoTrail->getTrailLocation(), $this->VALID_TRAILLOCATION);
 		$this->assertEquals($pdoTrail->getTrailLong(), $this->VALID_TRAILLONG);
+		$this->assertEquals($pdoTrail->getTrailName(), $this->VALID_TRAILNAME);
+		$this->assertEquals($pdoTrail->getTrailSummary(), $this->VALID_TRAILSUMMARY);
+		$this->assertEquals($pdoTrail->getTrailRating(), $this->VALID_TRAILRATING);
 	}
 	/**
 	 * test inserting a Trail, editing it, and then updating it
@@ -109,7 +109,7 @@ class TrailTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("trail");
 		// create a new Trail and insert to into mySQL
 		$trailId = generateUuidV4();
-		$trail = new Trail($trailId, $this->VALID_TRAILEXTERNALID, $this->VALID_TRAILADDRESS, $this->VALID_TRAILIMAGE, $this->VALID_TRAILNAME, $this->VALID_TRAILLOCATION, $this->VALID_TRAILSUMMARY, $this->VALID_TRAILASCENT, $this->VALID_TRAILRATING, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLATITUDE, $this->VALID_TRAILLONGITUDE);
+		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
 		$trail->insert($this->getPDO());
 		// edit the Trail and update it in mySQL
 		$trail->setTrailAddress($this->VALID_TRAILADDRESS2);
@@ -119,16 +119,16 @@ class TrailTest extends AbqOutsideTest {
 		$this->assertEquals($pdoTrail->getTrailId(), $trailId);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("trail"));
 		$this->assertEquals($pdoTrail->getTrailAddress(), $this->VALID_TRAILADDRESS2);
+		$this->assertEquals($pdoTrail->getTrailAscent(), $this->VALID_TRAILASCENT);
 		$this->assertEquals($pdoTrail->getTrailExternalId(), $this->VALID_TRAILEXTERNALID);
 		$this->assertEquals($pdoTrail->getTrailImage(), $this->VALID_TRAILIMAGE);
-		$this->assertEquals($pdoTrail->getTrailName(), $this->VALID_TRAILNAME);
-		$this->assertEquals($pdoTrail->getTrailLocation(), $this->VALID_TRAILLOCATION);
-		$this->assertEquals($pdoTrail->getTrailSummary(), $this->VALID_TRAILSUMMARY);
-		$this->assertEquals($pdoTrail->getTrailAscent(), $this->VALID_TRAILASCENT);
-		$this->assertEquals($pdoTrail->getTrailRating(), $this->VALID_TRAILRATING);
-		$this->assertEquals($pdoTrail->getTrailLength(), $this->VALID_TRAILLENGTH);
 		$this->assertEquals($pdoTrail->getTrailLat(), $this->VALID_TRAILLAT);
+		$this->assertEquals($pdoTrail->getTrailLength(), $this->VALID_TRAILLENGTH);
+		$this->assertEquals($pdoTrail->getTrailLocation(), $this->VALID_TRAILLOCATION);
 		$this->assertEquals($pdoTrail->getTrailLong(), $this->VALID_TRAILLONG);
+		$this->assertEquals($pdoTrail->getTrailName(), $this->VALID_TRAILNAME);
+		$this->assertEquals($pdoTrail->getTrailSummary(), $this->VALID_TRAILSUMMARY);
+		$this->assertEquals($pdoTrail->getTrailRating(), $this->VALID_TRAILRATING);
 	}
 	/**
 	 * test creating a Trail and then deleting it
@@ -138,7 +138,7 @@ class TrailTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("trail");
 		// create a new Trail and insert to into mySQL
 		$trailId = generateUuidV4();
-		$trail = new Trail($trailId, $this->VALID_TRAILEXTERNALID, $this->VALID_TRAILADDRESS, $this->VALID_TRAILIMAGE, $this->VALID_TRAILNAME, $this->VALID_TRAILLOCATION, $this->VALID_TRAILSUMMARY, $this->VALID_TRAILASCENT, $this->VALID_TRAILRATING, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLATITUDE, $this->VALID_TRAILLONGITUDE);
+		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
 		$trail->insert($this->getPDO());
 		// delete the Trail from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("trail"));
@@ -164,7 +164,7 @@ class TrailTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("trail");
 		// create a new Trail and insert to into mySQL
 		$trailId = generateUuidV4();
-		$trail = new Trail($trailId, $this->VALID_TRAILEXTERNALID, $this->VALID_TRAILADDRESS, $this->VALID_TRAILIMAGE, $this->VALID_TRAILNAME, $this->VALID_TRAILLOCATION, $this->VALID_TRAILSUMMARY, $this->VALID_TRAILASCENT, $this->VALID_TRAILRATING, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLATITUDE, $this->VALID_TRAILLONGITUDE);
+		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
 		$trail->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Trail::getTrailByDistance($this->getPDO(), 48, 192, 100);
@@ -175,17 +175,17 @@ class TrailTest extends AbqOutsideTest {
 		// grab the result from the array and validate it
 		$pdoTrail = $results[0];
 		$this->assertEquals($pdoTrail->getTrailId(), $trailId);
-		$this->assertEquals($pdoTrail->getTrailExternalId(), $this->VALID_TRAILEXTERNALID);
 		$this->assertEquals($pdoTrail->getTrailAddress(), $this->VALID_TRAILADDRESS);
-		$this->assertEquals($pdoTrail->getTrailImage(), $this->VALID_TRAILIMAGE);
-		$this->assertEquals($pdoTrail->getTrailName(), $this->VALID_TRAILNAME);
-		$this->assertEquals($pdoTrail->getTrailLocation(), $this->VALID_TRAILLOCATION);
-		$this->assertEquals($pdoTrail->getTrailSummary(), $this->VALID_TRAILSUMMARY);
 		$this->assertEquals($pdoTrail->getTrailAscent(), $this->VALID_TRAILASCENT);
-		$this->assertEquals($pdoTrail->getTrailRating(), $this->VALID_TRAILRATING);
-		$this->assertEquals($pdoTrail->getTrailLength(), $this->VALID_TRAILLENGTH);
+		$this->assertEquals($pdoTrail->getTrailExternalId(), $this->VALID_TRAILEXTERNALID);
+		$this->assertEquals($pdoTrail->getTrailImage(), $this->VALID_TRAILIMAGE);
 		$this->assertEquals($pdoTrail->getTrailLat(), $this->VALID_TRAILLAT);
+		$this->assertEquals($pdoTrail->getTrailLength(), $this->VALID_TRAILLENGTH);
+		$this->assertEquals($pdoTrail->getTrailLocation(), $this->VALID_TRAILLOCATION);
 		$this->assertEquals($pdoTrail->getTrailLong(), $this->VALID_TRAILLONG);
+		$this->assertEquals($pdoTrail->getTrailName(), $this->VALID_TRAILNAME);
+		$this->assertEquals($pdoTrail->getTrailSummary(), $this->VALID_TRAILSUMMARY);
+		$this->assertEquals($pdoTrail->getTrailRating(), $this->VALID_TRAILRATING);
 	}
 	/**
 	 * test grabbing a Trail whose distance does not exist
@@ -203,7 +203,7 @@ class TrailTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("trail");
 		// create a new Trail and insert to into mySQL
 		$trailId = generateUuidV4();
-		$trail = new Trail($trailId, $this->VALID_TRAILEXTERNALID, $this->VALID_TRAILADDRESS, $this->VALID_TRAILIMAGE, $this->VALID_TRAILNAME, $this->VALID_TRAILLOCATION, $this->VALID_TRAILSUMMARY, $this->VALID_TRAILASCENT, $this->VALID_TRAILRATING, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLATITUDE, $this->VALID_TRAILLONGITUDE);
+		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
 		$trail->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Trail::getAllTrails($this->getPDO());
@@ -213,16 +213,16 @@ class TrailTest extends AbqOutsideTest {
 		// grab the result from the array and validate it
 		$pdoTrail = $results[0];
 		$this->assertEquals($pdoTrail->getTrailId(), $trailId);
-		$this->assertEquals($pdoTrail->getTrailExternalId(), $this->VALID_TRAILEXTERNALID);
 		$this->assertEquals($pdoTrail->getTrailAddress(), $this->VALID_TRAILADDRESS);
-		$this->assertEquals($pdoTrail->getTrailImage(), $this->VALID_TRAILIMAGE);
-		$this->assertEquals($pdoTrail->getTrailName(), $this->VALID_TRAILNAME);
-		$this->assertEquals($pdoTrail->getTrailLocation(), $this->VALID_TRAILLOCATION);
-		$this->assertEquals($pdoTrail->getTrailSummary(), $this->VALID_TRAILSUMMARY);
 		$this->assertEquals($pdoTrail->getTrailAscent(), $this->VALID_TRAILASCENT);
-		$this->assertEquals($pdoTrail->getTrailRating(), $this->VALID_TRAILRATING);
-		$this->assertEquals($pdoTrail->getTrailLength(), $this->VALID_TRAILLENGTH);
+		$this->assertEquals($pdoTrail->getTrailExternalId(), $this->VALID_TRAILEXTERNALID);
+		$this->assertEquals($pdoTrail->getTrailImage(), $this->VALID_TRAILIMAGE);
 		$this->assertEquals($pdoTrail->getTrailLat(), $this->VALID_TRAILLAT);
+		$this->assertEquals($pdoTrail->getTrailLength(), $this->VALID_TRAILLENGTH);
+		$this->assertEquals($pdoTrail->getTrailLocation(), $this->VALID_TRAILLOCATION);
 		$this->assertEquals($pdoTrail->getTrailLong(), $this->VALID_TRAILLONG);
+		$this->assertEquals($pdoTrail->getTrailName(), $this->VALID_TRAILNAME);
+		$this->assertEquals($pdoTrail->getTrailSummary(), $this->VALID_TRAILSUMMARY);
+		$this->assertEquals($pdoTrail->getTrailRating(), $this->VALID_TRAILRATING);
 	}
 }
