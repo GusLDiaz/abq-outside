@@ -139,35 +139,6 @@ class Trail implements \JsonSerializable {
 		$this->trailId = $uuid;
 	}
 	/**
-	 * accessor method for trail external id
-	 *
-	 * @return string proper trail external id
-	 **/
-	public function getTrailExternalId(): string {
-		return($this->trailExternalId);
-	}
-	/**
-	 * mutator method for trail external id
-	 *
-	 * @param string $newTrailExternalId new value of trail external id
-	 * @throws \RangeException if $newTrailExternalId is not positive
-	 * @throws \TypeError if $newTrailExternalId is not a uuid or string
-	 **/
-	public function setTrailExternalId(string $newTrailExternalId) : void {
-		// verify the external Id is secure
-		$newTrailExternalId = trim($newTrailExternalId);
-		$newTrailExternalId = filter_var($newTrailExternalId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newTrailExternalId) === true) {
-			throw(new \InvalidArgumentException("trail external id is empty or insecure"));
-		}
-		// verify the external id will fit in the database
-		if(strlen($newTrailExternalId) > 200) {
-			throw(new \RangeException("trail external id too large"));
-		}
-		// store the address
-		$this->trailExternalId = $newTrailExternalId;
-	}
-	/**
 	 * accessor method for trail address
 	 *
 	 * @return string value of trail address
@@ -198,6 +169,56 @@ class Trail implements \JsonSerializable {
 		$this->trailAddress = $newTrailAddress;
 	}
 	/**
+	 *accessor method for trail ascent
+	 * @return int for trail ascent
+	 **/
+	public function getTrailAscent() : int {
+		return ($this->trailAscent);
+	}
+	/**
+	 * mutator method for trail ascent
+	 *
+	 * @param int $newTrailAscent new value of trail ascent
+	 * @throws \InvalidArgumentException if $newTrailAscent is not an int or insecure
+	 * @throws \RangeException if $newTrailAscent is > 255 characters
+	 * @throws \TypeError if $newTrailAscent is not an int
+	 **/
+	public function setTrailAscent(int $newTrailAscent) {
+		if($newTrailAscent < -32768 || $newTrailAscent > 32767) {
+			throw(new RangeException("Trail ascent not positive"));
+		}
+		$this->trailAscent = intval($newTrailAscent);
+	}
+	/**
+	 * accessor method for trail external id
+	 *
+	 * @return string proper trail external id
+	 **/
+	public function getTrailExternalId(): string {
+		return($this->trailExternalId);
+	}
+	/**
+	 * mutator method for trail external id
+	 *
+	 * @param string $newTrailExternalId new value of trail external id
+	 * @throws \RangeException if $newTrailExternalId is not positive
+	 * @throws \TypeError if $newTrailExternalId is not a uuid or string
+	 **/
+	public function setTrailExternalId(string $newTrailExternalId) : void {
+		// verify the external Id is secure
+		$newTrailExternalId = trim($newTrailExternalId);
+		$newTrailExternalId = filter_var($newTrailExternalId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newTrailExternalId) === true) {
+			throw(new \InvalidArgumentException("trail external id is empty or insecure"));
+		}
+		// verify the external id will fit in the database
+		if(strlen($newTrailExternalId) > 200) {
+			throw(new \RangeException("trail external id too large"));
+		}
+		// store the address
+		$this->trailExternalId = $newTrailExternalId;
+	}
+	/**
 	 * accessor method for trail image
 	 *
 	 * @return string value of trail image
@@ -226,6 +247,112 @@ class Trail implements \JsonSerializable {
 		}
 		// store the image
 		$this->trailImage = $newTrailImage;
+	}
+	/** accessor method for trail latitude
+	 *
+	 * @return float value of trail latitude
+	 **/
+	public function getTrailLat() : float {
+		return($this->trailLat);
+	}
+	/** mutator method for trail latitude
+	 *
+	 * @param float $newTrailLat new value of trail latitude
+	 * @throws \InvalidArgumentException if $newTrailLat is not a float or insecure
+	 * @throws \RangeException if $newTrailLat is not within -90 to 90
+	 * @throws \TypeError if $newTrailLat is not a float
+	 **/
+	public function setTrailLat(float $newTrailLat) : void {
+		// verify if the latitude exists
+		if(floatval($newTrailLat) > 90) {
+			throw(new \RangeException("trail latitude is not between -90 and 90"));
+		}
+		if (floatval($newTrailLat) < -90) {
+			throw(new \RangeException("trail latitude is not between -90 and 90"));
+		}
+		// store the latitude
+		$this->trailLat = $newTrailLat;
+	}
+	/** accessor method for trail length
+	 *
+	 * @return float value of trail length
+	 **/
+	public function getTrailLength() : float {
+		return($this->trailLength);
+	}
+	/** mutator method for trail length
+	 *
+	 * @param float $newTrailLength new value of trail length
+	 * @throws \InvalidArgumentException if $newTrailLength is not a float or insecure
+	 * @throws \RangeException if $newTrailLength is not within 1 - 25
+	 * @throws \TypeError if $newTrailLength is not a float
+	 **/
+	public function setTrailLength(float $newTrailLength) : void {
+		// verify if the length exists
+		if(floatval($newTrailLength) > 25) {
+			throw(new \RangeException("trail length is not between 1 and 25"));
+		}
+		if (floatval($newTrailLength) < 1) {
+			throw(new \RangeException("trail length is not between 1 and 25"));
+		}
+		// store the length
+		$this->trailLength = $newTrailLength;
+	}
+	/**
+	 * accessor method for trail location
+	 *
+	 * @return string value of trail location
+	 **/
+	public function getTrailLocation() : string {
+		return($this->trailLocation);
+	}
+	/**
+	 * mutator method for trail location
+	 *
+	 * @param string $newTrailLocation new value of trail location
+	 * @throws \InvalidArgumentException if $newTrailLocation is not a string or insecure
+	 * @throws \RangeException if $newTrailLocation is > 200 characters
+	 * @throws \TypeError if $newTrailLocation is not a string
+	 **/
+	public function setTrailLocation(string $newTrailLocation) : void {
+		// verify the trail location is secure
+		$newTrailLocation = trim($newTrailLocation);
+		$newTrailLocation = filter_var($newTrailLocation, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newTrailLocation) === true) {
+			throw(new \InvalidArgumentException("trail location is empty or insecure"));
+		}
+		// verify if the location will fit in the database
+		if(strlen($newTrailLocation) > 200) {
+			throw(new \RangeException("trail location too large"));
+		}
+		// store the trail location
+		$this->trailLocation = $newTrailLocation;
+	}
+	/** accessor method for trail longitude
+	 *
+	 *
+	 * @return float value of trail longitude
+	 **/
+	public function getTrailLong() : float {
+		return($this->trailLong);
+	}
+	/** mutator method for trail longitude
+	 *
+	 * @param float $newTrailLong new value of trail longitude
+	 * @throws \InvalidArgumentException if $newTrailLong is not a float or insecure
+	 * @throws \RangeException if $newTrailLong is not within -180 to 180
+	 * @throws \TypeError if $newTrailLong is not a float
+	 **/
+	public function setTrailLong(float $newTrailLong) : void {
+		// verify the longitude exists
+		if(floatval($newTrailLong) > 180) {
+			throw(new \RangeException("trail longitude is not between -180 and 180"));
+		}
+		if (floatval($newTrailLong) < -180) {
+			throw(new \RangeException("trail longitude is not between -180 and 180"));
+		}
+		// store the longitude
+		$this->trailLong = $newTrailLong;
 	}
 	/**
 	 * accessor method for trail name
@@ -258,34 +385,30 @@ class Trail implements \JsonSerializable {
 		$this->trailName = $newTrailName;
 	}
 	/**
-	 * accessor method for trail location
-	 *
-	 * @return string value of trail location
+	 *accessor method for trail rating
+	 * @return float for trail rating
 	 **/
-	public function getTrailLocation() : string {
-		return($this->trailLocation);
+	public function getTrailRating() : float {
+		return ($this->trailRating);
 	}
 	/**
-	 * mutator method for trail location
+	 * mutator method for trail rating
 	 *
-	 * @param string $newTrailLocation new value of trail location
-	 * @throws \InvalidArgumentException if $newTrailLocation is not a string or insecure
-	 * @throws \RangeException if $newTrailLocation is > 200 characters
-	 * @throws \TypeError if $newTrailLocation is not a string
+	 * @param float $newTrailRating new value of trail rating
+	 * @throws \InvalidArgumentException if $newTrailRating is not an float or insecure
+	 * @throws \RangeException if $newTrailLong is not within -180 to 180
+	 * @throws \TypeError if $newTrailRating is not a float
 	 **/
-	public function setTrailLocation(string $newTrailLocation) : void {
-		// verify the trail location is secure
-		$newTrailLocation = trim($newTrailLocation);
-		$newTrailLocation = filter_var($newTrailLocation, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newTrailLocation) === true) {
-			throw(new \InvalidArgumentException("trail location is empty or insecure"));
+	public function setTrailRating(float $newTrailRating) {
+		// verify the ratings exists
+		if(floatval($newTrailRating) > 5) {
+			throw(new \RangeException("trail rating is not between -180 and 180"));
 		}
-		// verify if the location will fit in the database
-		if(strlen($newTrailLocation) > 200) {
-			throw(new \RangeException("trail location too large"));
+		if (floatval($newTrailRating) < 0) {
+			throw(new \RangeException("trail rating is not between -180 and 180"));
 		}
-		// store the trail location
-		$this->trailLocation = $newTrailLocation;
+		// store the rating
+		$this->trailRating = $newTrailRating;
 	}
 	/**
 	 * accessor method for trail summary
@@ -316,124 +439,6 @@ class Trail implements \JsonSerializable {
 		}
 		// store the summary
 		$this->trailSummary = $newTrailSummary;
-	}
-	/**
-	 *accessor method for trail ascent
-	 * @return int for trail ascent
-	 **/
-	public function getTrailAscent() : int {
-		return ($this->trailAscent);
-	}
-	/**
-	 * mutator method for trail ascent
-	 *
-	 * @param int $newTrailAscent new value of trail ascent
-	 * @throws \InvalidArgumentException if $newTrailAscent is not an int or insecure
-	 * @throws \RangeException if $newTrailAscent is > 255 characters
-	 * @throws \TypeError if $newTrailAscent is not an int
-	 **/
-	public function setTrailAscent(int $newTrailAscent) {
-		if($newTrailAscent < -32768 || $newTrailAscent > 32767) {
-			throw(new RangeException("Trail ascent not positive"));
-		}
-		$this->trailAscent = intval($newTrailAscent);
-	}
-	/**
-	 *accessor method for trail rating
-	 * @return int for trail rating
-	 **/
-	public function getTrailRating() : int {
-		return ($this->trailRating);
-	}
-	/**
-	 * mutator method for trail rating
-	 *
-	 * @param int $newTrailRating new value of trail rating
-	 * @throws \InvalidArgumentException if $newTrailRating is not an int or insecure
-	 * @throws \RangeException if $newTrailRating is > 255 characters
-	 * @throws \TypeError if $newTrailRating is not an int
-	 **/
-	public function setTrailRating(int $newTrailRating) {
-		if($newTrailRating < 0 || $newTrailRating > 5) {
-			throw(new RangeException("Trail rating not positive"));
-		}
-		$this->trailRating = intval($newTrailRating);
-	}
-	/** accessor method for trail length
-	 *
-	 * @return float value of trail length
-	 **/
-	public function getTrailLength() : float {
-		return($this->trailLength);
-	}
-	/** mutator method for trail length
-	 *
-	 * @param float $newTrailLength new value of trail length
-	 * @throws \InvalidArgumentException if $newTrailLength is not a float or insecure
-	 * @throws \RangeException if $newTrailLength is not within 1 - 25
-	 * @throws \TypeError if $newTrailLength is not a float
-	 **/
-	public function setTrailLength(float $newTrailLength) : void {
-		// verify if the length exists
-		if(floatval($newTrailLength) > 25) {
-			throw(new \RangeException("trail length is not between 1 and 25"));
-		}
-		if (floatval($newTrailLength) < 1) {
-			throw(new \RangeException("trail length is not between 1 and 25"));
-		}
-		// store the length
-		$this->trailLength = $newTrailLength;
-	}
-	/** accessor method for trail latitude
-	 *
-	 * @return float value of trail latitude
-	 **/
-	public function getTrailLat() : float {
-		return($this->trailLat);
-	}
-	/** mutator method for trail latitude
-	 *
-	 * @param float $newTrailLat new value of trail latitude
-	 * @throws \InvalidArgumentException if $newTrailLat is not a float or insecure
-	 * @throws \RangeException if $newTrailLat is not within -90 to 90
-	 * @throws \TypeError if $newTrailLat is not a float
-	 **/
-	public function setTrailLat(float $newTrailLat) : void {
-		// verify if the latitude exists
-		if(floatval($newTrailLat) > 90) {
-			throw(new \RangeException("trail latitude is not between -90 and 90"));
-		}
-		if (floatval($newTrailLat) < -90) {
-			throw(new \RangeException("trail latitude is not between -90 and 90"));
-		}
-		// store the latitude
-		$this->trailLat = $newTrailLat;
-	}
-	/** accessor method for trail longitude
-	 *
-	 *
-	 * @return float value of trail longitude
-	 **/
-	public function getTrailLong() : float {
-		return($this->trailLong);
-	}
-	/** mutator method for trail longitude
-	 *
-	 * @param float $newTrailLong new value of trail longitude
-	 * @throws \InvalidArgumentException if $newTrailLong is not a float or insecure
-	 * @throws \RangeException if $newTrailLong is not within -180 to 180
-	 * @throws \TypeError if $newTrailLong is not a float
-	 **/
-	public function setTrailLong(float $newTrailLong) : void {
-		// verify the longitude exists
-		if(floatval($newTrailLong) > 180) {
-			throw(new \RangeException("trail longitude is not between -180 and 180"));
-		}
-		if (floatval($newTrailLong) < -180) {
-			throw(new \RangeException("trail longitude is not between -180 and 180"));
-		}
-		// store the longitude
-		$this->trailLong = $newTrailLong;
 	}
 	/**
 	 * inserts this Trail into mySQL
