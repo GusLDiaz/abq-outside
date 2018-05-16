@@ -1,14 +1,15 @@
 <phpunit>
 	<testsuites>
 		<testsuite name="Abq Outside">
+<<<<<<< HEAD
 			<file>CommentTest.php</file>
 			<!--<file>ProfileTest.php</file>-->
 			<!--<file>TrailTest.php</file>-->
+=======
+			<!--<file>CommentTest.php</file>
+			<file>ProfileTest.php</file>-->
+			<file>TrailTest.php</file>
+>>>>>>> Organized attributes on alfabetical order https://app.asana.com/0/660901941582663/663621423549618
 		</testsuite>
 	</testsuites>
-	<filter>
-		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">..</directory>
-		</whitelist>
-	</filter>
 </phpunit>

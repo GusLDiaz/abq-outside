@@ -19,14 +19,15 @@ CREATE TABLE trail (
 	trailId BINARY(16) NOT NULL,
 	trailAddress VARCHAR(255),
 	trailAscent SMALLINT,
+	trailExternalId CHAR(7) NOT NULL,
 	trailImage VARCHAR(255),
 	trailLat DECIMAL (12,9),
 	trailLength DECIMAL (6,3),
+	trailLocation VARCHAR(255),
 	trailLong DECIMAL (12,9),
 	trailName VARCHAR(128),
-	trailRating TINYINT UNSIGNED,
+	trailRating DECIMAL (3,1),
 	trailSummary VARCHAR(128),
-	trailExternalId CHAR(7) NOT NULL,
 	PRIMARY KEY(trailId)
 );
 
