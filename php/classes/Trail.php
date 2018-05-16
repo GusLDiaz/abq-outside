@@ -17,94 +17,95 @@ class Trail implements \JsonSerializable {
 	 **/
 	protected $trailId;
 	/**
-	 * external id (from API)for this Trail
-	 * @var string $trailExternalId
-	 **/
-	protected $trailExternalId;
-	/**
 	 * physical address for this Trail
 	 * @var string $trailAddress
 	 **/
 	protected $trailAddress;
-	/**
-	 * image of this Trail
-	 * @var string $trailImage
-	 **/
-	protected $trailImage;
-	/**
-	 * name of this Trail
-	 * @var string $trailName
-	 **/
-	protected $trailName;
-	/**
-	 * detailed description of this Trail location
-	 * @var string $trailLocation
-	 **/
-	protected $trailLocation;
-	/**
-	 * summary of this Trail
-	 * @var string $trailSummary
-	 **/
-	protected $trailSummary;
 	/**
 	 * ascent of this Trail
 	 * @var int $trailAscent
 	 **/
 	protected $trailAscent;
 	/**
-	 * rating of this Trail
-	 * @var int $trailRating
+	 * external id (from API)for this Trail
+	 * @var string $trailExternalId
 	 **/
-	protected $trailRating;
+	protected $trailExternalId;
+
 	/**
-	 * length of this Trail
-	 * @var float $trailLength;
+	 * image of this Trail
+	 * @var string $trailImage
 	 **/
-	protected $trailLength;
+	protected $trailImage;
 	/**
 	 * latitude of this Trail
 	 * @var float $trailLat;
 	 **/
 	protected $trailLat;
 	/**
+	 * length of this Trail
+	 * @var float $trailLength;
+	 **/
+	protected $trailLength;
+	/**
+	 * detailed description of this Trail location
+	 * @var string $trailLocation
+	 **/
+	protected $trailLocation;
+	/**
 	 * longitude of this Trail
 	 * @var float $trailLong;
 	 **/
 	protected $trailLong;
 	/**
+	 * name of this Trail
+	 * @var string $trailName
+	 **/
+	protected $trailName;
+	/**
+	 * rating of this Trail
+	 * @var float $trailRating
+	 **/
+	protected $trailRating;
+	/**
+	 * summary of this Trail
+	 * @var string $trailSummary
+	 **/
+	protected $trailSummary;
+	/**
 	 * constructor for this Trail
 	 *
 	 * @param string|UUID $newTrailId id of this Trail
-	 * @param string $newTrailExternalId id of this Trail
 	 * @param string $newTrailAddress address of this Trail
-	 * @param string $newTrailImage image of this Trail
-	 * @param string $newTrailName name of this Trail
-	 * @param string $newTrailLocation location of this trail
-	 * @param string $newTrailSummary summary of this trail
 	 * @param int $newTrailAscent int containing trail ascent
-	 * @param int $newTrailRating int containing trail rating
-	 * @param float $newTrailLength length of this trail
+	 * @param string $newTrailExternalId id of this Trail
+	 * @param string $newTrailImage image of this Trail
 	 * @param float $newTrailLat latitude of this trail
+	 * @param float $newTrailLength length of this trail
+	 * @param string $newTrailLocation location of this trail
 	 * @param float $newTrailLong longitude of this trail
+	 * @param string $newTrailName name of this Trail
+	 * @param float $newTrailRating int containing trail rating
+	 * @param string $newTrailSummary summary of this trail
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct($newTrailId, string $newTrailExternalId, string $newTrailAddress, string $newTrailImage, string $newTrailName, string $newTrailLocation, string $newTrailSummary, int $newTrailAscent, int $newTrailRating, float $newTrailLength, float $newTrailLat, float $newTrailLong) {
+	public function __construct($newTrailId, string $newTrailAddress, int $newTrailAscent, string $newTrailExternalId, string $newTrailImage, float $newTrailLat, float $newTrailLength, string $newTrailLocation, float $newTrailLong, string $newTrailName, float $newTrailRating, string $newTrailSummary) {
 		try {
 			$this->setTrailId($newTrailId);
-			$this->setTrailExternalId($newTrailExternalId);
 			$this->setTrailAddress($newTrailAddress);
-			$this->setTrailImage($newTrailImage);
-			$this->setTrailName($newTrailName);
-			$this->setTrailLocation($newTrailLocation);
-			$this->setTrailSummary($newTrailSummary);
 			$this->setTrailAscent($newTrailAscent);
-			$this->setTrailRating($newTrailRating);
-			$this->setTrailLength($newTrailLength);
+			$this->setTrailExternalId($newTrailExternalId);
+			$this->setTrailImage($newTrailImage);
 			$this->setTrailLat($newTrailLat);
+			$this->setTrailLength($newTrailLength);
+			$this->setTrailLocation($newTrailLocation);
 			$this->setTrailLong($newTrailLong);
+			$this->setTrailName($newTrailName);
+			$this->setTrailRating($newTrailRating);
+			$this->setTrailSummary($newTrailSummary);
 		}
 			//determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
