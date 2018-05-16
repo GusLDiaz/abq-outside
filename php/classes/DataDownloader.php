@@ -52,27 +52,43 @@ class DataDownloader {
 		$trailsX = self::readDataJson($urlG);
 		//var_dump($trailsX);
 //		$pdo = getEncryptedSqlConnection("/etc/apache2/capstone-mysql/outside.ini");
-
+		$imgCount=0;
+		$sumCount=0;
+		$trailCount=0;
 		foreach($trailsX as $value) {
 			//var_dump($value);
 			$trailId = generateUuidV4();
 			$trailExternalId = $value->id;
 //			//$trailAddress = $value->attributes->ADDRESS;
 			$trailAddress = "outdoors";
-//			if isEmpty($value->imgMedium)
 			$trailImage = $value->imgMedium;
+			if (empty($value->imgMedium)=== true) {
+			//if (empty($trailImage)===true){
+				$trailImage = "needs an image";
+			$imgCount = $imgCount + 1;
+			}
+
 			$trailName = $value->name;
 			$trailLocation = $value->location;
 			$trailLat = (float)$value->latitude;
 			$trailLong = (float)$value->longitude;
 			$trailLength = (float)$value->length;
 			$trailSummary = $value->summary;
+			if ((empty($trailSummary)||$trailSummary ==="Needs Adoption" )===true){
+				$trailSummary = "needs description";
+				$sumCount = $sumCount + 1;
+			}
 			$trailAscent = (int)$value->ascent;
 			$trailRating = (float)$value->stars;
+			$trailCount = $trailCount + 1;
 			try {
 			$trail = new Trail($trailId, $trailAddress, $trailAscent, $trailExternalId, $trailImage, $trailLat, $trailLength, $trailLocation, $trailLong, $trailName, $trailRating, $trailSummary);
+
 			var_dump($trail);
-//				$trail->insert($pdo);
+			var_dump($imgCount);
+			var_dump($sumCount);
+			var_dump($trailCount);
+			//$trail->insert($pdo);
 			} catch(\TypeError $typeError) {
 				echo("Gus");
 			}
@@ -88,7 +104,7 @@ class DataDownloader {
 		try {
 			//file-get-contents returns file in string context
 			if(($jsonData = file_get_contents($url, null, $context)) === false) {
-				throw(new \RuntimeException("cannot connect to city server"));
+				throw(new \RuntimeException("url doesn't produce results"));
 			}
 			//decode the Json file
 			$jsonConverted = json_decode($jsonData);
