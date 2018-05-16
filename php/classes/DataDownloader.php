@@ -49,8 +49,10 @@ class DataDownloader {
 //		} catch
 //		}
 		$features = self::readDataJson($urlG);
-		foreach($features as $value)
-			echo $value;
+		var_dump($features);
+		$pdo = getConnection("/etc/apache2/capstone-mysql/outside.ini");
+		foreach($features as $value) {}
+			var_dump($value);
 			$trailId = generateUuidV4();
 			$trailExternalId = $value->id;
 		//$trailAddress = $value->attributes->ADDRESS;
@@ -64,12 +66,12 @@ class DataDownloader {
 			$trailSummary = $value->summary;
 			$trailAscent = $value->ascent;
 			$trailRating = $value->stars;
-//		try {
-//			$trail = new Trail($trailId, $trailExternalId, $trailAddress, $trailImage, $trailName, $trailLocation, $trailSummary, $trailAscent, $trailRating, $trailLength, $trailLat, $trailLong);
-//			$trail->insert($pdo);
-//		} catch(\TypeError $typeError) {
-//			//echo("Gus");
-//		}
+		try {
+		$trail = new Trail($trailId, $trailExternalId, $trailAddress, $trailImage, $trailName, $trailLocation, $trailSummary, $trailAscent, $trailRating, $trailLength, $trailLat, $trailLong);
+			$trail->insert($pdo);
+		} catch(\TypeError $typeError) {
+			//echo("Gus");
+		}
 	}
 
 	/** @param $url
@@ -94,8 +96,10 @@ class DataDownloader {
 		}
 		return ($features);
 	}
-
 }
+
+
+
 
 //$client = new GuzzleHttp\Client{
 //['base_uri' => 'https://www.hikingproject.com/data/']
@@ -177,12 +181,4 @@ class DataDownloader {
 //			} catch(\TypeError $typeError) {
 //				echo("Gus");
 //			}
-//?>
-
-
-// Create a client with a base URI
-$client = new GuzzleHttp\Client(['base_uri' => 'https://foo.com/api/']);
-// Send a request to https://foo.com/api/test
-$response = $client->request('GET', 'test');
-// Send a request to https://foo.com/root
-$response = $client->request('GET', '/root');
+//
