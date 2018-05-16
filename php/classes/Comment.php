@@ -76,44 +76,6 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for comment id
-	 *
-	 * @return Uuid value of comment id
-	 **/
-	public function getCommentId(): Uuid {
-		return ($this->commentId);
-	}
-
-	/**
-	 * mutator method for comment id
-	 *
-	 * @param Uuid|string $newCommentId new value of comment id
-	 * @throws \RangeException if $newCommentId is not positive
-	 * @throws \TypeError if $newCommentId is not a uuid or string
-	 **/
-	public function setCommentId($newCommentId): void {
-		try {
-			$uuid = self::validateUuid($newCommentId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-
-		// convert and store the comment id
-		$this->commentId = $uuid;
-	}
-
-	/**
-	 * accessor method for comment profile id
-	 *
-	 * @return Uuid value of comment profile
-	 **/
-	public function getCommentProfilId(): Uuid {
-		return ($this->commentProfileId);
-	}
-
-
-	/**
 	 * mutator method for comment profile id
 	 *
 	 * @param Uuid|string $newCommentProfileId new value of comment profile id
@@ -130,157 +92,6 @@ class Comment implements \JsonSerializable {
 
 		// convert and store the comment profile id
 		$this->commentProfileId = $uuid;
-	}
-
-	/**
-	 * accessor method for comment trail id
-	 *
-	 * @return String value of comment trail id
-	 **/
-	public function getCommentTrailId(): String {
-		return ($this->commentTrailId);
-	}
-
-	/**
-	 * mutator method for comment trail id
-	 *
-	 * @param string $newCommentTrailId new value of comment trail id
-	 * @throws \RangeException if $newCommentTrailId is not positive
-	 * @throws \TypeError if $newCommentTrailId is not an integer
-	 **/
-	public function setCommentTrailId($newCommentTrailId): void {
-		try {
-			$string = self::validateString($newCommentTrailId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-
-		// convert and store the comment trail id
-		$this->commentTrailId = $string;
-	}
-
-	/**
-	 * accessor method for comment content
-	 *
-	 * @return string value of comment content
-	 **/
-	public function getCommentContent(): string {
-		return ($this->commentContent);
-	}
-
-	/**
-	 * mutator method for comment content
-	 *
-	 * @param string $newCommentContent new value of comment content
-	 * @throws \InvalidArgumentException if $newCommentContent is not a string or insecure
-	 * @throws \RangeException if $newCommentContent is > 140 characters
-	 * @throws \TypeError if $newCommentContent is not a string
-	 **/
-	public function setCommentContent(string $newCommentContent): void {
-		// verify the comment content is secure
-		$newCommentContent = trim($newCommentContent);
-		$newCommentContent = filter_var($newCommentContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newCommentContent) === true) {
-			throw(new \InvalidArgumentException("comment content is empty or insecure"));
-		}
-
-		// verify the comment content id will fit in the database
-		if(strlen($newCommentContent) > 256) {
-			throw(new \RangeException("comment content too large"));
-		}
-
-		// store the comment content
-		$this->CommentContent = $newCommentContent;
-	}
-
-	/**
-	 * accessor method for comment Timestap
-	 *
-	 * @return \DateTime value of comment timestamp
-	 **/
-	public function getCommentTimestamp(): \DateTime {
-		return ($this->commentTimestamp);
-	}
-
-	/**
-	 * mutator method for comment timestamp
-	 *
-	 * @param \DateTime|string|null $newCommentTimestamp content date time as a DateTime object or string (or null to load the current time)
-	 * @throws \InvalidArgumentException if $newCommentTimestamp is not a valid object or string
-	 * @throws \RangeException if $newCommentTimestamp is a date that does not exist
-	 **/
-	public function setCommentTimestamp($newCommentTimestamp = null): void {
-		// base case: if the date is null, use the current date and time
-		if($newCommentTimestamp === null) {
-			$this->getCommentTimestamp = new \DateTime();
-			return;
-		}
-
-		// store the comment timestamp using the ValidateDate trait
-		try {
-			$newCommentTimestamp = self::validateDateTime($newCommentTimestamp);
-		} catch(\InvalidArgumentException | \RangeException $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-		$this->commentTimestamp = $newCommentTimestamp;
-	}
-
-	/**
-	 * inserts this Comment into mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function insert(\PDO $pdo): void {
-
-		// create query template
-		$query = "INSERT INTO comment(commentId,commentProfileId, commentTrailId, commentContent, commentTimestamp) VALUES(:commentId, :commentProfileId, :commentTrailId, :commentContent, :commentTimestamp)";
-		$statement = $pdo->prepare($query);
-
-		// bind the member variables to the place holders in the template
-		$formattedDate = $this->commentTimestamp->format("Y-m-d H:i:s.u");
-		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
-		$statement->execute($parameters);
-	}
-
-	/**
-	 * deletes this Comment from mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function delete(\PDO $pdo): void {
-
-		// create query template
-		$query = "DELETE FROM comment WHERE commentId = :commentId";
-		$statement = $pdo->prepare($query);
-
-		// bind the member variables to the place holder in the template
-		$parameters = ["commentId" => $this->commentId->getBytes()];
-		$statement->execute($parameters);
-	}
-
-	/**
-	 * updates this Comment in mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function update(\PDO $pdo): void {
-
-		// create query template
-		$query = "UPDATE comment SET commentId = :commentId, commentProfileId = :commentProfileId, commentTrailId = :commentTrailId, commentContent = :commentContent, commentTimestamp = :commentTimestamp WHERE commentId = :commentId";
-		$statement = $pdo->prepare($query);
-
-
-		$formattedDate = $this->commentTimestamp->format("Y-m-d H:i:s.u");
-		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
-		$statement->execute($parameters);
 	}
 
 	/**
@@ -498,6 +309,194 @@ class Comment implements \JsonSerializable {
 			}
 		}
 		return ($comments);
+	}
+
+	/**
+	 * accessor method for comment id
+	 *
+	 * @return Uuid value of comment id
+	 **/
+	public function getCommentId(): Uuid {
+		return ($this->commentId);
+	}
+
+	/**
+	 * mutator method for comment id
+	 *
+	 * @param Uuid|string $newCommentId new value of comment id
+	 * @throws \RangeException if $newCommentId is not positive
+	 * @throws \TypeError if $newCommentId is not a uuid or string
+	 **/
+	public function setCommentId($newCommentId): void {
+		try {
+			$uuid = self::validateUuid($newCommentId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		// convert and store the comment id
+		$this->commentId = $uuid;
+	}
+
+	/**
+	 * accessor method for comment profile id
+	 *
+	 * @return Uuid value of comment profile
+	 **/
+	public function getCommentProfilId(): Uuid {
+		return ($this->commentProfileId);
+	}
+
+	/**
+	 * accessor method for comment trail id
+	 *
+	 * @return String value of comment trail id
+	 **/
+	public function getCommentTrailId(): String {
+		return ($this->commentTrailId);
+	}
+
+	/**
+	 * mutator method for comment trail id
+	 *
+	 * @param string $newCommentTrailId new value of comment trail id
+	 * @throws \RangeException if $newCommentTrailId is not positive
+	 * @throws \TypeError if $newCommentTrailId is not an integer
+	 **/
+	public function setCommentTrailId($newCommentTrailId): void {
+		try {
+			$string = self::validateString($newCommentTrailId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		// convert and store the comment trail id
+		$this->commentTrailId = $string;
+	}
+
+	/**
+	 * accessor method for comment content
+	 *
+	 * @return string value of comment content
+	 **/
+	public function getCommentContent(): string {
+		return ($this->commentContent);
+	}
+
+	/**
+	 * mutator method for comment content
+	 *
+	 * @param string $newCommentContent new value of comment content
+	 * @throws \InvalidArgumentException if $newCommentContent is not a string or insecure
+	 * @throws \RangeException if $newCommentContent is > 140 characters
+	 * @throws \TypeError if $newCommentContent is not a string
+	 **/
+	public function setCommentContent(string $newCommentContent): void {
+		// verify the comment content is secure
+		$newCommentContent = trim($newCommentContent);
+		$newCommentContent = filter_var($newCommentContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newCommentContent) === true) {
+			throw(new \InvalidArgumentException("comment content is empty or insecure"));
+		}
+
+		// verify the comment content id will fit in the database
+		if(strlen($newCommentContent) > 256) {
+			throw(new \RangeException("comment content too large"));
+		}
+
+		// store the comment content
+		$this->CommentContent = $newCommentContent;
+	}
+
+	/**
+	 * accessor method for comment Timestap
+	 *
+	 * @return \DateTime value of comment timestamp
+	 **/
+	public function getCommentTimestamp(): \DateTime {
+		return ($this->commentTimestamp);
+	}
+
+	/**
+	 * mutator method for comment timestamp
+	 *
+	 * @param \DateTime|string|null $newCommentTimestamp content date time as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newCommentTimestamp is not a valid object or string
+	 * @throws \RangeException if $newCommentTimestamp is a date that does not exist
+	 **/
+	public function setCommentTimestamp($newCommentTimestamp = null): void {
+		// base case: if the date is null, use the current date and time
+		if($newCommentTimestamp === null) {
+			$this->getCommentTimestamp = new \DateTime();
+			return;
+		}
+
+		// store the comment timestamp using the ValidateDate trait
+		try {
+			$newCommentTimestamp = self::validateDateTime($newCommentTimestamp);
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->commentTimestamp = $newCommentTimestamp;
+	}
+
+	/**
+	 * inserts this Comment into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo): void {
+
+		// create query template
+		$query = "INSERT INTO comment(commentId,commentProfileId, commentTrailId, commentContent, commentTimestamp) VALUES(:commentId, :commentProfileId, :commentTrailId, :commentContent, :commentTimestamp)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$formattedDate = $this->commentTimestamp->format("Y-m-d H:i:s.u");
+		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * deletes this Comment from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo): void {
+
+		// create query template
+		$query = "DELETE FROM comment WHERE commentId = :commentId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["commentId" => $this->commentId->getBytes()];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this Comment in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo): void {
+
+		// create query template
+		$query = "UPDATE comment SET commentId = :commentId, commentProfileId = :commentProfileId, commentTrailId = :commentTrailId, commentContent = :commentContent, commentTimestamp = :commentTimestamp WHERE commentId = :commentId";
+		$statement = $pdo->prepare($query);
+
+
+		$formattedDate = $this->commentTimestamp->format("Y-m-d H:i:s.u");
+		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
+		$statement->execute($parameters);
 	}
 
 	/**
