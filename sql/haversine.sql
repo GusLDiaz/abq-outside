@@ -1,3 +1,4 @@
+ALTER DATABASE outside CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- drop the procedure if already defined
 DROP FUNCTION IF EXISTS haversine;
