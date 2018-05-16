@@ -19,7 +19,7 @@ class ProfileTest extends AbqOutsideTest {
 	 * valid email to use
 	 * @var string $VALID_PROFILE_EMAIL
 	 **/
-	protected $VALID_PROFILE_EMAIL = "test@phpunit.de";
+	protected $VALID_PROFILE_EMAIL = "blabla@gmail.com";
 	/**
 	 * valid image url for OAUTH
 	 * @var string $VALID_PROFILE_IMAGE_URL
@@ -74,7 +74,9 @@ class ProfileTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("profile");
 		// create a new Profile and insert to into mySQL
 		$profileId = generateUuidV4();
-		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);		$profile->insert($this->getPDO());
+		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);
+		$profile->insert($this->getPDO());
+		$profile->setProfileUsername($this->VALID_PROFILE_USERNAME2);
 		// edit the Profile and update it in mySQL
 		$profile->update($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -84,7 +86,7 @@ class ProfileTest extends AbqOutsideTest {
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
 		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_PROFILE_IMAGE_URL);
 		$this->assertEquals($pdoProfile->getProfileRefreshToken(), $this->VALID_PROFILE_REFRESH_TOKEN);
-		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_PROFILE_USERNAME);
+		$this->assertEquals($pdoProfile->getProfileUsername(), $this->VALID_PROFILE_USERNAME2);
 	}
 	/**
 	 * test creating a Profile and then deleting it
@@ -93,7 +95,8 @@ class ProfileTest extends AbqOutsideTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
-		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);		$profile->insert($this->getPDO());
+		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);
+		$profile->insert($this->getPDO());
 		// delete the Profile from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$profile->delete($this->getPDO());
@@ -109,7 +112,8 @@ class ProfileTest extends AbqOutsideTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
-		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);		$profile->insert($this->getPDO());
+		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);
+		$profile->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
@@ -135,7 +139,8 @@ class ProfileTest extends AbqOutsideTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
-		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);		$profile->insert($this->getPDO());
+		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);
+		$profile->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileEmail($this->getPDO(), $profile->getProfileEmail());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
@@ -160,7 +165,8 @@ class ProfileTest extends AbqOutsideTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		$profileId = generateUuidV4();
-		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);		$profile->insert($this->getPDO());
+		$profile = new Profile($profileId, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE_URL,  $this->VALID_PROFILE_REFRESH_TOKEN, $this->VALID_PROFILE_USERNAME);
+		$profile->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileRefreshToken($this->getPDO(), $profile->getProfileRefreshToken());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
