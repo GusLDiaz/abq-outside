@@ -533,7 +533,7 @@ class Trail implements \JsonSerializable {
 	 * **/
 	public static function getTrailByDistance(\PDO $pdo, float $trailLat, float $trailLong, float $distance) : \SplFixedArray {
 		// create query template
-		$query = "SELECT trailId, trailAddress, trailAscent, trailExternalId, trailImage, trailLat, trailLength, trailLocation, trailLong, trailName, trailRating, trailSummary FROM trail WHERE haversine(:trailLat, :trailLong) < :distance";
+		$query = "SELECT trailId, trailAddress, trailAscent, trailExternalId, trailImage, trailLat, trailLength, trailLocation, trailLong, trailName, trailRating, trailSummary FROM trail WHERE haversine(:trailLong, :trailLat, trailLong, trailLat) < :distance";
 		$statement = $pdo->prepare($query);
 		// bind the trail distance to the place holder in the template
 		$parameters = ["distance" => $distance, "trailLat" => $trailLat, "trailLong" => $trailLong];

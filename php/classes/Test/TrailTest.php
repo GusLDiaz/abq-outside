@@ -192,7 +192,7 @@ class TrailTest extends AbqOutsideTest {
 	 **/
 	public function testGetInvalidTrailByDistance() : void {
 		// grab a trail by distance that does not exist
-		$trail = Trail::getTrailByDistance($this->getPDO(), 040.717274011, 040.717274011, 7);
+		$trail = Trail::getTrailByDistance($this->getPDO(), 35.0855, -106.6491, 100);
 		$this->assertCount(0, $trail);
 	}
 	/**
