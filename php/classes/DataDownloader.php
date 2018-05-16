@@ -42,42 +42,43 @@ class DataDownloader {
 //	};
 
 	public static function pullTrails() {
-		$features = null;
+		$trailsX = null;
 		$urlG = "https://www.hikingproject.com/data/get-trails?lat=35.085470&lon=-106.649072&maxDistance=200&maxResults=500&key=200265121-1809e265008042f9977e435839863103";
 //		try {
 //			$features = DataDownloader::readDataJson($urlG);
 //		} catch
 //		}
-		$features = self::readDataJson($urlG);
-		var_dump($features);
-		$pdo = getConnection("/etc/apache2/capstone-mysql/outside.ini");
-		foreach($features as $value) {}
-			var_dump($value);
-			$trailId = generateUuidV4();
-			$trailExternalId = $value->id;
-		//$trailAddress = $value->attributes->ADDRESS;
-			$trailAddress = "outdoors";
-			$trailImage = $value->imgMedium;
-			$trailName = $value->name;
-			$trailLocation = $value->location;
-			$trailLat = $value->latitude;
-			$trailLong = $value->longitude;
-			$trailLength = $value->length;
-			$trailSummary = $value->summary;
-			$trailAscent = $value->ascent;
-			$trailRating = $value->stars;
-		try {
-		$trail = new Trail($trailId, $trailExternalId, $trailAddress, $trailImage, $trailName, $trailLocation, $trailSummary, $trailAscent, $trailRating, $trailLength, $trailLat, $trailLong);
-			$trail->insert($pdo);
-		} catch(\TypeError $typeError) {
-			//echo("Gus");
+		$trailsX = self::readDataJson($urlG);
+		var_dump($trailsX);
+//		$pdo = getEncryptedSqlConnection("/etc/apache2/capstone-mysql/outside.ini");
+//		foreach($features as $value) {
+//			var_dump($value);
+//			$trailId = generateUuidV4();
+//			$trailExternalId = $value->id;
+//			//$trailAddress = $value->attributes->ADDRESS;
+//			$trailAddress = "outdoors";
+//			$trailImage = $value->imgMedium;
+//			$trailName = $value->name;
+//			$trailLocation = $value->location;
+//			$trailLat = $value->latitude;
+//			$trailLong = $value->longitude;
+//			$trailLength = $value->length;
+//			$trailSummary = $value->summary;
+//			$trailAscent = $value->ascent;
+//			$trailRating = $value->stars;
+//			try {
+//				$trail = new Trail($trailId, $trailExternalId, $trailAddress, $trailImage, $trailName, $trailLocation, $trailSummary, $trailAscent, $trailRating, $trailLength, $trailLat, $trailLong);
+//				$trail->insert($pdo);
+//			} catch(\TypeError $typeError) {
+//				//echo("Gus");
+////			}
 		}
-	}
+	//{
 
 	/** @param $url
 	 *  $url and go from there. just straight up craft this and use it
 	 */
-	public function readDataJson($url) {
+	public static function readDataJson($url) {
 
 		$context = stream_context_create(["http" => ["ignore_errors" => true, "method" => "GET"]]);
 		try {
@@ -88,17 +89,17 @@ class DataDownloader {
 			//decode the Json file
 			$jsonConverted = json_decode($jsonData);
 			//format
-			$jsonFeatures = $jsonConverted->features;
+			$jsonFeatures = $jsonConverted->trails;
 			//create array from the converted Json file
-			$features = \SplFixedArray::fromArray($jsonFeatures);
+			$trailsX = \SplFixedArray::fromArray($jsonFeatures);
 		} catch(\Exception $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($features);
+		return ($trailsX);
 	}
 }
 
-
+echo DataDownloader::pullTrails().PHP_EOL
 
 
 //$client = new GuzzleHttp\Client{
@@ -181,4 +182,5 @@ class DataDownloader {
 //			} catch(\TypeError $typeError) {
 //				echo("Gus");
 //			}
-//
+//?>
+

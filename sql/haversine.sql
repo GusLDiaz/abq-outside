@@ -1,4 +1,3 @@
--- @author Dylan McDonald <dmcdonald21@cnm.edu>
 
 -- drop the procedure if already defined
 DROP FUNCTION IF EXISTS haversine;
