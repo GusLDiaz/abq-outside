@@ -284,16 +284,16 @@ class Trail implements \JsonSerializable {
 	 *
 	 * @param float $newTrailLength new value of trail length
 	 * @throws \InvalidArgumentException if $newTrailLength is not a float or insecure
-	 * @throws \RangeException if $newTrailLength is not within 1 - 25
+	 * @throws \RangeException if $newTrailLength is not within 1 - 100
 	 * @throws \TypeError if $newTrailLength is not a float
 	 **/
 	public function setTrailLength(float $newTrailLength) : void {
 		// verify if the length exists
-		if(floatval($newTrailLength) > 30) {
-			throw(new \RangeException("trail length is not between 0.01 and 25"));
+		if(floatval($newTrailLength) > 100) {
+			throw(new \RangeException("trail length is not between 0.01 and 100"));
 		}
 		if (floatval($newTrailLength) < 0.01) {
-			throw(new \RangeException("trail length is not between 0.01 and 25"));
+			throw(new \RangeException("trail length is not between 0.01 and 100"));
 		}
 		// store the length
 		$this->trailLength = $newTrailLength;
