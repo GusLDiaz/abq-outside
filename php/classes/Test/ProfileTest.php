@@ -6,6 +6,7 @@ use Edu\Cnm\AbqOutside\Profile;
 
 require_once("AbqOutsideTest.php");
 require_once(dirname(__DIR__) . "/autoload.php");
+require_once (dirname(__DIR__, 2) . "/lib/uuid.php");
 
 
 class ProfileTest extends AbqOutsideTest {
@@ -40,10 +41,6 @@ class ProfileTest extends AbqOutsideTest {
 	 **/
 	protected $VALID_PROFILE_USERNAME2 = "stillpassingprofile";
 
-
-	/**re: comment_Content_2 do we need state vars for updated fields of prof. if theyre coming from OAUTH (GOOGLE?)
-	 */
-
 	public final function setUp(): void {
 		// run setUp() method
 		parent::setUp();
@@ -63,7 +60,7 @@ class ProfileTest extends AbqOutsideTest {
 
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
-		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileId(), $this->VALID_PROFILE_ID);
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
 		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_PROFILE_IMAGE_URL);
 		$this->assertEquals($pdoProfile->getProfileRefreshToken(), $this->VALID_PROFILE_REFRESH_TOKEN);
