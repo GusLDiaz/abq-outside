@@ -86,13 +86,13 @@ class Profile implements \JsonSerializable {
 	 **/
 	public function setProfileId($newProfileId): void {
 		try {
-			$uuid = self::validateUuid($newProfileId);
+			$newProfileId = self::validateUuid($newProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 		// convert and store the profile id
-		$this->profileId = $uuid;
+		$this->profileId = $newProfileId;
 	}
 
 	/**
@@ -230,9 +230,8 @@ class Profile implements \JsonSerializable {
 		// create query template
 		$query = "INSERT INTO profile(profileId, profileEmail, profileImage, profileRefreshToken, profileUsername) VALUES(:profileId, :profileEmail, :profileImage, :profileRefreshToken, :profileUsername)";
 		$statement = $pdo->prepare($query);
-
 		// bind the member variables to the place holders in the template
-		$parameters = ["profileId" => $this->profileId->getBytes(), "profileEmail" => $this->profileEmail->getBytes(), "profileImage" => $this->profileImage, "profileRefreshToken" => $this->profileRefreshtoken->getBytes(), "profileUsername" => $this->profileUsername->getBytes()];
+		$parameters = ["profileId" => $this->profileId->getBytes(), "profileEmail" => $this->profileEmail, "profileImage" => $this->profileImage, "profileRefreshToken" => $this->profileRefreshToken, "profileUsername" => $this->profileUsername];
 		$statement->execute($parameters);
 	}
 
@@ -267,7 +266,7 @@ class Profile implements \JsonSerializable {
 		$query = "UPDATE profile SET profileId = :profileId, profileEmail = :profileEmail, profileImage = :profileImage, profileRefreshToken= :profileRefreshToken, profileUsername = :profileUsername WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 
-		$parameters = ["profileId" => $this->profileId->getBytes(), "profileEmail" => $this->profileEmail->getBytes(), "profileImage" => $this->profileImage, "profileRefreshToken" => $this->profileRefreshToken, "profileUsername" => $this->profileUsername];
+		$parameters = ["profileId" => $this->profileId->getBytes(), "profileEmail" => $this->profileEmail, "profileImage" => $this->profileImage, "profileRefreshToken" => $this->profileRefreshToken, "profileUsername" => $this->profileUsername];
 		$statement->execute($parameters);
 	}
 
