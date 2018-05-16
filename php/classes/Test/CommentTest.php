@@ -61,7 +61,7 @@ class CommentTest extends AbqOutsideTest {
 		// create trail to be commented on
 		// do a  base api call first?
 		//trail order: trailId, trailExternalId,trailAddress,trailImage,trailName,trailLocation, trailSummary, trailAscent, trailRating, trailLength,trailLat,trailLong
-		$this->trail = new Trail(generateUuidV4(), "7475773", "address", "imagehandle", "trailname","trail location","trail description summary","13","3", "13.3","81.6","21.5");
+		$this->trail = new Trail(generateUuidV4(), "address", 11, "7475773", "trailname","40.2","8.1","dlhfghf","-106.1", "Variable of Valley","4.4","bgbrehbfe");
 		$this->trail->insert($this->getPDO());
 
 		// calculate the date (just use the time the unit test was setup...)

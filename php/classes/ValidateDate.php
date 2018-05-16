@@ -5,7 +5,7 @@
  * Date: 4/26/2018
  * Time: 2:35 PM
 */
-namespace Edu\Cnm\DataDesign;
+namespace Edu\Cnm\AbqOutside;
 /**
  * Trait to Validate a mySQL Date
  *

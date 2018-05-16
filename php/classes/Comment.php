@@ -6,6 +6,7 @@ require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
 use PDOException;
 use Ramsey\Uuid\Uuid;
+use Edu\Cnm\AbqOutside\ValidateDate;
 
 /**
  * Small Cross Section of a comment
@@ -18,8 +19,6 @@ use Ramsey\Uuid\Uuid;
  * @version 3.0.0
  **/
 class Comment implements \JsonSerializable {
-	use ValidateDate;
-	use ValidateUuid;
 	/**
 	 * id for this Comment; this is the primary key
 	 * @var Uuid $commentId
