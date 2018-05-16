@@ -69,7 +69,7 @@ class TrailTest extends AbqOutsideTest {
 	 * rating of this Trail
 	 * @var float $VALID_TRAILRATING
 	 **/
-	protected $VALID_TRAILRATING = 4;
+	protected $VALID_TRAILRATING = 4.4;
 	/**
 	 * summary of this trail
 	 * @var string $VALID_TRAILSUMMARY
@@ -83,7 +83,7 @@ class TrailTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("trail");
 		// create a new Trail and insert to into mySQL
 		$trailId = generateUuidV4();
-		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
+		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
 		$trail->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoTrail = Trail::getTrailByTrailId($this->getPDO(), $trail->getTrailId());
