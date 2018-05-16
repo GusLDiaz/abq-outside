@@ -449,10 +449,10 @@ class Trail implements \JsonSerializable {
 	 **/
 	public function insert(\PDO $pdo) : void {
 		// create query template
-		$query = "INSERT INTO trail(trailId, trailExternalId, trailAddress, trailImage, trailName, trailLocation, trailSummary, trailAscent, trailRating, trailLength, trailLat, trailLong) VALUES(:trailId, :trailExternalId, :trailAddress, :trailImage, :trailName, :trailLocation, :trailSummary, :trailAscent, :trailRating, :trailLength, :trailLat, :trailLong)";
+		$query = "INSERT INTO trail(trailId, trailAddress, trailAscent, trailExternalId, trailImage, trailLat, trailLength, trailLocation, trailLong, trailName, trailRating, trailSummary) VALUES(:trailId, :trailAddress, :trailAscent, :trailExternalId, :trailImage, :trailLat, :trailLength, :trailLocation, :trailLong, :trailName, :trailRating, :trailSummary)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["trailId" => $this->trailId->getBytes(), "trailExternalId" => $this->trailExternalId, "trailAddress" => $this->trailAddress, "trailImage" => $this->trailImage, "trailName" => $this->trailName, "trailLocation" => $this->trailLocation, "trailSummary" => $this->trailSummary, "trailAscent" => $this->trailAscent, "trailRating" => $this->trailRating, "trailLength" => $this->trailLength, "trailLat" => $this->trailLat, "trailLong" => $this->trailLong];
+		$parameters = ["trailId" => $this->trailId->getBytes(), "trailAddress" => $this->trailAddress, "trailAscent" => $this->trailAscent, "trailExternalId" => $this->trailExternalId, "trailImage" => $this->trailImage, "trailLat" => $this->trailLat, "trailLength" => $this->trailLength, "trailLocation" => $this->trailLocation, "trailLong" => $this->trailLong, "trailName" => $this->trailName, "trailRating" => $this->trailRating, "trailSummary" => $this->trailSummary];
 		$statement->execute($parameters);
 	}
 	/**
@@ -479,9 +479,9 @@ class Trail implements \JsonSerializable {
 	 **/
 	public function update(\PDO $pdo) : void {
 		// create query template
-		$query = "UPDATE trail SET trailExternalId = :trailExternalId, trailAddress = :trailAddress, trailName = :trailName, trailImage = :trailImage, trailLat = :trailLat, trailLocation = :trailLocation, trailLong = :trailLong, trailLength = :trailLength, trailSummary = :trailSummary, trailAscent = :trailAscent, trailRating = :trailRating WHERE trailId = :trailId";
+		$query = "UPDATE trail SET trailAddress = :trailAddress, trailAscent = :trailAscent, trailExternalId = :trailExternalId, trailImage = :trailImage, trailLat = :trailLat, trailLength = :trailLength, trailLocation = :trailLocation, trailLong = :trailLong, trailName = :trailName, trailRating = :trailRating, trailSummary = :trailSummary WHERE trailId = :trailId";
 		$statement = $pdo->prepare($query);
-		$parameters = ["trailId" => $this->trailId->getBytes(), "trailExternalId" => $this->trailExternalId, "trailAddress" => $this->trailAddress, "trailImage" => $this->trailImage, "trailName" => $this->trailName, "trailLocation" => $this->trailLocation, "trailSummary" => $this->trailSummary, "trailAscent" => $this->trailAscent, "trailRating" => $this->trailRating, "trailLength" => $this->trailLength, "trailLat" => $this->trailLat, "trailLong" => $this->trailLong];
+		$parameters = ["trailId" => $this->trailId->getBytes(), "trailAddress" => $this->trailAddress, "trailAscent" => $this->trailAscent, "trailExternalId" => $this->trailExternalId, "trailImage" => $this->trailImage, "trailLat" => $this->trailLat, "trailLength" => $this->trailLength, "trailLocation" => $this->trailLocation, "trailLong" => $this->trailLong, "trailName" => $this->trailName, "trailRating" => $this->trailRating, "trailSummary" => $this->trailSummary];
 		$statement->execute($parameters);
 	}
 	/**
@@ -501,7 +501,7 @@ class Trail implements \JsonSerializable {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		// create query template
-		$query = "SELECT trailId, trailExternalId, trailAddress, trailImage, trailName, trailLocation, trailSummary, trailAscent, trailRating, trailLength, trailLat, trailLong FROM trail WHERE trailId = :trailId";
+		$query = "SELECT trailId, trailAddress, trailAscent, trailExternalId, trailImage, trailLat, trailLength, trailLocation, trailLong, trailName, trailRating, trailSummary FROM trail WHERE trailId = :trailId";
 		$statement = $pdo->prepare($query);
 		// bind the trail id to the place holder in the template
 		$parameters = ["trailId" => $trailId->getBytes()];
@@ -512,7 +512,7 @@ class Trail implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$trail = new Trail($row["trailId"], $row["trailExternalId"], $row["trailAddress"], $row["trailImage"], $row["trailName"], $row["trailLocation"], $row["trailSummary"], $row["trailAscent"], $row["trailRating"], $row["trailLength"], $row["trailLat"], $row["trailLong"]);
+				$trail = new Trail($row["trailId"], $row["trailAddress"], $row["trailAscent"], $row["trailExternalId"], $row["trailImage"], $row["trailLat"], $row["trailLength"], $row["trailLocation"], $row["trailLong"], $row["trailName"], $row["trailRating"], $row["trailSummary"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -533,7 +533,7 @@ class Trail implements \JsonSerializable {
 	 * **/
 	public static function getTrailByDistance(\PDO $pdo, float $trailLat, float $trailLong, float $distance) : \SplFixedArray {
 		// create query template
-		$query = "SELECT trailId, trailExternalId, trailAddress, trailImage, trailName, trailLocation, trailSummary, trailAscent, trailRating, trailLength, trailLat, trailLong FROM trail WHERE haversine(:userLong, :userLat, artLong, artLat) < :distance";
+		$query = "SELECT trailId, trailAddress, trailAscent, trailExternalId, trailImage, trailLat, trailLength, trailLocation, trailLong, trailName, trailRating, trailSummary FROM trail WHERE haversine(:trailLat, :trailLong) < :distance";
 		$statement = $pdo->prepare($query);
 		// bind the trail distance to the place holder in the template
 		$parameters = ["distance" => $distance, "trailLat" => $trailLat, "trailLong" => $trailLong];
@@ -543,7 +543,7 @@ class Trail implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$trail = new Trail($row["trailId"], $row["trailExternalId"], $row["trailAddress"], $row["trailImage"], $row["trailName"], $row["trailLocation"], $row["trailSummary"], $row["trailAscent"], $row["trailRating"], $row["trailLength"], $row["trailLat"], $row["trailLong"]);
+				$trail = new Trail($row["trailId"], $row["trailAddress"], $row["trailAscent"], $row["trailExternalId"], $row["trailImage"], $row["trailLat"], $row["trailLength"], $row["trailLocation"], $row["trailLong"], $row["trailName"], $row["trailRating"], $row["trailSummary"]);
 				$trails[$trails->key()] = $trail;
 				$trails->next();
 			} catch(\Exception $exception) {
@@ -563,7 +563,7 @@ class Trail implements \JsonSerializable {
 	 **/
 	public static function getAllTrails(\PDO $pdo) : \SPLFixedArray {
 		// create query template
-		$query = "SELECT trailId, trailExternalId, trailAddress, trailImage, trailName, trailLocation, trailSummary, trailAscent, trailRating, trailLength, trailLat, trailLong FROM trail";
+		$query = "SELECT trailId, trailAddress, trailAscent, trailExternalId, trailImage, trailLat, trailLength, trailLocation, trailLong, trailName, trailRating, trailSummary FROM trail";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		// build an array of trails
@@ -571,7 +571,7 @@ class Trail implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$trail = new Trail($row["trailId"], $row["trailExternalId"], $row["trailAddress"], $row["trailImage"], $row["trailName"], $row["trailLocation"], $row["trailSummary"], $row["trailAscent"], $row["trailRating"], $row["trailLength"], $row["trailLat"], $row["trailLong"]);
+				$trail = new Trail($row["trailId"], $row["trailAddress"], $row["trailAscent"], $row["trailExternalId"], $row["trailImage"], $row["trailLat"], $row["trailLength"], $row["trailLocation"], $row["trailLong"], $row["trailName"], $row["trailRating"], $row["trailSummary"]);
 				$trails[$trails->key()] = $trail;
 				$trails->next();
 			} catch(\Exception $exception) {
