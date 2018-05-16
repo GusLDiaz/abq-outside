@@ -1,4 +1,4 @@
-ALTER DATABASE abq_outside CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER DATABASE outside CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS trail;
