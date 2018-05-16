@@ -109,7 +109,7 @@ class TrailTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("trail");
 		// create a new Trail and insert to into mySQL
 		$trailId = generateUuidV4();
-		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
+		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
 		$trail->insert($this->getPDO());
 		// edit the Trail and update it in mySQL
 		$trail->setTrailAddress($this->VALID_TRAILADDRESS2);
@@ -138,7 +138,7 @@ class TrailTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("trail");
 		// create a new Trail and insert to into mySQL
 		$trailId = generateUuidV4();
-		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
+		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
 		$trail->insert($this->getPDO());
 		// delete the Trail from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("trail"));
@@ -164,7 +164,7 @@ class TrailTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("trail");
 		// create a new Trail and insert to into mySQL
 		$trailId = generateUuidV4();
-		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
+		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
 		$trail->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Trail::getTrailByDistance($this->getPDO(), 48, 192, 100);
@@ -203,7 +203,7 @@ class TrailTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("trail");
 		// create a new Trail and insert to into mySQL
 		$trailId = generateUuidV4();
-		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
+		$trail = new Trail($trailId, $this->VALID_TRAILADDRESS, $this->VALID_TRAILASCENT, $this->VALID_TRAILEXTERNALID,  $this->VALID_TRAILIMAGE, $this->VALID_TRAILLAT, $this->VALID_TRAILLENGTH, $this->VALID_TRAILLOCATION, $this->VALID_TRAILLONG, $this->VALID_TRAILNAME, $this->VALID_TRAILRATING, $this->VALID_TRAILSUMMARY);
 		$trail->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Trail::getAllTrails($this->getPDO());
