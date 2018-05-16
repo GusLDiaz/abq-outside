@@ -1,7 +1,9 @@
 <?php
 namespace Edu\Cnm\AbqOutside\Test;
 
-use Edu\Cnm\AbqOutside\Comment;
+use Edu\Cnm\AbqOutside\ {
+	Comment, Profile, Trail
+};
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 // grab the uuid generator
@@ -53,7 +55,7 @@ class CommentTest extends AbqOutsideTest {
 
 		// create and insert a Profile to own the test (write the comment)
 		//order: profileId email image Refresh token username
-		$this->profile = new Profile(generateUuidV4(), "email", "imagehandle", "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "username");
+		$this->profile = new Profile(generateUuidV4(), "email@gmail.com", "imagehandle", "a", "username");
 		$this->profile->insert($this->getPDO());
 
 		// create trail to be commented on
