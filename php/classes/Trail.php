@@ -85,7 +85,7 @@ class Trail implements \JsonSerializable {
 	 * @param string $newTrailLocation location of this trail
 	 * @param float $newTrailLong longitude of this trail
 	 * @param string $newTrailName name of this Trail
-	 * @param float $newTrailRating int containing trail rating
+	 * @param float $newTrailRating " stars " floatcontaining trail rating
 	 * @param string $newTrailSummary summary of this trail
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
