@@ -1,13 +1,9 @@
 <?php
-
 namespace Edu\Cnm\AbqOutside;
 require_once("autoload.php");
 require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
-
 use PDOException;
 use Ramsey\Uuid\Uuid;
-use Edu\Cnm\AbqOutside\ValidateDate;
-
 /**
  * Small Cross Section of a comment
  *
@@ -19,6 +15,8 @@ use Edu\Cnm\AbqOutside\ValidateDate;
  * @version 3.0.0
  **/
 class Comment implements \JsonSerializable {
+	use ValidateUuid;
+	use ValidateDate;
 	/**
 	 * id for this Comment; this is the primary key
 	 * @var Uuid $commentId
@@ -31,7 +29,7 @@ class Comment implements \JsonSerializable {
 	private $commentProfileId;
 	/**
 	 * Trail id for comment posted
-	 * @var string $commentTrailId
+	 * @var Uuid $commentTrailId
 	 **/
 	private $commentTrailId;
 	/**
@@ -44,13 +42,12 @@ class Comment implements \JsonSerializable {
 	 * @var \DateTime $commentTimestamp
 	 **/
 	private $commentTimestamp;
-
 	/**
 	 * constructor for this Comment
 	 *
 	 * @param string|Uuid $newCommentId id of this Comment or null if a new Comment
 	 * @param string|Uuid $newCommentProfileId id of the profile who sent Comment
-	 * @param string $newCommentTrailId id of the trail comment
+	 * @param string|Uuid $newCommentTrailId id of the trail comment
 	 * @param string $newCommentContent string containing actual comment data
 	 * @param \DateTime|string|null $newCommentTimestamp date and time Comment was sent or null if set to current date and time
 	 * @throws \InvalidArgumentException if data types are not valid
@@ -60,12 +57,12 @@ class Comment implements \JsonSerializable {
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
 	//hint the parameters
-	public function __construct($newCommentId, $newCommentProfileId = null, string $newCommentTrailId, $newCommentContent, $newCommentTimestamp = null) {
+	public function __construct($newCommentId, $newCommentProfileId, $newCommentTrailId, string $newCommentContent, $newCommentTimestamp) {
 		try {
-			$this->setcommentId($newCommentId);
-			$this->setcommentProfileId($newCommentProfileId);
-			$this->setcommentTrailId($newCommentTrailId);
-			$this->setcommentContent($newCommentContent);
+			$this->setCommentId($newCommentId);
+			$this->setCommentProfileId($newCommentProfileId);
+			$this->setCommentTrailId($newCommentTrailId);
+			$this->setCommentContent($newCommentContent);
 			$this->setCommentTimestamp($newCommentTimestamp);
 		} //determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -75,6 +72,42 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
+	 * accessor method for comment id
+	 *
+	 * @return Uuid value of comment id
+	 **/
+	public function getCommentId(): Uuid {
+		return ($this->commentId);
+	}
+
+	/**
+	 * mutator method for comment id
+	 *
+	 * @param Uuid|string $newCommentId new value of comment id
+	 * @throws \RangeException if $newCommentId is not positive
+	 * @throws \TypeError if $newCommentId is not a uuid or string
+	 **/
+	public function setCommentId($newCommentId): void {
+		try {
+			$newCommentId = self::ValidateUuid($newCommentId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		// convert and store the comment id
+		$this->commentId = $newCommentId;
+	}
+
+	/**
+	 * accessor method for comment profile id
+	 *
+	 * @return Uuid value of comment profile
+	 **/
+	public function getCommentProfileId(): Uuid {
+		return ($this->commentProfileId);
+	}
+	/**
 	 * mutator method for comment profile id
 	 *
 	 * @param Uuid|string $newCommentProfileId new value of comment profile id
@@ -83,15 +116,112 @@ class Comment implements \JsonSerializable {
 	 **/
 	public function setCommentProfileId($newCommentProfileId): void {
 		try {
-			$uuid = self::validateUuid($newCommentProfileId);
+			$newCommentProfileId = self::ValidateUuid($newCommentProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 
 		// convert and store the comment profile id
-		$this->commentProfileId = $uuid;
+		$this->commentProfileId = $newCommentProfileId;
 	}
+
+	/**
+	 * accessor method for comment trail id
+	 *
+	 * @return Uuid value of comment trail id
+	 **/
+	public function getCommentTrailId(): Uuid {
+		return ($this->commentTrailId);
+	}
+
+	/**
+	 * mutator method for comment trail id
+	 *
+	 * @param Uuid $newCommentTrailId new value of comment trail id
+	 * @throws \RangeException if $newCommentTrailId is not positive
+	 * @throws \TypeError if $newCommentTrailId is not a uuid or string
+	 **/
+	public function setCommentTrailId($newCommentTrailId): void {
+		try {
+			$newCommentTrailId = self::ValidateUuid($newCommentTrailId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		// convert and store the comment trail id
+		$this->commentTrailId = $newCommentTrailId;
+	}
+
+	/**
+	 * accessor method for comment content
+	 *
+	 * @return string value of comment content
+	 **/
+	public function getCommentContent(): string {
+		return ($this->commentContent);
+	}
+
+	/**
+	 * mutator method for comment content
+	 *
+	 * @param string $newCommentContent new value of comment content
+	 * @throws \InvalidArgumentException if $newCommentContent is not a string or insecure
+	 * @throws \RangeException if $newCommentContent is > 140 characters
+	 * @throws \TypeError if $newCommentContent is not a string
+	 **/
+	public function setCommentContent(string $newCommentContent): void {
+		// verify the comment content is secure
+		$newCommentContent = trim($newCommentContent);
+		$newCommentContent = filter_var($newCommentContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newCommentContent) === true) {
+			throw(new \InvalidArgumentException("comment content is empty or insecure"));
+		}
+
+		// verify the comment content id will fit in the database
+		if(strlen($newCommentContent) > 256) {
+			throw(new \RangeException("comment content too large"));
+		}
+
+		// store the comment content
+		$this->commentContent = $newCommentContent;
+	}
+
+	/**
+	 * accessor method for comment Timestap
+	 *
+	 * @return \DateTime value of comment timestamp
+	 **/
+	public function getCommentTimestamp(): \DateTime {
+		return ($this->commentTimestamp);
+	}
+
+	/**
+	 * mutator method for comment timestamp
+	 *
+	 * @param \DateTime|string|null $newCommentTimestamp content date time as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newCommentTimestamp is not a valid object or string
+	 * @throws \RangeException if $newCommentTimestamp is a date that does not exist
+	 **/
+	public function setCommentTimestamp($newCommentTimestamp = null): void {
+		// base case: if the date is null, use the current date and time
+		if($newCommentTimestamp === null) {
+			$this->getCommentTimestamp = new \DateTime();
+			return;
+		}
+
+		// store the comment timestamp using the ValidateDate trait
+		try {
+			$newCommentTimestamp = self::validateDate($newCommentTimestamp);
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->commentTimestamp = $newCommentTimestamp;
+	}
+
+
 
 	/**
 	 * gets the Comment by commentId
@@ -123,6 +253,7 @@ class Comment implements \JsonSerializable {
 			$comment = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
+			var_dump($row["commentProfileId"]);
 			if($row !== false) {
 				$comment = new Comment($row["commentId"], $row["commentProfileId"], $row["commentTrailId"], $row["commentContent"], $row["commentTimestamp"]);
 			}
@@ -309,139 +440,6 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comments);
 	}
-
-	/**
-	 * accessor method for comment id
-	 *
-	 * @return Uuid value of comment id
-	 **/
-	public function getCommentId(): Uuid {
-		return ($this->commentId);
-	}
-
-	/**
-	 * mutator method for comment id
-	 *
-	 * @param Uuid|string $newCommentId new value of comment id
-	 * @throws \RangeException if $newCommentId is not positive
-	 * @throws \TypeError if $newCommentId is not a uuid or string
-	 **/
-	public function setCommentId($newCommentId): void {
-		try {
-			$uuid = self::validateUuid($newCommentId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-
-		// convert and store the comment id
-		$this->commentId = $uuid;
-	}
-
-	/**
-	 * accessor method for comment profile id
-	 *
-	 * @return Uuid value of comment profile
-	 **/
-	public function getCommentProfilId(): Uuid {
-		return ($this->commentProfileId);
-	}
-
-	/**
-	 * accessor method for comment trail id
-	 *
-	 * @return String value of comment trail id
-	 **/
-	public function getCommentTrailId(): String {
-		return ($this->commentTrailId);
-	}
-
-	/**
-	 * mutator method for comment trail id
-	 *
-	 * @param string $newCommentTrailId new value of comment trail id
-	 * @throws \RangeException if $newCommentTrailId is not positive
-	 * @throws \TypeError if $newCommentTrailId is not an integer
-	 **/
-	public function setCommentTrailId($newCommentTrailId): void {
-		try {
-			$string = self::validateString($newCommentTrailId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-
-		// convert and store the comment trail id
-		$this->commentTrailId = $string;
-	}
-
-	/**
-	 * accessor method for comment content
-	 *
-	 * @return string value of comment content
-	 **/
-	public function getCommentContent(): string {
-		return ($this->commentContent);
-	}
-
-	/**
-	 * mutator method for comment content
-	 *
-	 * @param string $newCommentContent new value of comment content
-	 * @throws \InvalidArgumentException if $newCommentContent is not a string or insecure
-	 * @throws \RangeException if $newCommentContent is > 140 characters
-	 * @throws \TypeError if $newCommentContent is not a string
-	 **/
-	public function setCommentContent(string $newCommentContent): void {
-		// verify the comment content is secure
-		$newCommentContent = trim($newCommentContent);
-		$newCommentContent = filter_var($newCommentContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newCommentContent) === true) {
-			throw(new \InvalidArgumentException("comment content is empty or insecure"));
-		}
-
-		// verify the comment content id will fit in the database
-		if(strlen($newCommentContent) > 256) {
-			throw(new \RangeException("comment content too large"));
-		}
-
-		// store the comment content
-		$this->CommentContent = $newCommentContent;
-	}
-
-	/**
-	 * accessor method for comment Timestap
-	 *
-	 * @return \DateTime value of comment timestamp
-	 **/
-	public function getCommentTimestamp(): \DateTime {
-		return ($this->commentTimestamp);
-	}
-
-	/**
-	 * mutator method for comment timestamp
-	 *
-	 * @param \DateTime|string|null $newCommentTimestamp content date time as a DateTime object or string (or null to load the current time)
-	 * @throws \InvalidArgumentException if $newCommentTimestamp is not a valid object or string
-	 * @throws \RangeException if $newCommentTimestamp is a date that does not exist
-	 **/
-	public function setCommentTimestamp($newCommentTimestamp = null): void {
-		// base case: if the date is null, use the current date and time
-		if($newCommentTimestamp === null) {
-			$this->getCommentTimestamp = new \DateTime();
-			return;
-		}
-
-		// store the comment timestamp using the ValidateDate trait
-		try {
-			$newCommentTimestamp = self::validateDateTime($newCommentTimestamp);
-		} catch(\InvalidArgumentException | \RangeException $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-		$this->commentTimestamp = $newCommentTimestamp;
-	}
-
 	/**
 	 * inserts this Comment into mySQL
 	 *
@@ -457,7 +455,7 @@ class Comment implements \JsonSerializable {
 
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->commentTimestamp->format("Y-m-d H:i:s.u");
-		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
+		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId->getBytes(), "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
 		$statement->execute($parameters);
 	}
 

@@ -9,6 +9,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
 // grab the uuid generator
 require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
 
+
 /**
  * Full PHPUnit test for the Tweet class
  *
@@ -47,7 +48,6 @@ class CommentTest extends AbqOutsideTest {
 	 * @var \DateTime $VALID_COMMENT_TIMESTAMP
 	 **/
 	protected $VALID_COMMENT_TIMESTAMP = null;
-//TODO finish setUP re: Trail, refresh Token
 	protected final function setUp(): void {
 		// run setUp() method
 		parent::setUp();
@@ -87,7 +87,7 @@ class CommentTest extends AbqOutsideTest {
 		$this->assertEquals($pdoComment->getCommentId(), $commentId);
 		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoComment->getCommentTrailId(), $this->trail->getTrailId());
-		$this->assertEquals($pdoComment->getCommmentContent(), $this->VALID_COMMENT_CONTENT);
+		$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT);
 		$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
 	}
 
@@ -100,7 +100,7 @@ class CommentTest extends AbqOutsideTest {
 
 		// create a new Comment and insert to into mySQL
 		$commentId = generateUuidV4();
-		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
+		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
 		$comment->insert($this->getPDO());
 
 		// edit and update it in mySQL
@@ -287,4 +287,6 @@ class CommentTest extends AbqOutsideTest {
 			$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT);
 			$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_CONTENT_TIMESTAMP->getTimestamp());
 		}
+
+
 }

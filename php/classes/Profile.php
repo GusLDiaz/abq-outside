@@ -177,7 +177,7 @@ class Profile implements \JsonSerializable {
 		}
 		$newProfileRefreshToken = strtolower(trim($newProfileRefreshToken));
 		if(ctype_xdigit($newProfileRefreshToken) === false) {
-			throw(new\InvalidArgumentException("user activation is not valid"));
+			throw(new\InvalidArgumentException("useq	r activation is not valid"));
 		}
 		//make sure user activation token is only 128 characters
 		if(strlen($newProfileRefreshToken) > 128) {

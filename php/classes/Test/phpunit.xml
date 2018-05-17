@@ -2,8 +2,8 @@
 	<testsuites>
 		<testsuite name="Abq Outside">
 			<!--<file>ProfileTest.php</file>-->
-			<!--<file>CommentTest.php</file>-->
-			<file>TrailTest.php</file>
+			<file>CommentTest.php</file>
+			<!--<file>TrailTest.php</file>-->
 		</testsuite>
 	</testsuites>
 </phpunit>
