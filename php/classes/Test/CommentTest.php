@@ -166,9 +166,9 @@ class CommentTest extends AbqOutsideTest {
 		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
 		$comment->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Comment::getCommentBycommentTrailId($this->getPDO(), $comment->getCommentTrailId());
+		$results = Comment::getCommentByCommentTrailId($this->getPDO(), $comment->getCommentTrailId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
-		$this->assertCount(0, $results);
+		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\AbqOutside\\Comment", $results);
 		// grab the result from the array and validate it
 		$pdoComment = $results[0];
@@ -206,7 +206,7 @@ class CommentTest extends AbqOutsideTest {
 		$numRows = $this->getConnection()->getRowCount("comment");
 		// create and insert a comment  into mySQL
 		$commentId = generateUuidV4();
-		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->trail->getTrailId(),$this->VALID_COMMENT_TIMESTAMP, $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
+		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
 		$comment->insert($this->getPDO());
 			// grab the data from mySQL and enforce the fields match our expectations
 			$results = Comment::getCommentByCommentContent($this->getPDO(), $comment->getCommentContent());
@@ -230,27 +230,4 @@ class CommentTest extends AbqOutsideTest {
 		$comment = Comment::getCommentByCommentContent($this->getPDO(), "Comcast has the best service EVER #comcastLove");
 		$this->assertCount(0, $comment);
 	}
-	/**
-	 * test grabbing all Comments
-	 **/
-	public function testGetAllValidComments() : void {
-			// count the number of rows and save it for later
-			$numRows = $this->getConnection()->getRowCount("comment");
-			// create a new Comment and insert to into mySQL
-			$commentId = generateUuidV4();
-			$comment = new Comment($commentId, $this->profile->getProfileId(),$this->trail->getTrailId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENT_TIMESTAMP);
-			$comment->insert($this->getPDO());
-		// grab the data from mySQL and enforce the fields match our expectations
-			$results = Comment::getAllComments($this->getPDO());
-			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
-			$this->assertCount(1, $results);
-			$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\AbqOutside", $results);
-			// grab the result from the array and validate it
-			$pdoComment = $results[0];
-			$this->assertEquals($pdoComment->getCommentId(), $commentId);
-			$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
-			$this->assertEquals($pdoComment->getCommentTrailId(), $this->trail->getTrailId());
-			$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT);
-			$this->assertEquals($pdoComment->getCommentTimestamp()->getTimestamp(), $this->VALID_COMMENT_TIMESTAMP->getTimestamp());
-		}
 }

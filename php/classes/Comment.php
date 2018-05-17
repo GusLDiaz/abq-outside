@@ -198,7 +198,7 @@ class Comment implements \JsonSerializable {
 		}
 		// store the comment timestamp using the ValidateDate trait
 		try {
-			$newCommentTimestamp = self::validateDate($newCommentTimestamp);
+			$newCommentTimestamp = self::validateDateTime($newCommentTimestamp);
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -232,7 +232,6 @@ class Comment implements \JsonSerializable {
 			$comment = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
-			var_dump($row["commentProfileId"]);
 			if($row !== false) {
 				$comment = new Comment($row["commentId"], $row["commentProfileId"], $row["commentTrailId"], $row["commentContent"], $row["commentTimestamp"]);
 			}
@@ -282,26 +281,22 @@ class Comment implements \JsonSerializable {
 	 * gets the Comment by commentTrailId
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $commentTrailId comment trail id to search for
+	 * @param uuid |string $commentTrailId comment trail id to search for
 	 * @return \SplFixedArray SplFixedArray of Comments found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getCommentByCommentTrailId(\PDO $pdo, string $commentTrailId): \SplFixedArray {
-		// sanitize the description before searching
-		$commentTrailId = trim($commentTrailId);
-		$commentTrailId = filter_var($commentTrailId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($commentTrailId) === true) {
-			throw(new \PDOException("comment trail id is invalid"));
+	public static function getCommentByCommentTrailId(\PDO $pdo, $commentTrailId): \SplFixedArray {
+		try {
+			$commentTrailId = self::validateUuid($commentTrailId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		// escape any mySQL wild cards
-		$commentTrailId = str_replace("_", "\\_", str_replace("%", "\\%", $commentTrailId));
 		// create query template
-		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment WHERE commentTrailId LIKE :commentTrailId";
+		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment WHERE commentTrailId = :commentTrailId";
 		$statement = $pdo->prepare($query);
-		// bind the comment trail id to the place holder in the template
-		$commentTrailId = "%$commentTrailId%";
-		$parameters = ["commentTrailId" => $commentTrailId];
+		// bind the comment profile id to the place holder in the template
+		$parameters = ["commentTrailId" => $commentTrailId->getBytes()];
 		$statement->execute($parameters);
 		// build an array of comments
 		$comments = new \SplFixedArray($statement->rowCount());
@@ -318,6 +313,37 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comments);
 	}
+//	public static function getCommentByCommentTrailId(\PDO $pdo, $commentTrailId): \SplFixedArray {
+//		// sanitize the description before searching
+//		$commentTrailId = trim($commentTrailId);
+//		$commentTrailId = filter_var($commentTrailId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+//		if(empty($commentTrailId) === true) {
+//			throw(new \PDOException("comment trail id is invalid"));
+//		}
+//		// escape any mySQL wild cards
+//		$commentTrailId = str_replace("_", "\\_", str_replace("%", "\\%", $commentTrailId));
+//		// create query template
+//		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment WHERE commentTrailId LIKE :commentTrailId";
+//		$statement = $pdo->prepare($query);
+//		// bind the comment trail id to the place holder in the template
+//		$commentTrailId = "%$commentTrailId%";
+//		$parameters = ["commentTrailId" => $commentTrailId->getBytes()];
+//		$statement->execute($parameters);
+//		// build an array of comments
+//		$comments = new \SplFixedArray($statement->rowCount());
+//		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+//		while(($row = $statement->fetch()) !== false) {
+//			try {
+//				$comment = new Comment($row["commentId"], $row["commentProfileId"], $row["commentTrailId"], $row["commentContent"], $row["commentTimestamp"]);
+//				$comments[$comments->key()] = $comment;
+//				$comments->next();
+//			} catch(\Exception $exception) {
+//				// if the row couldn't be converted, rethrow it
+//				throw(new \PDOException($exception->getMessage(), 0, $exception));
+//			}
+//		}
+//		return ($comments);
+//	}
 	/**
 	 * gets the Comment by commentContent
 	 *
@@ -411,7 +437,7 @@ class Comment implements \JsonSerializable {
 		$query = "INSERT INTO comment(commentId,commentProfileId, commentTrailId, commentContent, commentTimestamp) VALUES(:commentId, :commentProfileId, :commentTrailId, :commentContent, :commentTimestamp)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$newCommentTimestamp = $this->commentTimestamp->format("Y-m-d H:i:s");
+		$newCommentTimestamp = $this->commentTimestamp->format("Y-m-d H:i:s.u");
 		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId->getBytes(), "commentContent" => $this->commentContent, "commentTimestamp" => $newCommentTimestamp];
 		$statement->execute($parameters);
 	}
