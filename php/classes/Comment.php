@@ -70,7 +70,6 @@ class Comment implements \JsonSerializable {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
-
 	/**
 	 * accessor method for comment id
 	 *
@@ -79,7 +78,6 @@ class Comment implements \JsonSerializable {
 	public function getCommentId(): Uuid {
 		return ($this->commentId);
 	}
-
 	/**
 	 * mutator method for comment id
 	 *
@@ -94,11 +92,9 @@ class Comment implements \JsonSerializable {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-
 		// convert and store the comment id
 		$this->commentId = $newCommentId;
 	}
-
 	/**
 	 * accessor method for comment profile id
 	 *
@@ -121,11 +117,9 @@ class Comment implements \JsonSerializable {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-
 		// convert and store the comment profile id
 		$this->commentProfileId = $newCommentProfileId;
 	}
-
 	/**
 	 * accessor method for comment trail id
 	 *
@@ -134,7 +128,6 @@ class Comment implements \JsonSerializable {
 	public function getCommentTrailId(): Uuid {
 		return ($this->commentTrailId);
 	}
-
 	/**
 	 * mutator method for comment trail id
 	 *
@@ -149,11 +142,9 @@ class Comment implements \JsonSerializable {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-
 		// convert and store the comment trail id
 		$this->commentTrailId = $newCommentTrailId;
 	}
-
 	/**
 	 * accessor method for comment content
 	 *
@@ -162,7 +153,6 @@ class Comment implements \JsonSerializable {
 	public function getCommentContent(): string {
 		return ($this->commentContent);
 	}
-
 	/**
 	 * mutator method for comment content
 	 *
@@ -178,16 +168,13 @@ class Comment implements \JsonSerializable {
 		if(empty($newCommentContent) === true) {
 			throw(new \InvalidArgumentException("comment content is empty or insecure"));
 		}
-
 		// verify the comment content id will fit in the database
 		if(strlen($newCommentContent) > 256) {
 			throw(new \RangeException("comment content too large"));
 		}
-
 		// store the comment content
 		$this->commentContent = $newCommentContent;
 	}
-
 	/**
 	 * accessor method for comment Timestap
 	 *
@@ -196,7 +183,6 @@ class Comment implements \JsonSerializable {
 	public function getCommentTimestamp(): \DateTime {
 		return ($this->commentTimestamp);
 	}
-
 	/**
 	 * mutator method for comment timestamp
 	 *
@@ -210,7 +196,6 @@ class Comment implements \JsonSerializable {
 			$this->commentTimestamp = new \DateTime();
 			return;
 		}
-
 		// store the comment timestamp using the ValidateDate trait
 		try {
 			$newCommentTimestamp = self::validateDate($newCommentTimestamp);
@@ -220,9 +205,6 @@ class Comment implements \JsonSerializable {
 		}
 		$this->commentTimestamp = $newCommentTimestamp;
 	}
-
-
-
 	/**
 	 * gets the Comment by commentId
 	 *
@@ -239,15 +221,12 @@ class Comment implements \JsonSerializable {
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new PDOException($exception->getMessage(), 0, $exception));
 		}
-
 		// create query template
 		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment WHERE commentId = :commentId";
 		$statement = $pdo->prepare($query);
-
 		// bind the comment id to the place holder in the template
 		$parameters = ["commentId" => $commentId->getBytes()];
 		$statement->execute($parameters);
-
 		// grab the comment from mySQL
 		try {
 			$comment = null;
@@ -263,7 +242,6 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comment);
 	}
-
 	/**
 	 * gets the Comment by commentProfileId
 	 *
@@ -274,21 +252,17 @@ class Comment implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getCommentByCommentProfileId(\PDO $pdo, $commentProfileId): \SplFixedArray {
-
 		try {
 			$commentProfileId = self::validateUuid($commentProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-
 		// create query template
 		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment WHERE commentProfileId = :commentProfileId";
 		$statement = $pdo->prepare($query);
-
 		// bind the comment profile id to the place holder in the template
 		$parameters = ["commentProfileId" => $commentProfileId->getBytes()];
 		$statement->execute($parameters);
-
 		// build an array of comments
 		$comments = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -304,7 +278,6 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comments);
 	}
-
 	/**
 	 * gets the Comment by commentTrailId
 	 *
@@ -321,19 +294,15 @@ class Comment implements \JsonSerializable {
 		if(empty($commentTrailId) === true) {
 			throw(new \PDOException("comment trail id is invalid"));
 		}
-
 		// escape any mySQL wild cards
 		$commentTrailId = str_replace("_", "\\_", str_replace("%", "\\%", $commentTrailId));
-
 		// create query template
 		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment WHERE commentTrailId LIKE :commentTrailId";
 		$statement = $pdo->prepare($query);
-
 		// bind the comment trail id to the place holder in the template
 		$commentTrailId = "%$commentTrailId%";
 		$parameters = ["commentTrailId" => $commentTrailId];
 		$statement->execute($parameters);
-
 		// build an array of comments
 		$comments = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -349,7 +318,6 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comments);
 	}
-
 	/**
 	 * gets the Comment by commentContent
 	 *
@@ -366,19 +334,15 @@ class Comment implements \JsonSerializable {
 		if(empty($commentContent) === true) {
 			throw(new \PDOException("comment content is invalid"));
 		}
-
 		// escape any mySQL wild cards
 		$commentContent = str_replace("_", "\\_", str_replace("%", "\\%", $commentContent));
-
 		// create query template
-		$query = "SELECT commentId, commentProfileId, commentTrailId, commentcontent, commentTimestamp FROM comment WHERE commentContent LIKE :commentContent";
+		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment WHERE commentContent LIKE :commentContent";
 		$statement = $pdo->prepare($query);
-
 		// bind the comment content to the place holder in the template
 		$commentContent = "%$commentContent%";
 		$parameters = ["commentContent" => $commentContent];
 		$statement->execute($parameters);
-
 		// build an array of comments
 		$comments = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -394,7 +358,6 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comments);
 	}
-
 	/**
 	 * gets the Comments by commentTimestamp
 	 *
@@ -411,20 +374,16 @@ class Comment implements \JsonSerializable {
 		if(empty($commentTimestamp) === true) {
 			throw(new \PDOException("comment content is invalid"));
 		}
-
 		// escape any mySQL wild cards
 		$commentTimestamp = str_replace("_", "\\_", str_replace("%", "\\%", $commentTimestamp
 		));
-
 		// create query template
 		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment WHERE commentTimestamp LIKE :commentTimestamp";
 		$statement = $pdo->prepare($query);
-
 		// bind the comment content to the place holder in the template
 		$commentTimestamp = "%$commentTimestamp%";
 		$parameters = ["commentTimestamp" => $commentTimestamp];
 		$statement->execute($parameters);
-
 		// build an array of comments
 		$comments = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -448,17 +407,14 @@ class Comment implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function insert(\PDO $pdo): void {
-
 		// create query template
 		$query = "INSERT INTO comment(commentId,commentProfileId, commentTrailId, commentContent, commentTimestamp) VALUES(:commentId, :commentProfileId, :commentTrailId, :commentContent, :commentTimestamp)";
 		$statement = $pdo->prepare($query);
-
 		// bind the member variables to the place holders in the template
-		$newCommentTimestamp = $this->commentTimestamp->format("Y-m-d H:i:s.u");
+		$newCommentTimestamp = $this->commentTimestamp->format("Y-m-d H:i:s");
 		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId->getBytes(), "commentContent" => $this->commentContent, "commentTimestamp" => $newCommentTimestamp];
 		$statement->execute($parameters);
 	}
-
 	/**
 	 * deletes this Comment from mySQL
 	 *
@@ -467,16 +423,13 @@ class Comment implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function delete(\PDO $pdo): void {
-
 		// create query template
 		$query = "DELETE FROM comment WHERE commentId = :commentId";
 		$statement = $pdo->prepare($query);
-
 		// bind the member variables to the place holder in the template
 		$parameters = ["commentId" => $this->commentId->getBytes()];
 		$statement->execute($parameters);
 	}
-
 	/**
 	 * updates this Comment in mySQL
 	 *
@@ -485,17 +438,13 @@ class Comment implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function update(\PDO $pdo): void {
-
 		// create query template
 		$query = "UPDATE comment SET commentId = :commentId, commentProfileId = :commentProfileId, commentTrailId = :commentTrailId, commentContent = :commentContent, commentTimestamp = :commentTimestamp WHERE commentId = :commentId";
 		$statement = $pdo->prepare($query);
-
-
-		$newCommentTimestamp = $this->commentTimestamp->format("Y-m-d H:i:s.u");
+		$newCommentTimestamp = $this->commentTimestamp->format("Y-m-d H:i:s");
 		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId->getBytes(), "commentContent" => $this->commentContent, "commentTimestamp" => $newCommentTimestamp];
 		$statement->execute($parameters);
 	}
-
 	/**
 	 * formats the state variables for JSON serialization
 	 *
@@ -503,14 +452,11 @@ class Comment implements \JsonSerializable {
 	 **/
 	public function jsonSerialize(): array {
 		$fields = get_object_vars($this);
-
 		$fields["commentId"] = $this->commentId->toString();
 		$fields["commentProfileId"] = $this->commentProfileId->toString();
 		$fields["commentTrailId"] = $this->commentTrailId->toString();
-
 		//format the date so that the front end can consume it
 		$fields["commentTimestamp"] = round(floatval($this->commentTimestamp->format("U.u")) * 1000);
 		return ($fields);
 	}
 }
-
