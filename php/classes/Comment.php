@@ -415,8 +415,7 @@ class Comment implements \JsonSerializable {
 			throw(new \PDOException("comment content is invalid"));
 		}
 		// escape any mySQL wild cards
-		$commentTimestamp = str_replace("_", "\\_", str_replace("%", "\\%", $commentTimestamp
-		));
+		$commentTimestamp = str_replace("_", "\\_", str_replace("%", "\\%", $commentTimestamp));
 		// create query template
 		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment WHERE commentTimestamp LIKE :commentTimestamp";
 		$statement = $pdo->prepare($query);
