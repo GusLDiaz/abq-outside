@@ -169,7 +169,7 @@ class Comment implements \JsonSerializable {
 			throw(new \InvalidArgumentException("comment content is empty or insecure"));
 		}
 		// verify the comment content id will fit in the database
-		if(strlen($newCommentContent) > 256) {
+		if(strlen($newCommentContent) > 255) {
 			throw(new \RangeException("comment content too large"));
 		}
 		// store the comment content
