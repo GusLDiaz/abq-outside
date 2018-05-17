@@ -10,7 +10,7 @@ require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
 /**
  * Full PHPUnit test for the Tweet class
  *
- * This is a complete PHPUnit test of the Comment class. It is complete because *ALL* enabled methods
+ * This is a complete                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              PHPUnit test of the Comment class. It is complete because *ALL* enabled methods
  * are tested for both invalid and valid inputs.
  *
  * @see Comment

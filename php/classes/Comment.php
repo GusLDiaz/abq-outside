@@ -70,6 +70,7 @@ class Comment implements \JsonSerializable {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 	}
+
 	/**
 	 * accessor method for comment id
 	 *
@@ -78,6 +79,7 @@ class Comment implements \JsonSerializable {
 	public function getCommentId(): Uuid {
 		return ($this->commentId);
 	}
+
 	/**
 	 * mutator method for comment id
 	 *
@@ -95,6 +97,7 @@ class Comment implements \JsonSerializable {
 		// convert and store the comment id
 		$this->commentId = $newCommentId;
 	}
+
 	/**
 	 * accessor method for comment profile id
 	 *
@@ -103,6 +106,7 @@ class Comment implements \JsonSerializable {
 	public function getCommentProfileId(): Uuid {
 		return ($this->commentProfileId);
 	}
+
 	/**
 	 * mutator method for comment profile id
 	 *
@@ -120,6 +124,7 @@ class Comment implements \JsonSerializable {
 		// convert and store the comment profile id
 		$this->commentProfileId = $newCommentProfileId;
 	}
+
 	/**
 	 * accessor method for comment trail id
 	 *
@@ -128,6 +133,7 @@ class Comment implements \JsonSerializable {
 	public function getCommentTrailId(): Uuid {
 		return ($this->commentTrailId);
 	}
+
 	/**
 	 * mutator method for comment trail id
 	 *
@@ -145,6 +151,7 @@ class Comment implements \JsonSerializable {
 		// convert and store the comment trail id
 		$this->commentTrailId = $newCommentTrailId;
 	}
+
 	/**
 	 * accessor method for comment content
 	 *
@@ -153,6 +160,7 @@ class Comment implements \JsonSerializable {
 	public function getCommentContent(): string {
 		return ($this->commentContent);
 	}
+
 	/**
 	 * mutator method for comment content
 	 *
@@ -175,6 +183,7 @@ class Comment implements \JsonSerializable {
 		// store the comment content
 		$this->commentContent = $newCommentContent;
 	}
+
 	/**
 	 * accessor method for comment Timestap
 	 *
@@ -183,6 +192,7 @@ class Comment implements \JsonSerializable {
 	public function getCommentTimestamp(): \DateTime {
 		return ($this->commentTimestamp);
 	}
+
 	/**
 	 * mutator method for comment timestamp
 	 *
@@ -205,6 +215,7 @@ class Comment implements \JsonSerializable {
 		}
 		$this->commentTimestamp = $newCommentTimestamp;
 	}
+
 	/**
 	 * gets the Comment by commentId
 	 *
@@ -241,6 +252,7 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comment);
 	}
+
 	/**
 	 * gets the Comment by commentProfileId
 	 *
@@ -277,6 +289,7 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comments);
 	}
+
 	/**
 	 * gets the Comment by commentTrailId
 	 *
@@ -384,6 +397,7 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comments);
 	}
+
 	/**
 	 * gets the Comments by commentTimestamp
 	 *
@@ -425,6 +439,7 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comments);
 	}
+
 	/**
 	 * inserts this Comment into mySQL
 	 *
@@ -441,6 +456,7 @@ class Comment implements \JsonSerializable {
 		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId->getBytes(), "commentContent" => $this->commentContent, "commentTimestamp" => $newCommentTimestamp];
 		$statement->execute($parameters);
 	}
+
 	/**
 	 * deletes this Comment from mySQL
 	 *
@@ -456,6 +472,7 @@ class Comment implements \JsonSerializable {
 		$parameters = ["commentId" => $this->commentId->getBytes()];
 		$statement->execute($parameters);
 	}
+
 	/**
 	 * updates this Comment in mySQL
 	 *
@@ -471,6 +488,7 @@ class Comment implements \JsonSerializable {
 		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId->getBytes(), "commentContent" => $this->commentContent, "commentTimestamp" => $newCommentTimestamp];
 		$statement->execute($parameters);
 	}
+
 	/**
 	 * formats the state variables for JSON serialization
 	 *
