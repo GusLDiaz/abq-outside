@@ -4,7 +4,7 @@ require_once("autoload.php");
 require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**
- * This is the Trail class where we find data about each trail such as Id, External Id, Address, Image, Name, Location, Summary, Ascent, Rating, Length, Latitude and Longitude.
+ * This is the Trail class where we find data about each trail such as ID, Address, Ascent, External ID, Image, Latitude, Length, Location, Longitude, Name, Rating and Summary.
  *
  * @author Jullyane Hawkins <jhawkins20@cnm.edu>
  * @version 4.0.0
@@ -12,63 +12,62 @@ use Ramsey\Uuid\Uuid;
 class Trail implements \JsonSerializable {
 	use ValidateUuid;
 	/**
-	 * id for this Trail; this is the primary key
+	 * trail's id; this is the primary key
 	 * @var Uuid $trailId
 	 **/
 	protected $trailId;
 	/**
-	 * physical address for this Trail
+	 * trail's address
 	 * @var string $trailAddress
 	 **/
 	protected $trailAddress;
 	/**
-	 * ascent of this Trail
+	 * trail's ascent
 	 * @var int $trailAscent
 	 **/
 	protected $trailAscent;
 	/**
-	 * external id (from API)for this Trail
+	 * trail's external id (from API)
 	 * @var string $trailExternalId
 	 **/
 	protected $trailExternalId;
-
 	/**
-	 * image of this Trail
+	 * trail's image
 	 * @var string $trailImage
 	 **/
 	protected $trailImage;
 	/**
-	 * latitude of this Trail
+	 * trail's latitude
 	 * @var float $trailLat;
 	 **/
 	protected $trailLat;
 	/**
-	 * length of this Trail
+	 * trail's length
 	 * @var float $trailLength;
 	 **/
 	protected $trailLength;
 	/**
-	 * detailed description of this Trail location
+	 *  trail's location
 	 * @var string $trailLocation
 	 **/
 	protected $trailLocation;
 	/**
-	 * longitude of this Trail
+	 * trail's longitude
 	 * @var float $trailLong;
 	 **/
 	protected $trailLong;
 	/**
-	 * name of this Trail
+	 * trail's name
 	 * @var string $trailName
 	 **/
 	protected $trailName;
 	/**
-	 * rating of this Trail
+	 * trail's rating
 	 * @var float $trailRating
 	 **/
 	protected $trailRating;
 	/**
-	 * summary of this Trail
+	 * trail's summary
 	 * @var string $trailSummary
 	 **/
 	protected $trailSummary;
@@ -180,7 +179,7 @@ class Trail implements \JsonSerializable {
 	 *
 	 * @param int $newTrailAscent new value of trail ascent
 	 * @throws \InvalidArgumentException if $newTrailAscent is not an int or insecure
-	 * @throws \RangeException if $newTrailAscent is > 255 characters
+	 * @throws \RangeException if $newTrailAscent is < -32768 and > 32767
 	 * @throws \TypeError if $newTrailAscent is not an int
 	 **/
 	public function setTrailAscent(int $newTrailAscent) {
@@ -202,6 +201,7 @@ class Trail implements \JsonSerializable {
 	 *
 	 * @param string $newTrailExternalId new value of trail external id
 	 * @throws \RangeException if $newTrailExternalId is not positive
+	 * @throws \RangeException if $newTrailAddress is > 200 characters
 	 * @throws \TypeError if $newTrailExternalId is not a uuid or string
 	 **/
 	public function setTrailExternalId(string $newTrailExternalId) : void {
@@ -284,7 +284,7 @@ class Trail implements \JsonSerializable {
 	 *
 	 * @param float $newTrailLength new value of trail length
 	 * @throws \InvalidArgumentException if $newTrailLength is not a float or insecure
-	 * @throws \RangeException if $newTrailLength is not within 1 - 100
+	 * @throws \RangeException if $newTrailLength is not within 0.01 - 100
 	 * @throws \TypeError if $newTrailLength is not a float
 	 **/
 	public function setTrailLength(float $newTrailLength) : void {
@@ -396,16 +396,16 @@ class Trail implements \JsonSerializable {
 	 *
 	 * @param float $newTrailRating new value of trail rating
 	 * @throws \InvalidArgumentException if $newTrailRating is not an float or insecure
-	 * @throws \RangeException if $newTrailLong is not within -180 to 180
+	 * @throws \RangeException if $newTrailLong is not within 0 to 5
 	 * @throws \TypeError if $newTrailRating is not a float
 	 **/
 	public function setTrailRating(float $newTrailRating) {
 		// verify the ratings exists
 		if(floatval($newTrailRating) > 5) {
-			throw(new \RangeException("trail rating is not between -180 and 180"));
+			throw(new \RangeException("trail rating is not between 0 and 5"));
 		}
 		if (floatval($newTrailRating) < 0) {
-			throw(new \RangeException("trail rating is not between -180 and 180"));
+			throw(new \RangeException("trail rating is not between 0 and 5"));
 		}
 		// store the rating
 		$this->trailRating = $newTrailRating;

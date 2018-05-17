@@ -51,7 +51,7 @@ class DataDownloader {
 //		}
 		$trailsX = self::readDataJson($urlG);
 		//var_dump($trailsX);
-		$pdo = getEncryptedSqlConnection("/etc/apache2/capstone-mysql/outside.ini");
+		//$pdo = getEncryptedSqlConnection("/etc/apache2/capstone-mysql/outside.ini");
 		$imgCount=0;
 		$sumCount=0;
 		$trailCount=0;
@@ -88,7 +88,7 @@ class DataDownloader {
 			var_dump($imgCount);
 			var_dump($sumCount);
 			var_dump($trailCount);
-			$trail->insert($pdo);
+			//$trail->insert($pdo);
 			} catch(\TypeError $typeError) {
 				echo("Gus");
 			}
