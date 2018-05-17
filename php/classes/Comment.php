@@ -207,7 +207,7 @@ class Comment implements \JsonSerializable {
 	public function setCommentTimestamp($newCommentTimestamp = null): void {
 		// base case: if the date is null, use the current date and time
 		if($newCommentTimestamp === null) {
-			$this->getCommentTimestamp = new \DateTime();
+			$this->commentTimestamp = new \DateTime();
 			return;
 		}
 
@@ -399,7 +399,7 @@ class Comment implements \JsonSerializable {
 	 * gets the Comments by commentTimestamp
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $commentDate comment time stamp to search for
+	 * @param \DateTime $commentTimestamp comment time stamp to search for
 	 * @return \SplFixedArray SplFixedArray of Comments found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
@@ -454,8 +454,8 @@ class Comment implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$formattedDate = $this->commentTimestamp->format("Y-m-d H:i:s.u");
-		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId->getBytes(), "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
+		$newCommentTimestamp = $this->commentTimestamp->format("Y-m-d H:i:s.u");
+		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId->getBytes(), "commentContent" => $this->commentContent, "commentTimestamp" => $newCommentTimestamp];
 		$statement->execute($parameters);
 	}
 
@@ -491,8 +491,8 @@ class Comment implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 
-		$formattedDate = $this->commentTimestamp->format("Y-m-d H:i:s.u");
-		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId, "commentContent" => $this->commentContent, "commentTimestamp" => $formattedDate];
+		$newCommentTimestamp = $this->commentTimestamp->format("Y-m-d H:i:s.u");
+		$parameters = ["commentId" => $this->commentId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentTrailId" => $this->commentTrailId->getBytes(), "commentContent" => $this->commentContent, "commentTimestamp" => $newCommentTimestamp];
 		$statement->execute($parameters);
 	}
 
