@@ -72,7 +72,7 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for comment id
+	 * acessor method for comment id
 	 *
 	 * @return Uuid value of comment id
 	 **/
@@ -153,9 +153,9 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for comment content
+	 * accessor method for comment Content
 	 *
-	 * @return string value of comment content
+	 * @return string value of comment Content
 	 **/
 	public function getCommentContent(): string {
 		return ($this->commentContent);
@@ -185,9 +185,9 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for comment Timestap
+	 * accessor method for comment Timestamp
 	 *
-	 * @return \DateTime value of comment timestamp
+	 * @return \DateTime value of comment Timestamp
 	 **/
 	public function getCommentTimestamp(): \DateTime {
 		return ($this->commentTimestamp);
@@ -326,37 +326,7 @@ class Comment implements \JsonSerializable {
 		}
 		return ($comments);
 	}
-//	public static function getCommentByCommentTrailId(\PDO $pdo, $commentTrailId): \SplFixedArray {
-//		// sanitize the description before searching
-//		$commentTrailId = trim($commentTrailId);
-//		$commentTrailId = filter_var($commentTrailId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-//		if(empty($commentTrailId) === true) {
-//			throw(new \PDOException("comment trail id is invalid"));
-//		}
-//		// escape any mySQL wild cards
-//		$commentTrailId = str_replace("_", "\\_", str_replace("%", "\\%", $commentTrailId));
-//		// create query template
-//		$query = "SELECT commentId, commentProfileId, commentTrailId, commentContent, commentTimestamp FROM comment WHERE commentTrailId LIKE :commentTrailId";
-//		$statement = $pdo->prepare($query);
-//		// bind the comment trail id to the place holder in the template
-//		$commentTrailId = "%$commentTrailId%";
-//		$parameters = ["commentTrailId" => $commentTrailId->getBytes()];
-//		$statement->execute($parameters);
-//		// build an array of comments
-//		$comments = new \SplFixedArray($statement->rowCount());
-//		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-//		while(($row = $statement->fetch()) !== false) {
-//			try {
-//				$comment = new Comment($row["commentId"], $row["commentProfileId"], $row["commentTrailId"], $row["commentContent"], $row["commentTimestamp"]);
-//				$comments[$comments->key()] = $comment;
-//				$comments->next();
-//			} catch(\Exception $exception) {
-//				// if the row couldn't be converted, rethrow it
-//				throw(new \PDOException($exception->getMessage(), 0, $exception));
-//			}
-//		}
-//		return ($comments);
-//	}
+
 	/**
 	 * gets the Comment by commentContent
 	 *
