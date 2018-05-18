@@ -11,6 +11,7 @@ use Ramsey\Uuid\Uuid;
  *
  * @author Dylan McDonald <dmcdonald21@cnm.edu>
  * @author Michael Figueroa <mfigueroa14@cnm.edu>
+ * @version 1.0.0
  **/
 class Profile implements \JsonSerializable {
 	use ValidateUuid;

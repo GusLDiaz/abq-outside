@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
  *
  * @author Edith Thakkar <egarcia262@cnm.edu>
  * @author Dylan McDonald <dmcdonald21@cnm.edu>
- * @version 3.0.0
+ * @version 1.0.0
  **/
 class Comment implements \JsonSerializable {
 	use ValidateUuid;

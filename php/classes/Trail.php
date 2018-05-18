@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
  * This is the Trail class where we find data about each trail such as ID, Address, Ascent, External ID, Image, Latitude, Length, Location, Longitude, Name, Rating and Summary.
  *
  * @author Jullyane Hawkins <jhawkins20@cnm.edu>
- * @version 4.0.0
+ * @version 1.0.0
  **/
 class Trail implements \JsonSerializable {
 	use ValidateUuid;
