@@ -3,13 +3,12 @@
 namespace Edu\Cnm\AbqOutside;
 require_once("autoload.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
-//use Ramsey\Uuid\Uuid;
 require_once (dirname(__DIR__, 1) . "/lib/uuid.php");
 
 class DataDownloader {
 	/**
 	 * https://www.hikingproject.com/data/get-trails?lat=40.0274&lon=-105.2519&maxDistance=10&key=200265
-	 * two options: GetTrails, GetTrailsbyTrailId
+	 * two options: GetTrails, GetTrailsByTrailId
 	 *   method Get trails:
 	 *
 	 *Required Args:
@@ -39,19 +38,11 @@ class DataDownloader {
 	 * |||||||
 	 */
 
-//	public static function craftUrl() {
-//	};
-
 	public static function pullTrails() {
 		$trailsX = null;
 		$urlG = "https://www.hikingproject.com/data/get-trails?lat=35.085470&lon=-106.649072&maxDistance=200&maxResults=500&key=200265121-1809e265008042f9977e435839863103";
-//		try {
-//			$features = DataDownloader::readDataJson($urlG);
-//		} catch
-//		}
 		$trailsX = self::readDataJson($urlG);
-		//var_dump($trailsX);
-		//$pdo = getEncryptedSqlConnection("/etc/apache2/capstone-mysql/outside.ini");
+		$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/outside.ini");
 		$imgCount=0;
 		$sumCount=0;
 		$trailCount=0;
@@ -88,7 +79,7 @@ class DataDownloader {
 			var_dump($imgCount);
 			var_dump($sumCount);
 			var_dump($trailCount);
-			//$trail->insert($pdo);
+			$trail->insert($pdo);
 			} catch(\TypeError $typeError) {
 				echo("Gus");
 			}
@@ -110,7 +101,7 @@ class DataDownloader {
 			$jsonConverted = json_decode($jsonData);
 			//format
 			$jsonFeatures = $jsonConverted->trails;
-			//create array from the converted Json file
+
 			$trailsX = \SplFixedArray::fromArray($jsonFeatures);
 		} catch(\Exception $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
