@@ -31,3 +31,28 @@ try {
 	$commentProfileId = $id = filter_input(INPUT_GET, "commentProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$commentTrailId = $id = filter_input(INPUT_GET, "commentTrailId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	if($method === "GET") {
+		//set XSRF cookie
+		setXsrfCookie();
+		//gets a specific comment based on its commentId
+		if(empty($id) === false) {
+			$comment = Comment::getCommentByCommentId($pdo, $id);
+			if($comment !== null) {
+				$reply->data = $comment;
+			}
+			//get all the comments associated with a profileId
+		} else if(empty($commentProfileId) === false) {
+			$comment = Comment::getCommentByCommentProfileId($pdo, $commentProfileId)->toArray();
+			if($comment !== null) {
+				$reply->data = $comment;
+			}
+			//get all the comments associated with the trailId
+		} else if(empty($commentTrailId) === false) {
+			$comment = Comment::getCommentByCommentTrailId($pdo, $commentTrailId)->toArray();
+			if($comment !== null) {
+				$reply->data = $comment;
+			}
+		} else {
+			throw new InvalidArgumentException("incorrect search parameters ", 404);
+		}
+	}
+}}
