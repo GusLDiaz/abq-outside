@@ -31,11 +31,24 @@ try {
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/outside.ini");
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 //sanitize input (id ~profileId)
-	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileActivationToken = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$trailId = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	//$trailAdddress=
+	$trailAscent = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileUserName = filter_input(INPUT_GET, "profileUserName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$trailvalue
+	$trailExternalId;
+	$trailImage = filter_input(INPUT_GET, "trailImage", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$trailLat = filter_input(INPUT_GET, "trailLat", FILTER_SANITIZE_NUMBER_FLOAT);
+	$trailLength = filter_input(INPUT_GET, "trailLat", FILTER_SANITIZE_NUMBER_FLOAT);
+	$trailLocation = filter_input(INPUT_GET, "trailLocation", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$trailLong;
+	$trailName = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$trailRating;
+	$trailSummary = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+	$distance = filter_input(INPUT_GET, "distance", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+	$userLat = filter_input(INPUT_GET, "userLat", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+	$userLong = filter_input(INPUT_GET, "userLong", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 	if($method === "GET") {
 //set XSRF cookie
 		setXsrfCookie();
@@ -50,3 +63,19 @@ try {
 			if($trail !== null) {
 				$reply->data = $trail;
 			}
+
+		} catch(Exception $exception) {
+			$reply->status = $exception->getCode();
+			$reply->message = $exception->getMessage();
+			$reply->trace = $exception->getTraceAsString();
+		} catch(TypeError $typeError) {
+			$reply->status = $typeError->getCode();
+			$reply->message = $typeError->getMessage();
+		}
+// In these lines, the Exceptions are caught and the $reply object is updated with the data from the caught exception. Note that $reply->status will be updated with the correct error code in the case of an Exception.
+header("Content-type: application/json");
+// sets up the response header.
+if($reply->data === null) {
+	unset($reply->data);
+}
+echo json_encode($reply);
