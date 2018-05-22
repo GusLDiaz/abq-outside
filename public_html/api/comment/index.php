@@ -54,5 +54,3 @@ try {
 		} else {
 			throw new InvalidArgumentException("incorrect search parameters ", 404);
 		}
-	}
-}}
