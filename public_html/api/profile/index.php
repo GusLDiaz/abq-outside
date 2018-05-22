@@ -40,13 +40,21 @@ try {
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
-		} else if(empty($profileEmail) === false) {
+		}
+		else if(empty($profileEmail) === false) {
+			$profile = Profile::getProfileByProfileRefreshToken($pdo, $profileRefreshToken);
+			if($profile !== null) {
+				$reply->data = $profile;
+			}
+		}
+		else if(empty($profileEmail) === false) {
 			$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
 		}
-	} elseif($method === "PUT") {
+	}
+	elseif($method === "PUT") {
 		//enforce that the XSRF token is present in the header
 		verifyXsrf();
 		//enforce the end user has a JWT token
