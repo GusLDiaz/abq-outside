@@ -75,3 +75,30 @@ try {
 		header('Location: ' . $auth_url);
 		die('Redirect');
 	} else {
+
+		$params = ['code' => $_GET['code'], 'redirect_uri' => $REDIRECT_URI];
+		$response = $client->getAccessToken($TOKEN_ENDPOINT, 'authorization_code', $params);
+		parse_str($response['result'], $info);
+		$client->setAccessToken($info['access_token']);
+		$profileGithubToken = $info['access_token'];
+		$response = $client->fetch('https://api.github.com/user', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
+		$profileName = $response["result"]["login"];
+		$profileImage = $response["result"]["avatar_url"];
+		$response = $client->fetch('https://api.github.com/user/emails', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
+
+		// get profile by email to see if it exists, if it does not then create a new one
+		$profile = Profile::getProfileByProfileUsername($pdo, $profileName);
+		if(($profile) === null) {
+			// create a new profile
+			$user = new Profile(generateUuidV4(), $profileImage, $profileGithubToken, $profileName);
+			$user->insert($pdo);
+			$reply->message = "Welcome to Deep Dive Tutor!";
+		} else {
+			$reply->message = "Welcome back to Deep Dive Tutor!";
+		}
+		//grab profile from database and put into a session
+		$profile = Profile::getProfileByProfileUsername($pdo, $profileName);
+		$_SESSION["profile"] = $profile;
+
+		header("Location: ../../");
+	}
