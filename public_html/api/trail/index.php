@@ -50,15 +50,14 @@ try {
 			$trail = Trail::getTrailByDistance($pdo, $userLong, $userLat, $distance)->toArray();
 			if($trail !== null) {
 				$reply->data = $trail;
-
-		} catch(\Exception $exception) {
-			$reply->status = $exception->getCode();
-			$reply->message = $exception->getMessage();
-			$reply->trace = $exception->getTraceAsString();
-		} catch(\TypeError $typeError) {
-			$reply->status = $typeError->getCode();
-			$reply->message = $typeError->getMessage();
+			}
 		}
+	}
+}catch(\Exception | \TypeError $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+	$reply->trace = $exception->getTraceAsString();
+	}
 // In these lines, the Exceptions are caught and the $reply object is updated with the data from the caught exception. Note that $reply->status will be updated with the correct error code in the case of an Exception.
 header("Content-type: application/json");
 // sets up the response header.
