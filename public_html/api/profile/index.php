@@ -74,7 +74,8 @@ try {
 		$profile->update($pdo);
 		// update reply
 		$reply->message = "Profile information updated";
-	} elseif($method === "DELETE") {
+	}
+	else if($method === "DELETE") {
 		//verify the XSRF Token
 		verifyXsrf();
 		//enforce the end user has a JWT token
