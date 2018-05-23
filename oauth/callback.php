@@ -24,7 +24,7 @@ function
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $URL);
 	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $postParams),
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $postParams);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 	$response = curl_exec($ch);
@@ -40,8 +40,4 @@ function
 		header('Location: https://bootcamp-coders.cnm.edu/');
 		exit;
 	}
-
-	echo
-	var_dump()
-
 ?>
