@@ -54,3 +54,17 @@ try {
 		} else {
 			throw new InvalidArgumentException("incorrect search parameters ", 404);
 		}
+		/**
+		 * Post for Comment
+		 **/
+	} else if($method === "POST") {
+		//enforce that the end user has a XSRF token
+		verifyXsrf();
+		//enforce the end user has a JWT token
+		validateJwtHeader();
+//decode the response from the front end
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
+		if(empty($requestObject->commentProfileId) === true) {
+			throw (new \InvalidArgumentException("no profile linked to the comment", 405));
+		}
