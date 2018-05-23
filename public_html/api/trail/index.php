@@ -32,19 +32,8 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 //sanitize input (id ~profileId)
 	$trailId = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-//	$trailAddress=
-//	$trailAscent = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-//	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-//	$profileUserName = filter_input(INPUT_GET, "profileUserName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-//	$trailExternalId = filter_input(INPUT_GET, "traia", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-//	$trailImage = filter_input(INPUT_GET, "trailImage", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-//	$trailLat = filter_input(INPUT_GET, "trailLat", FILTER_SANITIZE_NUMBER_FLOAT);
 	$trailLength = filter_input(INPUT_GET, "trailLat", FILTER_SANITIZE_NUMBER_FLOAT);
-//	$trailLocation = filter_input(INPUT_GET, "trailLocation", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-//	$trailLong;
-//	$trailName = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-//	$trailRating;
-//	$trailSummary = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
 
 	$distance = filter_input(INPUT_GET, "distance", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 	$userLat = filter_input(INPUT_GET, "userLat", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -52,8 +41,8 @@ try {
 	if($method === "GET") {
 //set XSRF cookie
 		setXsrfCookie();
-		if(empty($id) === false) {
-			$trail = Trail::getTrailByTrailId($pdo, $id);
+		if(empty($trailId) === false) {
+			$trail = Trail::getTrailByTrailId($pdo, $trailId);
 			if($trail !== null) {
 				$reply->data = $trail;
 			}
