@@ -62,8 +62,8 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the MySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/deepDiveOauth.ini");
-	$config = readConfig("/etc/apache2/capstone-mysql/deepDiveOauth.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/outside.ini");
+	$config = readConfig("/etc/apache2/capstone-mysql/outside.ini");
 	$oauth = json_decode($config["github"]);
 	// now $oauth->github->clientId and $oauth->github->clientKey exist
 	$REDIRECT_URI = "https://bootcamp-coders.cnm.edu/~egarcia262/~outside/public_html/oauth";
