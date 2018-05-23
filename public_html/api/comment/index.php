@@ -62,9 +62,38 @@ try {
 		verifyXsrf();
 		//enforce the end user has a JWT token
 		validateJwtHeader();
-//decode the response from the front end
+		//decode the response from the front end
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 		if(empty($requestObject->commentProfileId) === true) {
 			throw (new \InvalidArgumentException("no profile linked to the comment", 405));
 		}
+		if(empty($requestObject->commentTrailId) === true) {
+			throw (new \InvalidArgumentException("no trail linked to the comment", 405));
+		}
+		if(empty($requestObject->commentTimestamp) === true) {
+		//$requestObject->commentTimestamp = date("y-m-d H:i:s");
+		}
+		// enforce the user is signed in
+		if(empty($_SESSION["profile"]) === true) {
+			throw(new \InvalidArgumentException("you must be logged in to comment on a trail", 403));
+		}
+		$commentId = generateUuidV4();
+		$comment = new Comment($commentId, $requestObject->commentTrailId, $_SESSION["profile"]->getProfileId(), $requestObject->commentContent, $requestObject->commentTimestamp);
+		$comment->insert($pdo);
+		$reply->message = "comment posted successfully";
+		// if any other HTTP request is sent throw an exception
+	} else {
+		throw new \InvalidArgumentException("invalid http request", 400);
+	}
+	//catch any exceptions that is thrown and update the reply status and message
+} catch(\Exception | \TypeError $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+}
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+// encode and return reply to front end caller
+echo json_encode($reply);
