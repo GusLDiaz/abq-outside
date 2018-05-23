@@ -6,13 +6,19 @@
     "swiftmailer/swiftmailer": "@stable",
     "lcobucci/jwt": "3.2",
     "ramsey/uuid": "@stable",
-    "phpdocumentor/phpdocumentor": "dev-master"
+    "phpdocumentor/phpdocumentor": "dev-master",
+    "adoy/oauth2": "@stable",
+    "phpunit/dbunit": "@stable",
+    "phpunit/phpunit": "@stable",
+    "ramsey/uuid": "@stable"
   },
 
   "scripts":{
     "apigen": "./vendor/bin/apigen generate ./php/classes/*.php --destination doc",
     "phpunit": "./vendor/bin/phpunit -c ./php/classes/Test --coverage-html coverage",
     "apiUnit": "./vendor/bin/phpunit -c ./php/classes/ApiTest --coverage-html coverage",
-    "phpdoc": "./vendor/bin/phpdoc run -d ./php/classes -t doc"
-  }
+    "phpdoc": "./vendor/bin/phpdoc run -d ./php/classes -t doc",
+    "phpdoc": "./vendor/bin/phpdoc -t doc -d ./php/classes",
+    "phpunit" : "./vendor/bin/phpunit -c ./php/classes/Test --coverage-html coverage"
+    }
 }
