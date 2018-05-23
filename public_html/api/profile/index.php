@@ -25,7 +25,8 @@ try {
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	// sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileId = filter_input(INPUT_GET, "profileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileRefreshToken= filter_input(INPUT_GET, "profileRefreshToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	// make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true )) {
@@ -36,7 +37,7 @@ try {
 		setXsrfCookie();
 		//gets a post by content
 		if(empty($id) === false) {
-			$profile = Profile::getProfileByProfileId($pdo, $id);
+			$profile = Profile::getProfileByProfileId($pdo, $profileId);
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
