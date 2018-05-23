@@ -80,7 +80,7 @@ try {
 		$response = $client->getAccessToken($TOKEN_ENDPOINT, 'authorization_code', $params);
 		parse_str($response['result'], $info);
 		$client->setAccessToken($info['access_token']);
-		$profileGithubToken = $info['access_token'];
+		$profileRefreshToken = $info['access_token'];
 		$response = $client->fetch('https://api.github.com/user', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
 		$profileName = $response["result"]["login"];
 		$profileImage = $response["result"]["avatar_url"];
@@ -90,11 +90,11 @@ try {
 		$profile = Profile::getProfileByProfileUsername($pdo, $profileName);
 		if(($profile) === null) {
 			// create a new profile
-			$user = new Profile(generateUuidV4(), $profileImage, $profileGithubToken, $profileName);
+			$user = new Profile(generateUuidV4(), $profileImage, $profileRefreshToken, $profileName);
 			$user->insert($pdo);
-			$reply->message = "Welcome to Deep Dive Tutor!";
+			$reply->message = "Welcome to Abq Outside!";
 		} else {
-			$reply->message = "Welcome back to Deep Dive Tutor!";
+			$reply->message = "Welcome back to Abq Outside!";
 		}
 		//grab profile from database and put into a session
 		$profile = Profile::getProfileByProfileUsername($pdo, $profileName);
