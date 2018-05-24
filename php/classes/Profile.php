@@ -55,7 +55,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct($newProfileId, string $newProfileEmail, string $newProfileImage, string $newProfileRefreshToken, string $newProfileUsername) {
+	public function __construct($newProfileId, string $newProfileEmail, ?string $newProfileImage, string $newProfileRefreshToken, string $newProfileUsername) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileEmail($newProfileEmail);
@@ -142,7 +142,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if $newProfileImage is not a string or insecure
 	 * @throws \TypeError if $newProfileImage is not a string
 	 **/
-	public function setProfileImage(string $newProfileImage): void {
+	public function setProfileImage(?string $newProfileImage): void {
 		// verify the profile image is secure
 		$newProfileImage = trim($newProfileImage);
 		$newProfileImage = filter_var($newProfileImage, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);

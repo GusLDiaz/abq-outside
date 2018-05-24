@@ -12,7 +12,7 @@ use Lcobucci\JWT\{
  * @param string $value name of the custom object that will be used for validation.
  * @param stdClass $content the actual object that will be used for authentication on the front end
  */
-function setJwtAndAuthHeader(string $value, stdClass $content): void {
+function setJwtAndAuthHeader(string $value, ?stdClass $content): void {
 //enforce that the session is active
 	if(session_status() !== PHP_SESSION_ACTIVE) {
 		throw(new RuntimeException("session not active"));
