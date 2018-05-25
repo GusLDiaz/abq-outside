@@ -3,6 +3,7 @@ require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
+require_once dirname(__DIR__, 3) . "/php/lib/jwt.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\AbqOutside\{
@@ -65,15 +66,11 @@ try {
 		//decode the response from the front end
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
-		if(empty($requestObject->commentProfileId) === true) {
-			throw (new \InvalidArgumentException("no profile linked to the comment", 405));
-		}
+
 		if(empty($requestObject->commentTrailId) === true) {
 			throw (new \InvalidArgumentException("no trail linked to the comment", 405));
 		}
-		if(empty($requestObject->commentTimestamp) === true) {
-		//$requestObject->commentTimestamp = date("y-m-d H:i:s");
-		}
+
 		// enforce the user is signed in
 		if(empty($_SESSION["profile"]) === true) {
 			throw(new \InvalidArgumentException("you must be logged in to comment on a trail", 403));

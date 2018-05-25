@@ -75,7 +75,7 @@ class DataDownloader {
 			try {
 			$trail = new Trail($trailId, $trailAddress, $trailAscent, $trailExternalId, $trailImage, $trailLat, $trailLength, $trailLocation, $trailLong, $trailName, $trailRating, $trailSummary);
 
-			var_dump($trail);
+			var_dump($trail->getTrailId()->toString());
 			var_dump($imgCount);
 			var_dump($sumCount);
 			var_dump($trailCount);
