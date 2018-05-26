@@ -10,7 +10,7 @@ use Edu\Cnm\AbqOutside\ {
 	Profile
 };
 /**
- * API for Tweet
+ * API for Profile
  *
  * @author Gkephart
  * @version 1.0
