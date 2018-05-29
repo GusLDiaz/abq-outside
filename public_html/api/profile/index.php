@@ -31,10 +31,6 @@ try {
 	// sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	// make sure the id is valid for methods that require it
-	if(($method === "POST" || $method === "PUT") && (empty($id) === true )) {
-		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
-	}
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
@@ -45,10 +41,12 @@ try {
 				$reply->data = $profile;
 			}
 		} elseif(empty($profileEmail) === false) {
-			$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
+			$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail)->toArray();
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
+		} else {
+			$reply->data = Profile::getAllProfiles($pdo)->toArray();
 		}
 	}
 	// catch any exceptions that were thrown and update the status and message state variable fields
