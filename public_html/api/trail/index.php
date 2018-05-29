@@ -41,21 +41,13 @@ try {
 		setXsrfCookie();
 		if(empty($trailId) === false) {
 			$trail = Trail::getTrailByTrailId($pdo, $trailId);
-			if($trail !== null) {
 				$reply->data = $trail;
 			}
 		} elseif(empty($userLat) === false && empty($userLong) === false && empty($distance) === false) {
 			$trail = Trail::getTrailByDistance($pdo, $userLong, $userLat, $distance)->toArray();
-			if($trail !== null) {
 				$reply->data = $trail;
-			}
-
 		} else {
-			$trails= Trail::getAllTrails($pdo)->toArray();
-		if($trails !== null) {
-			$reply->data = $trails;
-		}
-	}
+			$reply->data = Trail::getAllTrails($pdo)->toArray();
 	}
 }catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
