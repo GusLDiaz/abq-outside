@@ -46,7 +46,7 @@ try {
 				$reply->data = $profile;
 			}
 		} else {
-			$reply->data = Profile::getAllProfiles($pdo)->toArray();
+			$reply->data =[];
 		}
 	}
 	// catch any exceptions that were thrown and update the status and message state variable fields
