@@ -33,8 +33,6 @@ try {
 //sanitize input (id ~profileId)
 	$trailId = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$trailLength = filter_input(INPUT_GET, "trailLat", FILTER_SANITIZE_NUMBER_FLOAT);
-
-
 	$distance = filter_input(INPUT_GET, "distance", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 	$userLat = filter_input(INPUT_GET, "userLat", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 	$userLong = filter_input(INPUT_GET, "userLong", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -46,12 +44,18 @@ try {
 			if($trail !== null) {
 				$reply->data = $trail;
 			}
-		} else if(empty($userLat) === false && empty($userLong) === false && empty($distance) === false) {
+		} elseif(empty($userLat) === false && empty($userLong) === false && empty($distance) === false) {
 			$trail = Trail::getTrailByDistance($pdo, $userLong, $userLat, $distance)->toArray();
 			if($trail !== null) {
 				$reply->data = $trail;
 			}
+
+		} else {
+			$trails= Trail::getAllTrails($pdo)->toArray();
+		if($trails !== null) {
+			$reply->data = $trails;
 		}
+	}
 	}
 }catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
