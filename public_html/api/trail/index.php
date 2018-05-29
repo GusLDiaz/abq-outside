@@ -42,7 +42,6 @@ try {
 		if(empty($trailId) === false) {
 			$trail = Trail::getTrailByTrailId($pdo, $trailId);
 				$reply->data = $trail;
-			}
 		} elseif(empty($userLat) === false && empty($userLong) === false && empty($distance) === false) {
 			$trail = Trail::getTrailByDistance($pdo, $userLong, $userLat, $distance)->toArray();
 				$reply->data = $trail;
