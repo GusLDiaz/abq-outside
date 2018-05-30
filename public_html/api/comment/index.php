@@ -76,6 +76,7 @@ try {
 			throw(new \InvalidArgumentException("you must be logged in to comment on a trail", 403));
 		}
 		$commentId = generateUuidV4();
+		var_dump($_SESSION["profile"]->getProfileId()->toString());
 		$comment = new Comment($commentId, $requestObject->commentTrailId, $_SESSION["profile"]->getProfileId(), $requestObject->commentContent, $requestObject->commentTimestamp);
 		$comment->insert($pdo);
 		$reply->message = "comment posted successfully";
@@ -87,6 +88,7 @@ try {
 } catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
+
 }
 header("Content-type: application/json");
 if($reply->data === null) {

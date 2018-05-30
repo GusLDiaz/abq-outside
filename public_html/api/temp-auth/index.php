@@ -39,6 +39,7 @@ try {
 echo "3";
 	$profile = new Profile(generateUuidV4(), $randomEmail, $randomImage, $refreshToken, $userName );
 	$profile->insert($pdo);
+	echo "success";
 	$_SESSION["profile"] = $profile;
 	setXsrfCookie();
 	$object = new stdClass();
