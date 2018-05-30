@@ -31,6 +31,7 @@ try {
 	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
 	$commentProfileId = $id = filter_input(INPUT_GET, "commentProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$commentTrailId = $id = filter_input(INPUT_GET, "commentTrailId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$commentContent = filter_input(INPUT_GET, "commentContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
