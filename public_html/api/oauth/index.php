@@ -66,7 +66,7 @@ try {
 	$config = readConfig("/etc/apache2/capstone-mysql/outside.ini");
 	$oauth = json_decode($config["github"]);
 	// now $oauth->github->clientId and $oauth->github->clientKey exist
-	$REDIRECT_URI = "https://bootcamp-coders.cnm.edu/~egarcia262/abq-outside/public_html/oauth/";
+	$REDIRECT_URI = "https://bootcamp-coders.cnm.edu/~egarcia262/abq-outside/public_html/api/oauth/";
 	$AUTHORIZATION_ENDPOINT = 'https://github.com/login/oauth/authorize';
 	$TOKEN_ENDPOINT = 'https://github.com/login/oauth/authorize';
 	$client = new \OAuth2\Client($oauth->clientId, $oauth->clientKey);
