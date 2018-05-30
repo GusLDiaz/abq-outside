@@ -41,13 +41,13 @@ try {
 				$reply->data = $comment;
 			}
 			//get all the comments associated with a profileId
-		} else if(empty($commentProfileId) === false) {
+		} elseif(empty($commentProfileId) === false) {
 			$comment = Comment::getCommentByCommentProfileId($pdo, $commentProfileId)->toArray();
 			if($comment !== null) {
 				$reply->data = $comment;
 			}
 			//get all the comments associated with the trailId
-		} else if(empty($commentTrailId) === false) {
+		} elseif(empty($commentTrailId) === false) {
 			$comment = Comment::getCommentByCommentTrailId($pdo, $commentTrailId)->toArray();
 			if($comment !== null) {
 				$reply->data = $comment;
@@ -76,8 +76,8 @@ try {
 			throw(new \InvalidArgumentException("you must be logged in to comment on a trail", 403));
 		}
 		$commentId = generateUuidV4();
-		var_dump($_SESSION["profile"]->getProfileId()->toString());
-		$comment = new Comment($commentId,$_SESSION["profile"]->getProfileId(), $requestObject->commentTrailId,  $requestObject->commentContent, $requestObject->commentTimestamp);
+		$commentTimestamp = new \DateTime();
+		$comment = new Comment($commentId,$_SESSION["profile"]->getProfileId(), $requestObject->commentTrailId,  $requestObject->commentContent, null);
 		$comment->insert($pdo);
 		$reply->message = "comment posted successfully";
 		// if any other HTTP request is sent throw an exception
