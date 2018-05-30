@@ -49,7 +49,7 @@ try {
 			$reply->data = Trail::getAllTrails($pdo)->toArray();
 		}
 	}
-}catch(\Exception | \TypeError $exception) {
+} catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 	$reply->trace = $exception->getTraceAsString();
