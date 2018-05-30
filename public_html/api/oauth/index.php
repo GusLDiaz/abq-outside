@@ -5,7 +5,9 @@ require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\AbqOutside;
+use Edu\Cnm\AbqOutside\{
+	Comment, Profile, Trail
+};
 
 /**  ___________________________________
  *
@@ -66,7 +68,7 @@ try {
 	$config = readConfig("/etc/apache2/capstone-mysql/outside.ini");
 	$oauth = json_decode($config["github"]);
 	// now $oauth->github->clientId and $oauth->github->clientKey exist
-	$REDIRECT_URI = "https://bootcamp-coders.cnm.edu/~egarcia262/abq-outside/public_html/api/oauth/";
+	$REDIRECT_URI = "https://bootcamp-coders.cnm.edu/~egarcia262/abq-outside/public_html/oauth";
 	$AUTHORIZATION_ENDPOINT = 'https://github.com/login/oauth/authorize';
 	$TOKEN_ENDPOINT = 'https://github.com/login/oauth/authorize';
 	$client = new \OAuth2\Client($oauth->clientId, $oauth->clientKey);
