@@ -79,9 +79,9 @@ try {
 	} else {
 
 		$params = ['code' => $_GET['code'], 'redirect_uri' => $REDIRECT_URI];
-		$response = $client->getAccessToken($TOKEN_ENDPOINT, 'authorization_code', $params);
+		$response = $client->getProfileRefreshToken($TOKEN_ENDPOINT, 'authorization_code', $params);
 		parse_str($response['result'], $info);
-		$client->setAccessToken($info['access_token']);
+		$client->setProfileRefreshToken($info['access_token']);
 		$profileRefreshToken = $info['access_token'];
 		$response = $client->fetch('https://api.github.com/user', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
 		$profileName = $response["result"]["login"];
