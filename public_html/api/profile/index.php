@@ -41,7 +41,7 @@ try {
 				$reply->data = $profile;
 			}
 		} elseif(empty($profileEmail) === false) {
-			$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail)->toArray();
+			$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
