@@ -91,7 +91,8 @@ try {
 		$profileImage = $response["result"]["avatar_url"];
 
 		$response = $client->fetch('https://api.github.com/user/emails', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
-		for($i = 0; $i <= 10; $i++) {
+		for($i = 0;$i<=count($response["result"]) ; $i++) {
+
 			$primaryBoolean= $response["result"][$i]["primary"];
 			if($primaryBoolean === true) {
 				$profileEmail = $response["result"][$i]["email"];
