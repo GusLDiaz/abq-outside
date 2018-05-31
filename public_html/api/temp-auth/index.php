@@ -10,11 +10,6 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\AbqOutside\{
 	Comment, Profile, Trail
 };
-/**
- * api for the Comment class
- *
- * @author Jullyane Hawkins <jullyanehawkins@gmail.com>
- **/
 //verify the session, start if not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();

@@ -78,30 +78,33 @@ try {
 		die('Redirect');
 	} else {
 
-		$profileGithubToken = "";
-
 		$params = ['code' => $_GET['code'], 'redirect_uri' => $REDIRECT_URI];
-		$response = $client->getProfileRefreshToken($TOKEN_ENDPOINT, 'authorization_code', $params);
+		$response = $client->getAccessToken($TOKEN_ENDPOINT, 'authorization_code', $params);
 		parse_str($response['result'], $info);
-		$client->setProfileRefreshToken($info['access_token']);
-		$profileGithubToken = $info['access_token'];
+		var_dump($info);
+		$client->setAccessToken($info['access_token']);
+		$profileRefreshToken = $info['access_token'];
+		var_dump($profileRefreshToken);
 		$response = $client->fetch('https://api.github.com/user', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
-		$profileName = $response["result"]["login"];
+		var_dump($response);
+//		$profileEmail = $response["result"][""]
+		$profileUsername = $response["result"]["login"];
 		$profileImage = $response["result"]["avatar_url"];
 		$response = $client->fetch('https://api.github.com/user/emails', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
-
+		var_dump($profileUsername);
 		// get profile by email to see if it exists, if it does not then create a new one
-		$profile = Profile::getProfileByProfileUsername($pdo, $profileName);
+		$profile = Profile::getProfileByProfileUsername($pdo, $profileUsername);
+		var_dump($profile);
 		if(($profile) === null) {
 			// create a new profile
-			$user = new Profile(generateUuidV4(), $profileImage, $profileRefreshToken, $profileName);
+			$user = new Profile(generateUuidV4(), $profileEmail, $profileImage, $profileRefreshToken, $profileUsername);
 			$user->insert($pdo);
 			$reply->message = "Welcome to Abq Outside!";
 		} else {
 			$reply->message = "Welcome back to Abq Outside!";
 		}
 		//grab profile from database and put into a session
-		$profile = Profile::getProfileByProfileUsername($pdo, $profileName);
+		$profile = Profile::getProfileByProfileUsername($pdo, $profileUsername);
 		$_SESSION["profile"] = $profile;
 
 		header("Location: ../../");
