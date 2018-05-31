@@ -91,9 +91,13 @@ try {
 		$profileImage = $response["result"]["avatar_url"];
 
 		$response = $client->fetch('https://api.github.com/user/emails', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
-		$profileEmail = $response["result"]["0"]["email"];
-//var_dump($response);
-//		var_dump($profileUsername);
+		for($i = 0; $i <= 10; $i++) {
+			$primaryBoolean= $response["result"][$i]["primary"];
+			if($primaryBoolean === true) {
+				$profileEmail = $response["result"][$i]["email"];
+			}
+		}
+
 		// get profile by email to see if it exists, if it does not then create a new one
 		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 		var_dump($profile);
