@@ -87,11 +87,11 @@ try {
 		var_dump($profileRefreshToken);
 		$response = $client->fetch('https://api.github.com/user', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
 		var_dump($response);
-//		$profileEmail = $response["result"][""]
 		$profileUsername = $response["result"]["login"];
 		$profileImage = $response["result"]["avatar_url"];
-		$response = $client->fetch('https://api.github.com/user/emails', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
-		var_dump($response);
+		$profileEmail = $response["result"]["email"];
+//		$response = $client->fetch('https://api.github.com/user/emails', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
+//		var_dump($response);
 //		var_dump($profileUsername);
 		// get profile by email to see if it exists, if it does not then create a new one
 		$profile = Profile::getProfileByProfileUsername($pdo, $profileUsername);
