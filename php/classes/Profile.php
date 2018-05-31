@@ -178,7 +178,7 @@ class Profile implements \JsonSerializable {
 		}
 		$newProfileRefreshToken = strtolower(trim($newProfileRefreshToken));
 		if(ctype_xdigit($newProfileRefreshToken) === false) {
-			throw(new\InvalidArgumentException("useq	r activation is not valid"));
+			throw(new\RangeException("user activation is not valid"));
 		}
 		//make sure user activation token is only 128 characters
 		if(strlen($newProfileRefreshToken) > 128) {
@@ -404,6 +404,7 @@ class Profile implements \JsonSerializable {
 		//create the query template
 		$query = "SELECT profileId, profileEmail, profileImage, profileRefreshToken, profileUsername FROM profile WHERE profileRefreshToken = :profileRefreshToken";
 		$statement = $pdo->prepare($query);
+
 		// bind the profile refresh token to the placeholder in the template
 		$parameters = ["profileRefreshToken" => $profileRefreshToken];
 		$statement->execute($parameters);

@@ -6,7 +6,7 @@ require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\AbqOutside\{
-	Comment, Profile, Trail
+	Profile
 };
 
 /**  ___________________________________
@@ -70,7 +70,7 @@ try {
 	// now $oauth->github->clientId and $oauth->github->clientKey exist
 	$REDIRECT_URI = "https://bootcamp-coders.cnm.edu/~egarcia262/abq-outside/public_html/api/oauth/";
 	$AUTHORIZATION_ENDPOINT = 'https://github.com/login/oauth/authorize';
-	$TOKEN_ENDPOINT = 'https://github.com/login/oauth/authorize';
+	$TOKEN_ENDPOINT = 'https://github.com/login/oauth/refresh_token';
 	$client = new \OAuth2\Client($oauth->clientId, $oauth->clientKey);
 	if(!isset($_GET['code'])) {
 		$auth_url = $client->getAuthenticationUrl($AUTHORIZATION_ENDPOINT, $REDIRECT_URI, ['scope' => 'user:email']);
@@ -78,11 +78,13 @@ try {
 		die('Redirect');
 	} else {
 
+		$profileGithubToken = "";
+
 		$params = ['code' => $_GET['code'], 'redirect_uri' => $REDIRECT_URI];
 		$response = $client->getProfileRefreshToken($TOKEN_ENDPOINT, 'authorization_code', $params);
 		parse_str($response['result'], $info);
-		$client->setProfileRefreshToken($info['access_token']);
-		$profileRefreshToken = $info['access_token'];
+		$client->setProfileRefreshToken($info['refresh_token']);
+		$profileGithubToken = $info['refresh_token'];
 		$response = $client->fetch('https://api.github.com/user', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
 		$profileName = $response["result"]["login"];
 		$profileImage = $response["result"]["avatar_url"];
