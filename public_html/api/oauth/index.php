@@ -89,12 +89,13 @@ try {
 		var_dump($response);
 		$profileUsername = $response["result"]["login"];
 		$profileImage = $response["result"]["avatar_url"];
-		$profileEmail = $response["result"]["email"];
-//		$response = $client->fetch('https://api.github.com/user/emails', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
-//		var_dump($response);
+
+		$response = $client->fetch('https://api.github.com/user/emails', [], 'GET', ['User-Agent' => 'Jack Auto Deleter v NaN']);
+		$profileEmail = $response["result"]["0"]["email"];
+//var_dump($response);
 //		var_dump($profileUsername);
 		// get profile by email to see if it exists, if it does not then create a new one
-		$profile = Profile::getProfileByProfileUsername($pdo, $profileUsername);
+		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 		var_dump($profile);
 		if(($profile) === null) {
 			// create a new profile
@@ -105,7 +106,7 @@ try {
 			$reply->message = "Welcome back to Abq Outside!";
 		}
 		//grab profile from database and put into a session
-		$profile = Profile::getProfileByProfileUsername($pdo, $profileUsername);
+		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 		$_SESSION["profile"] = $profile;
 
 		header("Location: ../../");
