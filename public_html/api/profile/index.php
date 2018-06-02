@@ -35,6 +35,8 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 		//gets a post by content
+		echo $id;
+		echo $profileEmail;
 		if(empty($id) === false) {
 			$profile = Profile::getProfileByProfileId($pdo, $id);
 			if($profile !== null) {
