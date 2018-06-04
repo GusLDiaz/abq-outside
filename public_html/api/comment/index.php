@@ -77,7 +77,7 @@ try {
 		}
 		$commentId = generateUuidV4();
 		$commentTimestamp = new \DateTime();
-		$comment = new Comment($commentId,$_SESSION["profile"]->getProfileId(), $requestObject->commentTrailId,  $requestObject->commentContent, null);
+		$comment = new Comment($commentId,$_SESSION["profile"]->getProfileId(), $requestObject->commentTrailId, $requestObject->commentContent, null);
 		$comment->insert($pdo);
 		$reply->message = "comment posted successfully";
 		// if any other HTTP request is sent throw an exception
