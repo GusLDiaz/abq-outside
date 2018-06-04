@@ -28,15 +28,15 @@ try {
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize the search parameters
-	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
-	$commentProfileId = $id = filter_input(INPUT_GET, "commentProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$commentTrailId = $id = filter_input(INPUT_GET, "commentTrailId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$commentId = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
+	$commentProfileId = filter_input(INPUT_GET, "commentProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$commentTrailId = filter_input(INPUT_GET, "commentTrailId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
 		//gets a specific comment based on its commentId
 		if(empty($id) === false) {
-			$comment = Comment::getCommentByCommentId($pdo, $id);
+			$comment = Comment::getCommentByCommentId($pdo, $commentId);
 			if($comment !== null) {
 				$reply->data = $comment;
 			}
