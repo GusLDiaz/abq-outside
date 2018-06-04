@@ -6,6 +6,6 @@
 /src/**/*.js
 /src/**/*.js.map
 /public_html/dist
-/public_html/index.ejs
+/public_html/index.html
 /npm-debug.log
 /webpack/target.js
