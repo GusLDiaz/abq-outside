@@ -41,31 +41,29 @@ class DataDownloader {
 
 	public static function pullTrails() {
 		$trailsX = null;
-		$urlG = "https://www.hikingproject.com/data/get-trails?lat=35.085470&lon=-106.649072&maxDistance=200&maxResults=500&key=200265121-1809e265008042f9977e435839863103";
-		$trailsX = self::readDataJson($urlG);
+		$urlBase = "https://www.hikingproject.com/data/get-trails?lat=35.085470&lon=-106.649072&maxDistance=200&maxResults=500&key=200265121-1809e265008042f9977e435839863103";
+		$trailsX = self::readDataJson($urlBase);
 		$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/outside.ini");
 		$imgCount=0;
 		$sumCount=0;
 		$trailCount=0;
 		foreach($trailsX as $value) {
-			//var_dump($value);
 			$trailId = generateUuidV4();
 			$trailExternalId = $value->id;
-//			//$trailAddress = $value->attributes->ADDRESS;
 			$trailAddress = "outdoors";
 			$trailImage = $value->imgMedium;
+			//Missing image counter
 			if (empty($value->imgMedium)=== true) {
-			//if (empty($trailImage)===true){
 				$trailImage = "needs an image";
 			$imgCount = $imgCount + 1;
 			}
-
 			$trailName = $value->name;
 			$trailLocation = $value->location;
 			$trailLat = (float)$value->latitude;
 			$trailLong = (float)$value->longitude;
 			$trailLength = (float)$value->length;
 			$trailSummary = $value->summary;
+			//Missing description counter
 			if ((empty($trailSummary)||$trailSummary ==="Needs Adoption" )===true){
 				$trailSummary = "needs description";
 				$sumCount = $sumCount + 1;
@@ -75,21 +73,17 @@ class DataDownloader {
 			$trailCount = $trailCount + 1;
 			try {
 			$trail = new Trail($trailId, $trailAddress, $trailAscent, $trailExternalId, $trailImage, $trailLat, $trailLength, $trailLocation, $trailLong, $trailName, $trailRating, $trailSummary);
-
-			var_dump($trail->getTrailId()->toString());
-			var_dump($imgCount);
-			var_dump($sumCount);
-			var_dump($trailCount);
+// Show how many trails are pulled from data downloader, missing summaries and images
+//			var_dump($trail->getTrailId()->toString());
+//			var_dump($imgCount);
+//			var_dump($sumCount);
+//			var_dump($trailCount);
 			$trail->insert($pdo);
 			} catch(\TypeError $typeError) {
-				echo("Gus");
+				echo("Error Connecting to database");
 			}
 		}
 	}
-
-	/** @param $url
-	 *  $url and go from there. just straight up craft this and use it
-	 */
 	public static function readDataJson($url) {
 
 		$context = stream_context_create(["http" => ["ignore_errors" => true, "method" => "GET"]]);
