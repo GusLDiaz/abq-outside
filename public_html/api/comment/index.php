@@ -35,7 +35,7 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 		//gets a specific comment based on its commentId
-		if(empty($id) === false) {
+		if(empty($commentId) === false) {
 			$comment = Comment::getCommentByCommentId($pdo, $commentId);
 			if($comment !== null) {
 				$reply->data = $comment;
