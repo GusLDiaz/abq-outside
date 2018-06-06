@@ -29,13 +29,10 @@
 <!--			</div>-->
 <!--			<div class="column-fluid mt-5 col 2 bg-secondary">-->
 <!--				<h1 class="about">Gus Liakos</h1>-->
-<!--				<p>Give me all the tacos, immediately. Give me all your tacos. Yeah, apparently the taco shack was robbed.-->
-<!--					They left the money but took the tacos. Josh’s taco shack is the best taco shack. Tacos, tacos, tacos.-->
-<!--					Tacos Al pastor/De Adobada are made of thin pork steaks seasoned with adobo seasoning, then skewered and-->
-<!--					overlapped on one another on a vertical rotisserie cooked and flame-broiled as it spins. It’s a wonderful-->
-<!--					morning for breakfast tacos. Let’s do a beef and a chicken, and one with both. Let’s do a beef and a-->
-<!--					chicken, and one with both.</p>-->
-<!--				<p><a href="https://github.com/GusLDiaz" target="_blank">GitHub</a></p>-->
+<!--	<blockquote><p>If you revere competence, you'll enjoy developing it in yourself — the hard work and dedication will become a kind of intense play rather than drudgery.</p>	<footer class="blockquote-footer">-->
+<!--			<cite title="Source Title"><em>How to Be a Hacker</em></cite>-->
+<!--		</footer></blockquote>-->
+<!--	<p><a href="https://github.com/GusLDiaz" target="_blank">GitHub</a></p>-->
 <!--			</div>-->
 <!--		</div>-->
 <!--	</div>-->
