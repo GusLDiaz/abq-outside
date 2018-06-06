@@ -20,7 +20,7 @@
 				</ul>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-						<a href="https://bootcamp-coders.cnm.edu/~egarcia262/abq-outside/public_html/api/oauth" class="nav-link text-dark font-weight-bold rounded border bg-light text-center">Log in with GitHub</a>
+						<a href="https://bootcamp-coders.cnm.edu/~egarcia262/abq-outside/public_html/api/oauth" class="nav-link text-dark font-weight-bold rounded border bg-light text-center align-top">Log in <i class="fab fa-github fa-2x"></i></a>
 					</li>
 				</ul>
 			</div>

@@ -8,6 +8,9 @@
 
 	<!-- Font Awesome -->
 	<link type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+	<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+			  integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
+			  crossorigin="anonymous"></script>
 
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="css/style.css" type="text/css">
