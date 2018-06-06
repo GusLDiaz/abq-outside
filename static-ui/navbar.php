@@ -9,6 +9,9 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
+						<a href="home-view.php" class="nav-link text-white">Home</a>
+					</li>
+					<li class="nav-item">
 						<a href="about-us.php" class="nav-link text-white">About Us</a>
 					</li>
 					<li class="nav-item">
