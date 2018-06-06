@@ -7,8 +7,6 @@
 		<div class="carousel-item active">
 			<img class="d-block w-100" src="../src/img/bike.jpg" alt="First slide">
 			<div class="carousel-caption d-none d-md-block lead">
-				<h1>Welcome</h1>
-				<p>Unleash your inner travel spirit</p>
 			</div>
 		</div>
 
