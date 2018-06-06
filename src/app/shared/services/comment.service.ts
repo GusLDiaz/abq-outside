@@ -41,7 +41,7 @@ export class CommentService {
 	}
 
 // call to the Comment API and get a Comment timestamp
-	getCommentByCommentTimestamp(commentTimestamp: string): Observable<Comment> {
+	getCommentByCommentTimestamp(commentTimestamp: string): Observable<Comment[]> {
 		return (this.http.get<Comment[]>(this.commentUrl + commentTimestamp));
 	}
 }
