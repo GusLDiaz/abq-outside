@@ -26,6 +26,11 @@
 			</div>
 		</div>
 	</div>
-<div class="col-12 col-md-8 p-3">
+<!--<script>-->
+<!--	$('.single-item').slick();-->
+<!--</script>-->
+<div class="container-fluid">
+<div class="col-12 p-3 border-2 border-success">
 	<img class="img-fluid" src="../src/img/temporary-map.jpeg" alt="map">
+</div>
 </div>

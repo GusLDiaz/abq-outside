@@ -24,6 +24,13 @@
 			  integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
 			  crossorigin="anonymous"></script>
 
+<!--	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>-->
+<!---->
+<!--	//JS-->
+<!---->
+<!--	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>-->
+
+
 	<title>Abq Outside</title>
 </head>
 
