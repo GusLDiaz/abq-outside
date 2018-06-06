@@ -9,18 +9,18 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-						<a href="home-view.php" class="nav-link text-white">Home</a>
+						<a href="home-view.php" class="nav-link text-dark rounded border bg-light text-center">Home</a>
 					</li>
 					<li class="nav-item">
-						<a href="about-us.php" class="nav-link text-white">About Us</a>
+						<a href="about-us.php" class="nav-link text-dark rounded border bg-light text-center">About Us</a>
 					</li>
 					<li class="nav-item">
-						<a href="trails.php" class="nav-link text-white">Trails</a>
+						<a href="trails.php" class="nav-link text-dark rounded border bg-light text-center">Trails</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-						<a href="https://bootcamp-coders.cnm.edu/~egarcia262/abq-outside/public_html/api/oauth" class="nav-link text-white">Log in with GitHub</a>
+						<a href="https://bootcamp-coders.cnm.edu/~egarcia262/abq-outside/public_html/api/oauth" class="nav-link text-dark rounded border bg-light text-center">Log in with GitHub</a>
 					</li>
 				</ul>
 			</div>
