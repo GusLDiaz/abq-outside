@@ -76,28 +76,28 @@
 </div>
 <div class="card-group">
 	<div class="card">
-		<img class="card-img-top rounded-circle" src="../src/img/edith.jpeg" alt="Edith Thakkar">
+		<img class="card-img-top rounded-circle" src="../src/app/about/edith.jpeg" alt="Edith Thakkar">
 		<div class="card-body">
 			<h4 class="card-title">Edith Thakkar</h4>
 			<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 		</div>
 	</div>
 	<div class="card">
-		<img class="card-img-top rounded-circle" src="../src/img/gus.jpg" alt="Gus Liakos">
+		<img class="card-img-top rounded-circle" src="../src/app/about/gus.jpg" alt="Gus Liakos">
 		<div class="card-body">
 			<h4 class="card-title">Gus Liakos</h4>
 			<p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
 		</div>
 	</div>
 	<div class="card">
-		<img class="card-img-top rounded-circle" src="../src/img/jully.jpg" alt="Jullyane Hawkins">
+		<img class="card-img-top rounded-circle" src="../src/app/about/jully.jpg" alt="Jullyane Hawkins">
 		<div class="card-body">
 			<h4 class="card-title">Jullyane Hawkins</h4>
 			<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
 		</div>
 	</div>
 	<div class="card">
-		<img class="card-img-top rounded-circle" src="../src/img/michael.jpg" alt="Michael Figueroa">
+		<img class="card-img-top rounded-circle" src="../src/app/about/michael.jpg" alt="Michael Figueroa">
 		<div class="card-body">
 			<h4 class="card-title">Michael Figueroa</h4>
 			<p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
