@@ -2,32 +2,38 @@ import {RouterModule, Routes} from "@angular/router";
 
 
 //import all needed components
-// import {HomeComponent} from "./home/home.component";
-// import {ListTweetsComponent} from "./home/home.list.component";
-// import {MainNavComponent} from "./shared/components/main-nav/main.nav";
-// import {ProfileComponent} from "./profile/profile.component";
-// import {SignInComponent} from "./shared/components/main-nav/signin.component";
-// import {SignUpComponent} from "./sign-up/sign.up.component";
-
+import {HomeComponent} from "./home/home.component";
+import {TrailComponent} from "./trail/trail.component";
+import {NavBarComponent} from "./navbar/navbar.component";
+import {ProfileComponent} from "./profile/profile.component";
+//tentative Oauth-replaced
+//import {SignInComponent} from "./shared/components/main-nav/signin.component";
+//import {SignUpComponent} from "./sign-up/sign.up.component";
+import {CommentComponent} from "./shared/comment/comment.component";
+import {AboutComponent} from "./about/about.component";
 
 // import all needed Services
-
 import {CookieService} from "ng2-cookies";
 import {JwtHelperService} from "@auth0/angular-jwt";
-
+import {CommentService} from "./shared/services/comment.service";
+import {ProfileService} from "./shared/services/profile.service";
+import {TrailService} from "./shared/services/trail.service";
+// import {SessionService} from "./shared/services/session.service";
 
 //import all needed Interceptors
 import {APP_BASE_HREF} from "@angular/common";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 // import {AuthGuardService} from "./shared/guards/auth.guard";
 // import {AuthService} from "./shared/services/auth.service";
-// import {LikeService} from "./shared/services/like.service";
-// import {ProfileService} from "./shared/services/profile.service";
-// import {SessionService} from "./shared/services/session.service";
+
+
+
+
 // import {SignInService} from "./shared/services/sign.in.service";
 // import {SignUpService} from "./shared/services/sign.up.service";
-// import {TweetService} from "./shared/services/tweet.service";
-// import {DeepDiveInterceptor} from "./shared/interceptors/deep.dive.interceptor";
+
+
+import {DeepDiveInterceptor} from "./shared/interceptors/deep.dive.interceptor";
 
 
 
@@ -36,17 +42,17 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
 
 
 
-export const allAppComponents : any[] = [ ];
-//HomeComponent, ProfileComponent, SignInComponent, SignUpComponent];
+export const allAppComponents : any[] = [HomeComponent, ProfileComponent, TrailComponent,CommentComponent,AboutComponent,NavbarComponent, MapComponent];
 
 // //an array of routes that will be passed of to the module
  export const routes: Routes = [
-// 	{path: "profile-page", component: ProfileComponent, canActivate: [AuthGuardService]},
-// 	{path: "", component: HomeComponent}
+	{path: "about", component: AboutComponent}
+	{path: "trail/:trailId", component: TrailComponent},
+	{path: "", component: HomeComponent}
 ];
 
 // an array of services
-//const services : any[] = [AuthService, AuthGuardService, CookieService,JwtHelperService ,LikeService, ProfileService, SessionService, SignInService,  SignUpService, TweetService];
+const services : any[] = [AuthService, AuthGuardService, CookieService,JwtHelperService , ProfileService, SessionService,CommentService];
 
 //an array of misc providers
  const providers : any[] = [
