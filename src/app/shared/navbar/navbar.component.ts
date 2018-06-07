@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
 	selector: "navbar"
 })
 
-export class NavbarComponent {
+export class NavBarComponent {
 
 	status: Status;
 
