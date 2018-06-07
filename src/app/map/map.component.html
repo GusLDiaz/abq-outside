@@ -3,19 +3,7 @@
 		<div class="col-12">
 
 			<!-- this is the google map :P~ -->
-			<ngui-map zoom="13" center="Albuquerque, New Mexico">
-				<marker *ngFor="let trail of trails" [position]="[trail.trailLat, trail.trailLong]" (click)="clicked($event)" (click)=""></marker><!--add display of trail-->
-				<info-window id="details">
-					<div class="map-text p-3 ml-3 text-center"><img class="card-img-top p-1" src="{{trail.trailImage}}" alt="trail caption">
-						<br>
-						<br>
-						<strong>Title:</strong> {{trail.trailName}}
-						<br>
-						<br>
-						<a [routerLink]="'/trail/' + trail.trailId"> <strong>View This Trail</strong> </a>
-					</div>
-				</info-window>
-			</ngui-map>
+
 
 		</div>
 	</div>
