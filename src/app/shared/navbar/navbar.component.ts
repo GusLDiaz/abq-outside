@@ -1,11 +1,11 @@
 import {Component} from "@angular/core";
-import {CookieService} from "ng2-cookies";
+//import {CookieService} from "ng2-cookies";
 import {Status} from "../classes/status";
 import {Router} from "@angular/router";
 
 @Component({
 	template: require("./navbar.component.html"),
-	selector: "navbar"
+	//selector: "navbar"
 })
 
 export class NavBarComponent {
@@ -13,7 +13,7 @@ export class NavBarComponent {
 	status: Status;
 
 	constructor(
-		private cookieService: CookieService,
+		//private cookieService: CookieService,
 		private router: Router
 	) {}
 
