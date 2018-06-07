@@ -1,18 +1,18 @@
-import {Component} from "@angular/core"
+import {Component, OnInit} from "@angular/core"
 import {TrailService} from "../shared/services/trail.service";
+import {Trail} from "../shared/classes/trail";
 
-@Component ({
+@Component({
 	template: require("./trail.component.html")
 })
 //
-export class TrailComponent {
+export class TrailComponent implements OnInit {
+	trails : Trail[];
 	constructor(protected trailService: TrailService) {
-// 	}
-// ngOnInit{
-// 		trailUp()
-// }
-// 	trailUp() {
-// 	this.TrailService.getAllPosts().subscribe(trails => this.posts = posts)
-// 	}
+	}
+
+
+	ngOnInit() {
+		this.trailService.getAllTrails().subscribe(trails => this.trails = trails)
 	}
 }

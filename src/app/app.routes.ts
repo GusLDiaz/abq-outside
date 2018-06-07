@@ -6,7 +6,6 @@ import {NavBarComponent} from "./shared/navbar/navbar.component";
 //import {ProfileComponent} from "./profile/profile.component";
 import {AboutComponent} from "./about/about.component";
 import {MapComponent} from "./map/map.component";
-import {CommentService} from "./shared/services/comment.service";
 import {ProfileService} from "./shared/services/profile.service";
 import {TrailService} from "./shared/services/trail.service";
 import {SessionService} from "./shared/services/session.service";
@@ -15,7 +14,7 @@ import {APP_BASE_HREF} from "@angular/common";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {DeepDiveInterceptor} from "./shared/interceptors/deep.dive.interceptor";
 
-//import {NavBarComponent} from "./shared/navbar/navbar.component";
+
 //import {SessionService} from "./shared/services/session.service";
 
 export const allAppComponents : any[] = [HomeComponent, TrailComponent,AboutComponent,NavBarComponent, MapComponent];
