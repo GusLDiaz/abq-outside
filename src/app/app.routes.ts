@@ -3,11 +3,9 @@ import {RouterModule, Routes} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
 import {TrailComponent} from "./trail/trail.component";
 import {NavBarComponent} from "./shared/navbar/navbar.component";
-import {ProfileComponent} from "./profile/profile.component";
-import {CommentComponent} from "./shared/comment/comment.component";
+//import {ProfileComponent} from "./profile/profile.component";
 import {AboutComponent} from "./about/about.component";
 import {MapComponent} from "./map/map.component";
-// import all needed Svice} from "ng2-cookies";
 import {CommentService} from "./shared/services/comment.service";
 import {ProfileService} from "./shared/services/profile.service";
 import {TrailService} from "./shared/services/trail.service";
@@ -17,10 +15,10 @@ import {APP_BASE_HREF} from "@angular/common";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {DeepDiveInterceptor} from "./shared/interceptors/deep.dive.interceptor";
 
-//import {NavbarComponent} from "./shared/navbar/navbar.component";
+//import {NavBarComponent} from "./shared/navbar/navbar.component";
 //import {SessionService} from "./shared/services/session.service";
 
-export const allAppComponents : any[] = [HomeComponent, ProfileComponent, TrailComponent,CommentComponent,AboutComponent,NavbarComponent, MapComponent];
+export const allAppComponents : any[] = [HomeComponent, TrailComponent,AboutComponent,NavBarComponent, MapComponent];
 
 // //an array of routes that will be passed of to the module
  export const routes: Routes = [
@@ -30,7 +28,7 @@ export const allAppComponents : any[] = [HomeComponent, ProfileComponent, TrailC
 ];
 
 // an array of services
-const services : any[] = [CookieService, ProfileService,TrailService,SessionService,CommentService];
+const services : any[] = [ProfileService,TrailService,SessionService];
 
 //an array of misc providers
  const providers : any[] = [

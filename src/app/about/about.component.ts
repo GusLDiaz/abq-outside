@@ -6,6 +6,6 @@ import {Component} from "@angular/core";
 	//add head utils;
 })
 
-export class AboutUsComponent {
+export class AboutComponent {
 	constructor() {}
 }
