@@ -3,23 +3,23 @@
 <div id="carouselExampleFade" class="carousel slide" data-ride="carousel">
 	<div class="carousel-inner">
 		<div class="carousel-item active">
-			<img class="d-block w-100" src="../src/img/bike.jpg" alt="First slide">
+			<img class="d-block w-100" src="../src/img/sandia-foothills-trail.jpg" alt="First slide">
 			<div class="carousel-caption d-none d-md-block lead">
 			</div>
 		</div>
 		<div class="carousel-item">
-			<img class="d-block w-100" src="../src/img/sunset.jpg" alt="Second slide">
+			<img class="d-block w-100" src="../src/img/petroglyph-national-monument.jpg" alt="Second slide">
 			<div class="carousel-caption d-none d-md-block lead">
 			</div>
 		</div>
 		<div class="carousel-item">
-			<img class="d-block w-100" src="../src/img/1500-500-PT-Geres-Trail-1500x500.jpg"
+			<img class="d-block w-100" src="../src/img/rinconada-canyon.jpg"
 				  alt="Third slide">
 			<div class="carousel-caption d-none d-md-block lead">
 			</div>
 		</div>
 		<div class="carousel-item">
-			<img class="d-block w-100" src="../src/img/1500-500-CH-Lötschen-06-1500x500.jpg" alt="Fourth slide">
+			<img class="d-block w-100" src="../src/img/michael-emery.jpg" alt="Fourth slide">
 			<div class="carousel-caption d-none d-md-block lead">
 			</div>
 		</div>
