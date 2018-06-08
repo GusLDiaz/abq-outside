@@ -3,7 +3,7 @@ import {Component, OnInit} from "@angular/core";
 // import {SessionService} from "./shared/services/session.service";
 
 @Component({
-	selector: "cool-app",
+	selector: "abq-outside",
 	template: require("./app.component.html")
 })
 export class AppComponent{
