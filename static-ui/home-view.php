@@ -24,7 +24,6 @@
 		</div>
 			</div>
 		</div>
-	</div>
 <!--<script>-->
 <!--	$('.single-item').slick();-->
 <!--</script>-->
