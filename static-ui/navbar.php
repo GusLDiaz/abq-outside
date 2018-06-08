@@ -21,8 +21,8 @@
 
 				</ul>
 				<ul class="nav">
-					<li><img src="../src/img/temporary-logo.jpeg" alt="logo"
-													  class="img-fluid rounded-circle align-middle nav-link"></li>
+					<li><img src="../src/img/ABQ OUTSIDE LOGO.png" alt="logo"
+								class="img-fluid align-middle nav-link"></li>
 				</ul>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
