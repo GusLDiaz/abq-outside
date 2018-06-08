@@ -1,40 +1,18 @@
-<body>
-	<h2 class="display-2">Trail Attributes</h2>
-	<table class="table">
-		<tr>
-			<td>Trail Address</td>
-		</tr>
-		<tr>
-			<td>Trail Ascent</td>
-		</tr>
-		<tr>
-			<td>Trail Image</td>
-		</tr>
-		<tr>
-			<td>Trail Lat</td>
-		</tr>
-		<tr>
-			<td>Trail Length</td>
-		</tr>
-		<tr>
-			<td>Trail Location</td>
-		</tr>
-		<tr>
-			<td>Trail Long</td>
-		</tr>
-		<tr>
-			<td>Trail Rating</td>
-		</tr>
-		<tr>
-			<td>Trail Name</td>
-		</tr>
-		<tr>
-			<td>Trail Summary</td>
-		</tr>
-	</table>
-
-	<div>
-		<!--this is where the comments go-->
+<main>
+	<div  class="container-fluid p-2">
+		<div class="row">
+			<div class="col-sm-2 col-md-3"></div>
+			<div class="card col-12 col-sm-8 col-md-6" >
+				<img class="card-img-top p-1" src="{{ trail.trailImageUrl }}" alt="Trail image caption">
+				<ul class="p-1 list-group list-group-flush">
+					<li class="list-group-item">Title: {{ trail.trailTitle }}</li>
+					<li class="list-group-item">Location: {{trail.trailLocation}}</li>
+					<li class="list-group-item">Address: {{trail.trailAddress}}</li>
+					<li class="list-group-item">trail Summary: {{trail.trailSummary}} </li>
+				</ul>
+			</div>
+			<div class="col-sm-2 col-md-3"></div>
+		</div>
+		<comment></comment>
 	</div>
-</body>
-
+</main>
