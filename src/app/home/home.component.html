@@ -23,7 +23,4 @@
 	</div>
 	<router-outlet></router-outlet>
 </div>
-<ngui-map zoom="13" center="Albuquerque, New Mexico">
-	<marker *ngFor="let trail of trails" [position]="[trail.trailLat, trail.trailLong]"></marker>
-	<!--add display of trail-->
-</ngui-map>
+<map></map>
