@@ -8,13 +8,17 @@ import {Trail} from "../shared/classes/trail";
 })
 
 export class HomeComponent implements OnInit{
-
+	trail : string = "";
 	trails : Trail[] = [];
 	constructor(protected trailService : TrailService){
 	}
 	ngOnInit() : void {
 		this.trailService.getAllTrails()
 			.subscribe(trails => this.trails = trails);
+	}
+	showSidePanel(trail: Trail) : void {
+		// this.trailService.getTrailByTrailId()
+		this.trail = trail.trailId;
 	}
 }
 
