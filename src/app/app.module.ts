@@ -14,7 +14,6 @@ const moduleDeclarations = [AppComponent];
 
 @NgModule({
 	imports:      [BrowserModule, HttpClientModule,ReactiveFormsModule, FormsModule, routing,NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCZrOzc0T3D0D75_0BhmWijZXCqHK3DC08'})],
-	//imports:      [BrowserModule, HttpClientModule,ReactiveFormsModule, FormsModule, routing],
 	declarations: [...moduleDeclarations, ...allAppComponents],
 	bootstrap:    [AppComponent],
 	providers:    [appRoutingProviders]

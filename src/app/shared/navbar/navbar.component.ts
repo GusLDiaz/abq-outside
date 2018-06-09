@@ -16,7 +16,13 @@ export class NavBarComponent {
 		//private cookieService: CookieService,
 		private router: Router
 	) {}
+	goHome() {
+		this.router.navigate(['']);
+	}
 
+	goAbout() {
+		this.router.navigate(['about']);
+	}
 	// signOut() : void {
 	// 	this.signInService.getSignOut()
 	//
