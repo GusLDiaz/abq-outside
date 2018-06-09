@@ -1,4 +1,3 @@
-
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Status} from "../classes/status";
@@ -8,9 +7,9 @@ export class SessionService {
 
 	constructor(protected http:HttpClient) {}
 
-	private sessionUrl = "api/session/";
+	private sessionUrl = "api/t-rex/";
 
 	setSession() {
-		return (this.http.get<Status>(this.sessionUrl, {}));
+		return (this.http.get<Status>(this.sessionUrl));
 	}
 }
