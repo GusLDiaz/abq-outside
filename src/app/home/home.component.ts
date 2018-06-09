@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-
+import {TrailService} from "../shared/services/trail.service";
 
 @Component({
 	template: require("./home.component.html"),
@@ -8,7 +8,7 @@ import {Component} from "@angular/core";
 
 export class HomeComponent{
 
-	constructor(){
+	constructor(protected trailservice : TrailService){
 	}
 }
 

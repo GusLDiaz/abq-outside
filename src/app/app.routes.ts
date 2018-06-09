@@ -17,7 +17,7 @@ import {DeepDiveInterceptor} from "./shared/interceptors/deep.dive.interceptor";
 
 //import {SessionService} from "./shared/services/session.service";
 
-export const allAppComponents : any[] = [HomeComponent, TrailComponent,AboutComponent,NavBarComponent, MapComponent];
+export const allAppComponents : any[] = [HomeComponent, TrailComponent,AboutComponent,NavBarComponent];
 
 // //an array of routes that will be passed of to the module
  export const routes: Routes = [
