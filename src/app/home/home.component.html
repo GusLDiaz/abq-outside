@@ -22,14 +22,21 @@
 		</div>
 	</div>
 </div>
-<ngui-map zoom="8" center="Albuquerque, New Mexico" class="map p-5 border-top border-success bg-success">
-	<marker *ngFor="let trail of trails" [position]="[trail.trailLat, trail.trailLong]" (click)="showSidePanel(trail)"></marker>
-	<!--<a href="#" tooltips tooltip-template="tooltip">Tooltip me</a>-->
-	<!--<div id="marker-tooltip"></div>-->
-	<info-window id="trailTip">
-		<div class="map-text p-3 ml-3 text-center"><strong>{{trailTipName}}</strong></div>
-	</info-window>
-</ngui-map>
-<!--<div>-->
-	<!--<p>{{trail}}</p>-->
-<!--</div>-->
+<div class="container-fluid bg-success">
+	<div class="row">
+		<ngui-map zoom="8" center="Albuquerque, New Mexico"
+					 class="map p-3 border-top border-success bg-success col-md-8">
+			<!-- *ngIf="" >if sidePanel is active -->
+			<marker *ngFor="let trail of trails" [position]="[trail.trailLat, trail.trailLong]"
+					  (click)="showSidePanel(trail)"></marker>
+		</ngui-map>
+		<!--If null display normal text-->
+		<div *ngIf="detailedTrail.trailId !== null" class="col-md-4 bg-success">
+			<h1 class="rounded-top">{{detailedTrail.trailName}}</h1>
+			<div><img class="img-fluid" src={{detailedTrail.trailImage}}></div>
+			<!--<p>{{detailedTrail.trailRating}}</p>-->
+			<br>
+			<button class="btn btn-block" (click)="goToTrail()">Check It Out!</button>
+		</div>
+	</div>
+</div>
