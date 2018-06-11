@@ -22,12 +22,12 @@
 		</div>
 	</div>
 </div>
-<ngui-map zoom="8" center="Albuquerque, New Mexico" >
+<ngui-map zoom="8" center="Albuquerque, New Mexico" class="map p-5 border-top border-success bg-success">
 	<marker *ngFor="let trail of trails" [position]="[trail.trailLat, trail.trailLong]" (click)="showSidePanel(trail)"></marker>
 	<!--<a href="#" tooltips tooltip-template="tooltip">Tooltip me</a>-->
 	<!--<div id="marker-tooltip"></div>-->
 	<info-window id="trailTip">
-		<div class="map-text p-3 ml-3 text-center"><strong>{{trail.trailName}}</strong></div>
+		<div class="map-text p-3 ml-3 text-center"><strong>{{trailTipName}}</strong></div>
 	</info-window>
 </ngui-map>
 <!--<div>-->

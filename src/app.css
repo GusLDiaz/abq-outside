@@ -8,3 +8,7 @@ h4, .h4,
 span{
 	font-family: 'Oswald', sans-serif;
 }
+.map{
+	height: 60vw;
+	border-top: 12px outset #28a745
+}
