@@ -79,7 +79,10 @@
 		<img class="card-img-top rounded-circle" src="../src/img/edith.jpeg" alt="Edith Thakkar">
 		<div class="card-body">
 			<h4 class="card-title">Edith Thakkar</h4>
-			<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+			<p>Hello, my name is Edith Thakkar, and I'm a junior programmer.Prior to programming I was working as an Office
+				manager for a health clinic. I’ve obtained a Bachelors of Science in Psychology with a minor in Evolutionary
+				Anthropology.
+				In April I began a pursuit to become a full stack developer through Deep Dive coding. </p>
 		</div>
 	</div>
 	<div class="card">
