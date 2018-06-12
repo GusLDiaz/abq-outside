@@ -62,7 +62,7 @@ try {
 		//enforce that the end user has a XSRF token
 		verifyXsrf();
 		//enforce the end user has a JWT token
-		validateJwtHeader();
+//		validateJwtHeader();
 		//decode the response from the front end
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
