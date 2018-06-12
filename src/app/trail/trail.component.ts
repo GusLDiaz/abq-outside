@@ -23,7 +23,7 @@ export class TrailComponent implements OnInit {
 
 		this.trailService.getTrailByTrailId(this.trailId).subscribe(reply => this.trail = reply);
 		var commentTrailId = this.commentService.getCommentByCommentTrailId(this.trailId);
-		this.trailId.subscribe(comments => this.comments = comments);
+		commentTrailId.subscribe(comments => this.comments = comments);
 
 	}
 	// createComment() : any {
