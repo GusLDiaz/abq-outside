@@ -14,8 +14,9 @@ export class TrailComponent implements OnInit {
 	trail: Trail = new Trail(null, null, null, null, null, null, null, null, null, null, null, null);
 	trails: Trail[] = [];
 	comments: Comment[] = [];
-	trailId = this.route.snapshot.params.trailId;
 	comment: Comment = new Comment(null, null, null, null, null, null);
+	trailId = this.route.snapshot.params.trailId;
+	detailedComment: Comment = new Comment(null, null, null, null, null, null);
 	commentCreator: FormGroup;
 	status: Status = null;
 
@@ -23,26 +24,29 @@ export class TrailComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.showComments();
-		this.trailService.getTrailByTrailId(this.trailId).subscribe(reply => this.trail = reply);
-	}
 
-	createComment(): any {
-		this.comment = new Comment(null, null, null, null, this.createComment().value.commentContent, null);
+		this.trailService.getTrailByTrailId(this.trailId).subscribe(reply => this.trail = reply);
+		this.commentService.getCommentByCommentTrailId(this.trailId).subscribe(comments => this.comments = comments);
+		this.showComment(this.comment);
 		this.commentCreator = this.formBuilder.group({
 			commentContent: ["", [Validators.maxLength(2000), Validators.required]]
 		});
+	}
+
+	createComment(): any {
+		this.comment = new Comment(null, null, this.trailId, null, this.createComment().value.commentContent, null);
+
 		this.commentService.createComment(this.comment)
 			.subscribe(status =>
 				this.status = status);
 		if(this.status.status === 200) {
-			this.showComments();
+			this.showComment(this.comment);
 			this.commentCreator.reset();
 		} else {
 			return false
 		}
 	}
-	showComments(): void {
-		this.commentService.getCommentByCommentTrailId(this.trailId).subscribe(comments => this.comments = comments);
+	showComment(comment: Comment): void {
+		this.detailedComment = comment;
 	}
 }

@@ -41,27 +41,27 @@
 </div>
 <div class="row">
 	<div class="col-sm-2 col-md-3"></div>
-	<div class="card col-12 col-sm-8 col-md-6" >
+	<div class="card col-12 col-sm-8 col-md-6">
 		<br>
-		<form id="commentCreator" name="commentCreator" [formGroup]="commentCreator" (submit)="createComment()" novalidate>
-			<textarea class="form-control" type="text" name="commentContent" id="commentContent" placeholder="Your comment here!" formControlName="commentContent" rows="3"></textarea>
+		<form id="commentCreator" name="commentCreator" [formGroup]="commentCreator" (submit)="createComment()"
+				novalidate>
+			<textarea class="form-control" type="text" name="commentContent" id="commentContent"
+						 placeholder="Your comment here!" formControlName="commentContent" rows="3"></textarea>
 			<br>
-			<button class="btn text-dark font-weight-bold rounded border bg-light text-center" type="submit">Submit</button>
+			<button class="btn text-dark font-weight-bold rounded border bg-light text-center" type="submit">Submit
+			</button>
 		</form>
 		<div class="col-12 col-lg-9">
 			<div class="card-columns">
 				<!-- begin comment item -->
 				<div *ngFor="let comment of comments" class="card">
-					<div class="card-body">
-						<h4 class="card-title">{{ profile.profileUsername }}</h4>
-						<p class="card-text">{{ comment.commentContent }}</p>
-						<div class="small text-muted">{{ comment.commentTimestamp | date:'M/d/yy h:mm a' }}
+					<div *ngIf="detailedComment.commentId !== null" class="col-md-4 bg-success">
+						<p class="card-text">{{ detailedComment.commentContent }}</p>
+						<div class="small text-muted">{{ detailedComment.commentTimestamp | date:'M/d/yy h:mm a' }}
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-2 col-md-3"></div>
 </div>
