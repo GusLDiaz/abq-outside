@@ -14,7 +14,6 @@ export class AppComponent implements OnInit{
 
 	trail : string = "";
 	trails : Trail[];
-	//comments : Comment[] = [];
 	status : Status = null;
 
 	 constructor(protected trailService: TrailService) { //}, protected commentService: CommentService) {
