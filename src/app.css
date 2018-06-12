@@ -13,3 +13,7 @@ span{
 	height: 60vw;
 	border-top: 12px outset #28a745
 }
+dt, .dt,
+dl, .dl {
+	font-size: larger;
+}
