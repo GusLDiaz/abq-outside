@@ -18,6 +18,6 @@ export class TrailComponent implements OnInit {
 		this.trailService.getTrailByTrailId(trailId).subscribe(reply => this.trail = reply);
 		//this.trailService.getAllTrails().subscribe(trail => this.trails = trails)
 		//this.trail = trail.trailId;
-		//this.commentService
+
 	}
 }
