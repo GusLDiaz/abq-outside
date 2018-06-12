@@ -23,29 +23,26 @@ export class TrailComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		// showComments : void {
-		//
-		// }
+		this.showComments();
 		this.trailService.getTrailByTrailId(this.trailId).subscribe(reply => this.trail = reply);
-		let commentTrailId = this.commentService.getCommentByCommentTrailId(this.trailId);
-		commentTrailId.subscribe(comments => this.comments = comments);
-		this.commentCreator = this.formBuilder.group({
-			commentContent: ["", [Validators.maxLength(2000), Validators.required]]
-		});
 	}
 
 	createComment(): any {
-
-		let comment = new Comment(null, null, null, null, this.createComment().value.commentContent, null);
-
-		this.commentService.createComment(comment)
+		this.comment = new Comment(null, null, null, null, this.createComment().value.commentContent, null);
+		this.commentCreator = this.formBuilder.group({
+			commentContent: ["", [Validators.maxLength(2000), Validators.required]]
+		});
+		this.commentService.createComment(this.comment)
 			.subscribe(status =>
 				this.status = status);
-		// if(status.status === 200) {
-		// 	this.showComments();
-		// 	this.createComment.reset();
-		// } else {
-		// 	return false
-		// }
+		if(this.status.status === 200) {
+			this.showComments();
+			this.commentCreator.reset();
+		} else {
+			return false
+		}
+	}
+	showComments(): void {
+		this.commentService.getCommentByCommentTrailId(this.trailId).subscribe(comments => this.comments = comments);
 	}
 }
