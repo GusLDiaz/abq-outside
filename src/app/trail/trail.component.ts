@@ -8,7 +8,7 @@ import {ActivatedRoute} from "@angular/router";
 	template: require("./trail.component.html")
 })
 export class TrailComponent implements OnInit {
-	trail : Trail = new Trail(null,"lol",null,null,null,null,null,null,null,null,null,null);
+	trail : Trail = new Trail(null,null,null,null,null,null,null,null,null,null,null,null);
 	trails : Trail[] = [];
 	comments : Comment[] = [];
 	constructor(protected trailService: TrailService, protected commentService: CommentService, protected route : ActivatedRoute) {
