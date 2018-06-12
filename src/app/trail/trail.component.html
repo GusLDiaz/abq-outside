@@ -43,7 +43,7 @@
 	<div class="col-sm-2 col-md-3"></div>
 	<div class="card col-12 col-sm-8 col-md-6">
 		<br>
-		<form id="commentCreator" name="commentCreator" [formGroup]="commentCreator" (submit)="createComment()"
+		<form id="commentCreator" name="commentCreator" [formGroup]="commentCreator" (ngSubmit)="createTrailComment()"
 				novalidate>
 			<textarea class="form-control" type="text" name="commentContent" id="commentContent"
 						 placeholder="Your comment here!" formControlName="commentContent" rows="3"></textarea>
@@ -54,13 +54,14 @@
 		<div class="col-12 col-lg-9">
 			<div class="card-columns">
 				<!-- begin comment item -->
-				<div *ngFor="let comment of comments" class="card">
-					<div *ngIf="detailedComment.commentId !== null" class="col-md-4 bg-success">
-						<p class="card-text">{{ detailedComment.commentContent }}</p>
-						<div class="small text-muted">{{ detailedComment.commentTimestamp | date:'M/d/yy h:mm a' }}
-						</div>
-					</div>
-				</div>
+				<!--<div *ngFor="let comment of comments" class="card">-->
+					<!--hello-->
+					<!--&lt;!&ndash;<div *ngIf="detailedComment.commentId !== null" class="col-md-4 bg-success">&ndash;&gt;-->
+						<!--&lt;!&ndash;<p class="card-text">{{ detailedComment.commentContent }}</p>&ndash;&gt;-->
+						<!--&lt;!&ndash;<div class="small text-muted">{{ detailedComment.commentTimestamp | date:'M/d/yy h:mm a' }}&ndash;&gt;-->
+						<!--&lt;!&ndash;</div> &ndash;&gt;-->
+					<!--&lt;!&ndash;</div>  &ndash;&gt;-->
+				<!--</div>-->
 			</div>
 		</div>
 	</div>

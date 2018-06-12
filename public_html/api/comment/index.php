@@ -53,7 +53,7 @@ try {
 				$reply->data = $comment;
 			}
 		} else {
-			throw new InvalidArgumentException("incorrect search parameters ", 404);
+			$reply->data = null;
 		}
 		/**
 		 * Post for Comment
@@ -99,4 +99,4 @@ if($reply->data === null) {
 	unset($reply->data);
 }
 // encode and return reply to front end caller
-//echo json_encode($reply);
+echo json_encode($reply);
