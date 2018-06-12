@@ -26,26 +26,26 @@ export class TrailComponent implements OnInit {
 		this.trailId.subscribe(comments => this.comments = comments);
 
 	}
-	createComment() : any {
-		if(!this.event) {
-			return false
-		}
-
-		let comment = new Comment(null, null,null, null, this.commentCreator.value.commentContent, null);
-
-		this.commentService.createComment(comment)
-			.subscribe(status =>
-				this.status = status);
-				if(status.status === 200) {
-					this.Speak
-					this.createCommentForm.reset();
-				} else {
-					return false
-				}
-			})
-	}
-		speak() : {
-
-			let commentTrailId : string = this.route.snapshot.params["commentArtId"];
-		}
+	// createComment() : any {
+	// 	if(!this.event) {
+	// 		return false
+	// 	}
+	//
+	// 	let comment = new Comment(null, null,null, null, this.commentCreator.value.commentContent, null);
+	//
+	// 	this.commentService.createComment(comment)
+	// 		.subscribe(status =>
+	// 			this.status = status);
+	// 			if(status.status === 200) {
+	// 				this.Speak
+	// 				this.createCommentForm.reset();
+	// 			} else {
+	// 				return false
+	// 			}
+	// 		})
+	// }
+	// 	speak() {
+	//
+	// 		let commentTrailId : string = this.route.snapshot.params["commentArtId"];
+	// 	}
 }
