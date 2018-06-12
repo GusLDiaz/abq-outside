@@ -107,7 +107,7 @@ try {
 		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 		$_SESSION["profile"] = $profile;
 
-		header("Location: ../../");
+		header("Location: ../../..");
 	}
 } catch(\Exception $exception) {
 	$reply->status = $exception->getCode();
