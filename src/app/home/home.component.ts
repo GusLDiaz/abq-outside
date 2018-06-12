@@ -10,7 +10,7 @@ export class HomeComponent implements OnInit{
 	trail : string = "";
 	trails : Trail[] = [];
 	detailedTrail : Trail = new Trail(null,null,null,null,null,null,null,null,null,null,null,null);
-	constructor(protected trailService : TrailService, protected router: Router){ //protected v private v public?
+	constructor(protected trailService : TrailService, public router: Router){ //protected v private v public?
 
 	}
 	ngOnInit() : void {
@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit{
 	this.detailedTrail = trail;
 	}
 	goToTrail(){
-		this.router.navigate(['trail/' + this.detailedTrail.trailId]);
+		this.router.navigate(['trail/' , this.detailedTrail.trailId]);
 	}
 }
 

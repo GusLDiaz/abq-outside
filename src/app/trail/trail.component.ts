@@ -14,7 +14,8 @@ export class TrailComponent implements OnInit {
 	constructor(protected trailService: TrailService, protected commentService: CommentService, protected route : ActivatedRoute) {
 	}
 	ngOnInit() {
-		this.trailService.getTrailByTrailId(this.route.snapshot["trailId"]).subscribe(reply => this.trail = reply);
+		let trailId = this.route.snapshot.params.trailId;
+		this.trailService.getTrailByTrailId(trailId).subscribe(reply => this.trail = reply);
 		//this.trailService.getAllTrails().subscribe(trail => this.trails = trails)
 		//this.trail = trail.trailId;
 		//this.commentService
