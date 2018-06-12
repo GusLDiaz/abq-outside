@@ -30,8 +30,8 @@ export class ProfileService  {
 	}
 
 	// call to the API to grab an array of profiles based on the user input
-	getProfileByProfileUserName(profileUserName: string) :Observable<Profile[]> {
-		return(this.http.get<Profile[]>(this.profileUrl, {params: new HttpParams().set("profileUserName", profileUserName)}));
+	getProfileByProfileUsername(profileUsername: string) :Observable<Profile[]> {
+		return(this.http.get<Profile[]>(this.profileUrl, {params: new HttpParams().set("profileUsername", profileUsername)}));
 	}
 
 	//call to the profile API and grab the corresponding profile by its email

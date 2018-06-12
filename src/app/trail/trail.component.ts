@@ -22,28 +22,30 @@ export class TrailComponent implements OnInit {
 	ngOnInit() {
 
 		this.trailService.getTrailByTrailId(this.trailId).subscribe(reply => this.trail = reply);
-		this.commentService.getCommentByCommentTrailId(this.trailId).subscribe(this.comments => this.comments = reply);
+		var commentTrailId = this.commentService.getCommentByCommentTrailId(this.trailId);
+		this.trailId.subscribe(comments => this.comments = comments);
 
 	}
 	createComment() : any {
-		if(!this.) {
+		if(!this.event) {
 			return false
 		}
-
-		let newCommentProfileId = this.();
 
 		let comment = new Comment(null, null,null, null, this.commentCreator.value.commentContent, null);
 
 		this.commentService.createComment(comment)
-			.subscribe(status => {
-				this.status = status;
+			.subscribe(status =>
+				this.status = status);
 				if(status.status === 200) {
-					this.listComments();
+					this.Speak
 					this.createCommentForm.reset();
 				} else {
 					return false
 				}
 			})
 	}
+		speak() : {
 
+			let commentTrailId : string = this.route.snapshot.params["commentArtId"];
+		}
 }
