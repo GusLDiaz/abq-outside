@@ -27,7 +27,7 @@
 		<ngui-map zoom="8" center="Albuquerque, New Mexico"
 					 class="map p-3 border-top border-success bg-success col-md-8">
 			<!-- *ngIf="" >if sidePanel is active -->
-			<marker *ngFor="let trail of trails" [position]="[trail.trailLat, trail.trailLong]" [icon]="{url: 'https://bootcamp-coders.cnm.edu/~gliakos/abq-outside/src/app/home/hiker2.svg',anchor: [16,16],size: [22,22],scaledSize: [22,22]}" (click)="showSidePanel(trail)"></marker>
+			<marker *ngFor="let trail of trails" [position]="[trail.trailLat, trail.trailLong]" [icon]="{url: 'https://bootcamp-coders.cnm.edu/~gliakos/abq-outside/src/app/home/tree2.svg',anchor: [16,16],size: [22,22],scaledSize: [22,22]}" (click)="showSidePanel(trail)"></marker>
 		</ngui-map>
 		<!--If null display normal text-->
 		<div *ngIf="detailedTrail.trailId !== null" class="col-md-4 bg-success">

@@ -18,11 +18,12 @@
 <!--<div id="comment"></div>-->
 <!--</div>-->
 <!--</div>-->
-<div class="container-fluid">
 	<div class="row">
-		<div class="order-1">
-			<img class="mh-50 mw-50 p-1" src="{{trail.trailImage}}" alt="Trail image caption">
+		<div class="col-12">
+				<img class="mh-50 mw-50 p-1 mx-auto d-block" src="{{trail.trailImage}}" alt="Trail image caption">
 		</div>
+			<div class="row">
+				<div class="col-12">
 		<div class="order-3">
 			<dl class="dl-horizontal text-container">
 				<dt class="col-sm-3">{{trail.trailName}}</dt>
@@ -39,6 +40,7 @@
 		</div>
 	</div>
 </div>
+	</div>
 <div class="row">
 	<div class="col-sm-2 col-md-3"></div>
 	<div class="card col-12 col-sm-8 col-md-6">
@@ -51,16 +53,14 @@
 			<button class="btn text-dark font-weight-bold rounded border bg-light text-center" type="submit">Submit
 			</button>
 		</form>
-		<div class="col-12 col-lg-9">
 			<div class="card-columns">
 				<!-- begin comment item -->
 				<div class="container-fluid"></div>
-				<div *ngFor="let comment of comments" class="card">>
+				<div *ngFor="let comment of comments" class="card">
 						<p class="card-text">{{ detailedComment.commentContent }}</p>
 						<div class="small text-muted">{{ detailedComment.commentTimestamp | date:'M/d/yy h:mm a' }}
 						</div>
 					</div>
 				</div>
-			</div>
 		</div>
 </div>
