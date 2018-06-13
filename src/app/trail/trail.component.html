@@ -63,14 +63,14 @@
 			<h3>Comments</h3>
 			<div *ngFor="let comment of comments">
 				<div class="card">
-					<p class="card-text">{{ detailedComment.commentContent }}</p>
-					<div class="small text-muted">{{ detailedComment.commentTimestamp | date:'M/d/yy h:mm a' }}
+					<h4>{{usermap[comment.commentProfileId]}}</h4>
+					<p class="card-text">{{ comment.commentContent }}</p>
+					<div class="small text-muted">{{ comment.commentTimestamp | date:'M/d/yy h:mm a' }}
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 </div>
 
 

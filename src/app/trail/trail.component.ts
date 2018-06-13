@@ -51,7 +51,7 @@ export class TrailComponent implements OnInit {
 	}
 
 	//showComment(comment: Comment): void {
-		//this.detailedComment = comment;
+	//this.detailedComment = comment;
 	//}
 
 	getProfileComments(): void {
@@ -60,5 +60,10 @@ export class TrailComponent implements OnInit {
 		//this.sessionService.
 		//this.cookieJar = this.cookieService.getAll();
 		//this.cookieJar['profileId'].subscribe(profiles => this.profiles = profiles);
+	}
+	usermap : object = {
+		"61fadb93-8d1c-4124-a505-7ae0b69662e0": "HappyHikerMan",
+		"7d6020d2-7763-472e-bfa7-e36ac013f02e": "MrTrailGuy",
+		"f4ac03a6-637d-4221-b9e2-76a1670983eb": "JullyDaHikeQueen"
 	}
 }
