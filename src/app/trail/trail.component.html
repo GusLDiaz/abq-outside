@@ -52,11 +52,15 @@
 		</form>
 		<div class="col-12 col-lg-9">
 				<div class="container-fluid">
-				<div *ngFor="let comment of comments" class="card">>
-						<p class="card-text">{{ comment.commentContent }}</p>
-						<div class="small text-muted">{{ comment.commentTimestamp | date:'M/d/yy h:mm a' }}
-						</div>
-					</div>
+					{{comments | json}}
+				<!--<div *ngFor="let comment of comments" class="card">>-->
+					<!--<div>-->
+						<!--<h4 class="card-title"> {{comment.commentProfileId}}</h4>-->
+						<!--<p class="card-text">{{ comment.commentContent }}</p>-->
+						<!--<div class="small text-muted">{{ comment.commentTimestamp | date:'M/d/yy h:mm a' }}-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
 				</div>
 			</div>
 	</div>

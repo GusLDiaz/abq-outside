@@ -31,7 +31,7 @@ export class CommentService {
 
 // call to the Comment API and get a Comment object by its foreign key,  trail id
 	getCommentByCommentTrailId(commentTrailId: string): Observable<Comment[]> {
-		return (this.http.get<Comment[]>(this.commentUrl + commentTrailId));
+		return (this.http.get<Comment[]>(this.commentUrl + "?commentTrailId=" + commentTrailId));
 	}
 
 // call to the Comment API and get a Comment content

@@ -37,7 +37,7 @@ export class TrailComponent implements OnInit {
 	}
 
 	createTrailComment(): any {
-		let status = new Status("200", null, null)
+		let status = new Status("200", null, null);
 		this.comment = new Comment(null, null, this.trailId, this.commentCreator.value.commentContent, null);
 //this.comment['commentProfileId'] = '4fa9ccdf-6f6c-489d-bcec-aa0b5d92faf2'
 		//getProfileComments();
