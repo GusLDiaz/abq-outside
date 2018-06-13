@@ -7,7 +7,7 @@ import {Comment} from "../shared/classes/comment";
 import {ActivatedRoute} from "@angular/router";
 import {Status} from "../shared/classes/status";
 import {SessionService} from "../shared/services/session.service";
-import {CookieService} from "ng2-cookies";
+// import {CookieService} from "ng2-cookies";
 
 @Component({
 	template: require("./trail.component.html")
@@ -22,7 +22,7 @@ export class TrailComponent implements OnInit {
 	commentCreator: FormGroup;
 	status: Status = new Status(null, null, null);
 
-	constructor(protected trailService: TrailService, protected formBuilder: FormBuilder, protected commentService: CommentService, protected route: ActivatedRoute, protected sessionService: SessionService, protected cookieService: CookieService) {
+	constructor(protected trailService: TrailService, protected formBuilder: FormBuilder, protected commentService: CommentService, protected route: ActivatedRoute, protected sessionService: SessionService) {
 	}
 
 
