@@ -75,7 +75,7 @@ try {
 			throw (new \InvalidArgumentException("You need something to say to say something!", 405));
 		}
 
-		// enforce the user is signed in
+//		// enforce the user is signed in
 		if(empty($_SESSION["profile"]) === true) {
 			throw(new \InvalidArgumentException("you must be logged in to comment on a trail", 403));
 		}

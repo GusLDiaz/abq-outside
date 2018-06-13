@@ -15,7 +15,7 @@ export class ProfileService  {
 	private profileUrl = "api/profile/";
 
 	//reach out to the profile  API and delete the profile in question
-	deleteProfile(id : number) : Observable<Status> {
+	deleteProfile(id : string) : Observable<Status> {
 		return(this.http.delete<Status>(this.profileUrl + id));
 	}
 
@@ -25,7 +25,7 @@ export class ProfileService  {
 	}
 
 	// call to the Profile API and get a Profile object by its id
-	getProfileByProfileId(id: number) : Observable<Profile> {
+	getProfileByProfileId(id: string) : Observable<Profile> {
 		return(this.http.get<Profile>(this.profileUrl + id));
 	}
 

@@ -6,6 +6,8 @@ import {CommentService} from "../shared/services/comment.service";
 import {Comment} from "../shared/classes/comment";
 import {ActivatedRoute} from "@angular/router";
 import {Status} from "../shared/classes/status";
+import {SessionService} from "../shared/services/session.service";
+import {CookieService} from "ng2-cookies";
 
 @Component({
 	template: require("./trail.component.html")
@@ -19,10 +21,13 @@ export class TrailComponent implements OnInit {
 	detailedComment: Comment = new Comment(null, null, null, null, null);
 	commentCreator: FormGroup;
 	status: Status = new Status(null, null, null);
-	constructor(protected trailService: TrailService, protected formBuilder: FormBuilder, protected commentService: CommentService, protected route: ActivatedRoute) {
+
+	constructor(protected trailService: TrailService, protected formBuilder: FormBuilder, protected commentService: CommentService, protected route: ActivatedRoute, protected sessionService: SessionService, protected cookieService: CookieService) {
 	}
 
+
 	ngOnInit() {
+		//this.sessionService.getSessionApiProfile().subscribe(reply => this.comment.commentProfileId = reply);
 		this.trailService.getTrailByTrailId(this.trailId).subscribe(reply => this.trail = reply);
 		this.commentService.getCommentByCommentTrailId(this.trailId).subscribe(comments => this.comments = comments);
 		//this.showComment(this.comment);
@@ -32,19 +37,27 @@ export class TrailComponent implements OnInit {
 	}
 
 	createTrailComment(): any {
+		let status = new Status("200", null, null)
 		this.comment = new Comment(null, null, this.trailId, this.commentCreator.value.commentContent, null);
-
+//this.comment['commentProfileId'] = '4fa9ccdf-6f6c-489d-bcec-aa0b5d92faf2'
+		//loadProfileComments();
 		this.commentService.createComment(this.comment)
-			.subscribe(status =>
-				this.status = status);
-		// if(status.status === 200) {
-		// 	this.showComment(this.comment);
-		// 	this.commentCreator.reset();
-		// } else {
-		// 	return false
-		// }
+			.subscribe(Status => this.status = Status);
+		if(this.status.status == status.status) {
+			this.showComment(this.comment);
+			this.commentCreator.reset();
+		} else {
+			return false
+		}
 	}
+
 	showComment(comment: Comment): void {
 		this.detailedComment = comment;
+	}
+
+	getProfileComments(): void {
+		this.sessionService.setSession();
+		//this.cookieJar = this.cookieService.getAll();
+		//this.cookieJar['profileId'].subscribe(profiles => this.profiles = profiles);
 	}
 }

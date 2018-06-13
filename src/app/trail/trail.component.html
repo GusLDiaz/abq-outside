@@ -54,15 +54,13 @@
 		<div class="col-12 col-lg-9">
 			<div class="card-columns">
 				<!-- begin comment item -->
-				<!--<div *ngFor="let comment of comments" class="card">-->
-					<!--hello-->
-					<!--&lt;!&ndash;<div *ngIf="detailedComment.commentId !== null" class="col-md-4 bg-success">&ndash;&gt;-->
-						<!--&lt;!&ndash;<p class="card-text">{{ detailedComment.commentContent }}</p>&ndash;&gt;-->
-						<!--&lt;!&ndash;<div class="small text-muted">{{ detailedComment.commentTimestamp | date:'M/d/yy h:mm a' }}&ndash;&gt;-->
-						<!--&lt;!&ndash;</div> &ndash;&gt;-->
-					<!--&lt;!&ndash;</div>  &ndash;&gt;-->
-				<!--</div>-->
+				<div class="container-fluid"></div>
+				<div *ngFor="let comment of comments" class="card">>
+						<p class="card-text">{{ detailedComment.commentContent }}</p>
+						<div class="small text-muted">{{ detailedComment.commentTimestamp | date:'M/d/yy h:mm a' }}
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
 </div>
