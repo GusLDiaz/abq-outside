@@ -40,6 +40,7 @@
 	</div>
 </div>
 <div class="row">
+	<div class="col-sm-2 col-md-3"></div>
 	<div class="card col-12 col-sm-8 col-md-6">
 		<br>
 		<form id="commentCreator" name="commentCreator" [formGroup]="commentCreator" (ngSubmit)="createTrailComment()"
@@ -51,17 +52,15 @@
 			</button>
 		</form>
 		<div class="col-12 col-lg-9">
-				<div class="container-fluid">
-					{{comments | json}}
-				<!--<div *ngFor="let comment of comments" class="card">>-->
-					<!--<div>-->
-						<!--<h4 class="card-title"> {{comment.commentProfileId}}</h4>-->
-						<!--<p class="card-text">{{ comment.commentContent }}</p>-->
-						<!--<div class="small text-muted">{{ comment.commentTimestamp | date:'M/d/yy h:mm a' }}-->
-						<!--</div>-->
-					<!--</div>-->
-				<!--</div>-->
+			<div class="card-columns">
+				<!-- begin comment item -->
+				<div class="container-fluid"></div>
+				<div *ngFor="let comment of comments" class="card">>
+						<p class="card-text">{{ detailedComment.commentContent }}</p>
+						<div class="small text-muted">{{ detailedComment.commentTimestamp | date:'M/d/yy h:mm a' }}
+						</div>
+					</div>
 				</div>
 			</div>
-	</div>
+		</div>
 </div>

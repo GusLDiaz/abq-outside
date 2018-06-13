@@ -18,3 +18,14 @@ dl, .dl {
 	font-size: larger;
 }
 
+/*-------------------------------*/
+/*Trail Component CSS*/
+/*-------------------------------*/
+
+.text-container {
+	border: solid;
+	color: black;
+	margin: 0 auto;
+	padding:.25rem;
+}
+

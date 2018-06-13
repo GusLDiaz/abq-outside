@@ -18,8 +18,8 @@ export class HomeComponent implements OnInit{
 			.subscribe(trails => this.trails = trails);
 	}
 	showSidePanel( trail : Trail) {
-	this.detailedTrail = trail;
-	}
+	this.detailedTrail = trail;}
+
 	goToTrail(){
 		this.router.navigate(['trail/' , this.detailedTrail.trailId]);
 	}
