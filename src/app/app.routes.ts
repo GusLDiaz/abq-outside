@@ -14,6 +14,7 @@ import {APP_BASE_HREF} from "@angular/common";
 import {HTTP_INTERCEPTORS, HttpInterceptor} from "@angular/common/http";
 import {DeepDiveInterceptor} from "./shared/interceptors/deep.dive.interceptor";
 import {CommentService} from "./shared/services/comment.service";
+import {CookieService} from "ng2-cookies";
 
 
 //import {SessionService} from "./shared/services/session.service";
@@ -28,7 +29,7 @@ export const allAppComponents : any[] = [HomeComponent,TrailComponent,AboutCompo
 ];
 
 // an array of services
-const services : any[] = [ProfileService,TrailService,SessionService,CommentService];
+const services : any[] = [ProfileService,TrailService,SessionService,CommentService,CookieService];
 
 //an array of misc providers
  const providers : any[] = [

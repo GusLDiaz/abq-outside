@@ -16,9 +16,9 @@ export class AppComponent implements OnInit{
 	trails : Trail[];
 	status : Status = null;
 
-	 constructor(protected trailService: TrailService) { //}, protected commentService: CommentService) {
-	 // 	this.sessionService.setSession()
-	 // 		.subscribe(status => this.status = status);
+	 constructor(protected trailService: TrailService, protected sessionService: SessionService) { //}, protected commentService: CommentService) {
+	  	this.sessionService.setSession()
+	  		.subscribe(status => this.status = status);
 	  }
 	  ngOnInit() : void {
 	 	this.trailService.getAllTrails()

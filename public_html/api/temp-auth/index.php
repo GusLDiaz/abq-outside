@@ -18,6 +18,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
+$reply->message = null;
 try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/outside.ini");
@@ -34,13 +35,13 @@ try {
 //echo "3";
 	$profile = new Profile(generateUuidV4(), $randomEmail, $randomImage, $refreshToken, $userName );
 	$profile->insert($pdo);
-//	echo ,"success";
+	$reply->message ="gus was sent to the play pen";
 	$_SESSION["profile"] = $profile;
 	setXsrfCookie();
 	$object = new stdClass();
 //	setJwtAndAuthHeader("empty", $object);
-	echo $profile->getProfileId();
-	$reply->data = $profile->getProfileId();
+	//echo $profile->getProfileId();
+	//$reply->data = $profile->getProfileId();
 } catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();

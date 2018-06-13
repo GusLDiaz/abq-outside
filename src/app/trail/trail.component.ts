@@ -7,7 +7,7 @@ import {Comment} from "../shared/classes/comment";
 import {ActivatedRoute} from "@angular/router";
 import {Status} from "../shared/classes/status";
 import {SessionService} from "../shared/services/session.service";
-// import {CookieService} from "ng2-cookies";
+import {CookieService} from "ng2-cookies";
 
 @Component({
 	template: require("./trail.component.html")
@@ -18,7 +18,7 @@ export class TrailComponent implements OnInit {
 	comments: Comment[] = [];
 	comment: Comment = new Comment(null, null, null, null, null);
 	trailId = this.route.snapshot.params.trailId;
-	detailedComment: Comment = new Comment(null, null, null, null, null);
+	//detailedComment: Comment = new Comment(null, null, null, null, null);
 	commentCreator: FormGroup;
 	status: Status = new Status(null, null, null);
 
@@ -27,7 +27,7 @@ export class TrailComponent implements OnInit {
 
 
 	ngOnInit() {
-		//this.sessionService.getSessionApiProfile().subscribe(reply => this.comment.commentProfileId = reply);
+		this.sessionService.setSession();
 		this.trailService.getTrailByTrailId(this.trailId).subscribe(reply => this.trail = reply);
 		this.commentService.getCommentByCommentTrailId(this.trailId).subscribe(comments => this.comments = comments);
 		//this.showComment(this.comment);
@@ -40,23 +40,24 @@ export class TrailComponent implements OnInit {
 		let status = new Status("200", null, null)
 		this.comment = new Comment(null, null, this.trailId, this.commentCreator.value.commentContent, null);
 //this.comment['commentProfileId'] = '4fa9ccdf-6f6c-489d-bcec-aa0b5d92faf2'
-		//loadProfileComments();
+		//getProfileComments();
 		this.commentService.createComment(this.comment)
 			.subscribe(Status => this.status = Status);
 		if(this.status.status == status.status) {
-			this.showComment(this.comment);
 			this.commentCreator.reset();
 		} else {
 			return false
 		}
 	}
 
-	showComment(comment: Comment): void {
-		this.detailedComment = comment;
-	}
+	//showComment(comment: Comment): void {
+		//this.detailedComment = comment;
+	//}
 
 	getProfileComments(): void {
 		this.sessionService.setSession();
+
+		//this.sessionService.
 		//this.cookieJar = this.cookieService.getAll();
 		//this.cookieJar['profileId'].subscribe(profiles => this.profiles = profiles);
 	}

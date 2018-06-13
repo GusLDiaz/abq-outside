@@ -8,11 +8,10 @@ export class SessionService {
 
 	constructor(protected http:HttpClient) {}
 
-	private sessionUrl = "api/temp-auth";
+	private sessionUrl = "api/temp-auth/";
 
-	setSession() : Observable<Response> {
-		return (this.http.get(this.sessionUrl)
-			.map((response : Response) => response));
+	setSession() {
+		return (this.http.get<Status>(this.sessionUrl));
 	}
 	// getSessionApiProfile() {
 	// 	return (this.http.get<>(this.sessionUrl));

@@ -13,7 +13,6 @@ export class CommentService {
 
 	constructor(protected http: HttpClient) {
 	}
-
 //call the Comment API and create a new comment
 	createComment(comment: Comment): Observable<Status> {
 		return (this.http.post<Status>(this.commentUrl, comment));
