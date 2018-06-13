@@ -18,50 +18,59 @@
 <!--<div id="comment"></div>-->
 <!--</div>-->
 <!--</div>-->
-<div class="container-fluid">
+<div class="container">
 	<div class="row">
-		<div class="order-1" *ngIf="trail.trailImage!==null">
-			<img class="mh-50 mw-50 p-1" src="{{trail.trailImage}}" alt="Trail image caption">
+		<div class="col-md-6 offset-md-3">
+			<img class="mh-50 mw-50 p-1 img-fluid mb-3 mx-auto" src="{{trail.trailImage}}" alt="{{trail.trailName}}">
 		</div>
-		<div class="order-1" *ngIf="trail.trailImage == needsanimage"></div>
-		<div class="order-3">
-			<dl class="dl-horizontal">
-				<dt class="col-sm-3">{{trail.trailName}}</dt>
-				<dd class="col-sm-9">{{trail.trailLocation}}</dd>
+	</div><!-- /.row -->
+	<div class="row">
+		<div class="col-md-6 offset-md-3">
+			<dl class="dl-horizontal text-container mb-3">
+				<dt>{{trail.trailName}}</dt>
+				<dd>{{trail.trailLocation}}</dd>
 
-				<dt class="col-sm-3">Trail Rating: {{trail.trailRating}}</dt>
+				<dt>Trail Rating: {{trail.trailRating}}</dt>
 
-				<dt class="col-sm-3">Trail Length: {{trail.trailLength}}</dt>
-				<dt class="col-sm-3">Trail Ascent: {{trail.trailAscent}}</dt>
+				<dt>Trail Length: {{trail.trailLength}}</dt>
+				<dt>Trail Ascent: {{trail.trailAscent}}</dt>
 
-				<dt class="col-sm-3">Description:</dt>
-				<dd class="col-sm-9">{{trail.trailSummary}}</dd>
+				<dt>Description:</dt>
+				<dd>{{trail.trailSummary}}</dd>
 			</dl>
 		</div>
 	</div>
-</div>
-<div class="row">
-	<div class="card col-12 col-sm-8 col-md-6">
-		<br>
-		<form id="commentCreator" name="commentCreator" [formGroup]="commentCreator" (ngSubmit)="createTrailComment()"
-				novalidate>
-			<textarea class="form-control" type="text" name="commentContent" id="commentContent"
-						 placeholder="Your comment here!" formControlName="commentContent" rows="3"></textarea>
-			<br>
-			<button class="btn text-dark font-weight-bold rounded border bg-light text-center" type="submit">Submit
-			</button>
-		</form>
-				<div class="container-fluid align-items-end">
-					<!--{{comments | json}}-->
-				<div *ngFor="let comment of comments" class="card">
-					<div>
-						<br>
-						<h4 class="card-title">{{comment.commentProfileId}}</h4>
-						<p class="card-text">{{ comment.commentContent }}</p>
-						<div class="small text-muted ">{{ comment.commentTimestamp | date:'M/d/yy h:mm a' }}
-						</div>
+
+	<div class="row">
+		<div class="col col-md-6 offset-md-3 mb-3">
+			<div class="card p-3">
+				<h3>Leave a Comment Below:</h3>
+				<form id="commentCreator" name="commentCreator" [formGroup]="commentCreator"
+						(ngSubmit)="createTrailComment()"
+						novalidate>
+				<textarea class="form-control" type="text" name="commentContent" id="commentContent"
+							 placeholder="Your comment here!" formControlName="commentContent" rows="3"></textarea>
+					<button class="btn text-dark font-weight-bold rounded border bg-light text-center mt-3" type="submit">
+						Submit
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6 offset-md-3">
+			<h3>Comments</h3>
+			<div *ngFor="let comment of comments">
+				<div class="card">
+					<p class="card-text">{{ detailedComment.commentContent }}</p>
+					<div class="small text-muted">{{ detailedComment.commentTimestamp | date:'M/d/yy h:mm a' }}
 					</div>
 				</div>
-				</div>
+			</div>
+		</div>
 	</div>
+
 </div>
+
+
